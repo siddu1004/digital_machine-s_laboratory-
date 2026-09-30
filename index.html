@@ -721,54 +721,56 @@
       const mlPredictions = useMemo(() => {
         if (activeFacility === "motor") {
           const rawInput = [voltage, slip, frequency];
-          const modelsObj = activeData[selectedDataset];
-          if (!modelsObj || !modelsObj.models) return null;
+          const datasetObj = activeData[selectedDataset];
+          if (!datasetObj || !datasetObj.models || !datasetObj.models.scaler || !datasetObj.models.models) return null;
           
-          const mean = modelsObj.scaler.mean;
-          const scale = modelsObj.scaler.scale;
+          const mean = datasetObj.models.scaler.mean;
+          const scale = datasetObj.models.scaler.scale;
+          if (!mean || !scale) return null;
           const scaledX = rawInput.map((v, i) => (v - mean[i]) / scale[i]);
 
           const names = ["Efficiency", "PowerFactor", "Torque", "I1", "P_in"];
           const predictions = {};
           
           names.forEach((name, i) => {
-            const polyVal = evalPoly(modelsObj.models.poly.coefs[i], rawInput);
-            const rfVal = evalForest(modelsObj.models.rf.forests[i], rawInput);
-            const mlpVal = evalMLP(modelsObj.models.mlp.networks[i], scaledX);
+            const polyVal = evalPoly(datasetObj.models.models.poly?.coefs?.[i], rawInput);
+            const rfVal = evalForest(datasetObj.models.models.rf?.forests?.[i], rawInput);
+            const mlpVal = evalMLP(datasetObj.models.models.mlp?.networks?.[i], scaledX);
             
             predictions[name] = {
               poly: polyVal, rf: rfVal, mlp: mlpVal,
               r2: {
-                poly: modelsObj.models.poly.r2[i],
-                rf: modelsObj.models.rf.r2[i],
-                mlp: modelsObj.models.mlp.r2[i]
+                poly: datasetObj.models.models.poly?.r2?.[i],
+                rf: datasetObj.models.models.rf?.r2?.[i],
+                mlp: datasetObj.models.models.mlp?.r2?.[i]
               }
             };
           });
           return predictions;
         } else {
           const rawInput = [aIf, aIa, Math.acos(Math.abs(aPF)) * (aPF < 0 ? -1 : 1)];
-          const modelsObj = activeData.alternator;
-          if (!modelsObj || !modelsObj.models) return null;
+          const datasetObj = activeData.alternator;
+          if (!datasetObj || !datasetObj.models || !datasetObj.models.scaler || !datasetObj.models.models) return null;
           
-          const mean = modelsObj.models.scaler.mean;
-          const scale = modelsObj.models.scaler.scale;
+          const mean = datasetObj.models.scaler.mean;
+          const scale = datasetObj.models.scaler.scale;
+          if (!mean || !scale) return null;
           const scaledX = rawInput.map((v, i) => (v - mean[i]) / scale[i]);
 
           const names = ["VoltageRegulation", "Efficiency", "Losses", "Vt_line", "Eph"];
           const predictions = {};
           
           names.forEach((name, i) => {
-            const polyVal = evalPoly(modelsObj.models.poly.coefs[i], rawInput);
-            const rfVal = evalForest(modelsObj.models.rf.forests[i], rawInput);
-            const mlpVal = evalMLP(modelsObj.models.mlp.networks[i], scaledX);
+            const polyVal = evalPoly(datasetObj.models.models.poly?.coefs?.[i], rawInput);
+            const rfVal = evalForest(datasetObj.models.models.rf?.forests?.[i], rawInput);
+            const mlpVal = evalMLP(datasetObj.models.models.mlp?.networks?.[i], scaledX);
             
             predictions[name] = {
               poly: polyVal, rf: rfVal, mlp: mlpVal,
               r2: {
-                poly: modelsObj.models.poly.r2[i],
-                rf: modelsObj.models.rf.r2[i],
-                mlp: modelsObj.models.mlp.r2[i]
+                poly: datasetObj.models.models.poly?.r2?.[i],
+                rf: datasetObj.models.models.rf?.r2?.[i],
+                mlp: datasetObj.models.models.mlp?.r2?.[i]
               }
             };
           });
