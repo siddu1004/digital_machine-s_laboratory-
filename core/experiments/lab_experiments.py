@@ -367,6 +367,155 @@ EXPERIMENTS_REGISTRY: Dict[str, Dict[str, Any]] = {
             "Can a Dyn11 transformer be operated in parallel with a Yd1 transformer?",
             "What is the consequence of unequal per-unit impedances in parallel transformers?"
         ]
+    },
+    "exp_alt_emf_mmf_regulation": {
+        "id": "exp_alt_emf_mmf_regulation",
+        "title": "Voltage Regulation of Alternator by EMF (Synchronous Impedance) & MMF (Ampere-Turn) Methods",
+        "machine_type": "synchronous_alternator",
+        "aim": "To predetermine the percentage voltage regulation of a 3-phase alternator for various power factors using EMF and MMF methods by obtaining OCC and SCC curves.",
+        "apparatus": ["3-Phase Alternator coupled to DC Motor Prime Mover", "DC Field Rheostat", "AC Voltmeter", "AC Ammeter", "DC Ammeters"],
+        "theory": (
+            "EMF Method (Pessimistic Method): Assumes magnetic circuit is unsaturated and replaces armature reaction flux by fictitious synchronous reactance drop I*Xs. "
+            "MMF Method (Optimistic Method): Replaces armature resistance and leakage reactance voltage drops by equivalent field ampere-turns."
+        ),
+        "equations": [
+            r"Z_s = \left.\frac{E_{0(\text{ph})}}{I_{sc(\text{ph})}}\right|_{I_f = \text{const}}, \quad X_s = \sqrt{Z_s^2 - R_a^2}",
+            r"E_0 = \sqrt{(V\cos\phi + I R_a)^2 + (V\sin\phi \pm I X_s)^2}",
+            r"I_f = \sqrt{I_{f1}^2 + I_{f2}^2 - 2 I_{f1} I_{f2} \cos(90^\circ \pm \phi)}",
+            r"\% \text{Reg} = \frac{E_0 - V}{V} \times 100\%"
+        ],
+        "procedure_steps": [
+            "Part 1 (OCC): Run alternator at synchronous speed. Increase field current If in steps from zero to maximum, recording open circuit phase voltage E0.",
+            "Part 2 (SCC): Short-circuit alternator armature terminals through ammeters. Increase If slowly until rated armature current flows; record If.",
+            "Part 3 (EMF Method): Calculate Zs and Xs. Compute generated voltage E0 for given power factor and determine regulation.",
+            "Part 4 (MMF Method): Find If1 (for V) and If2 (for I_rated). Vectorially combine If1 and If2 to obtain resultant field current If, read E0 from OCC and calculate regulation."
+        ],
+        "observation_columns": [
+            {"key": "if_field", "label": "I_f (Field)", "unit": "A"},
+            {"key": "e0_occ", "label": "E0 (OCC)", "unit": "V"},
+            {"key": "isc_scc", "label": "I_sc (SCC)", "unit": "A"},
+            {"key": "zs", "label": "Z_s", "unit": "Ω"},
+            {"key": "reg_emf", "label": "Reg (EMF)", "unit": "%"},
+            {"key": "reg_mmf", "label": "Reg (MMF)", "unit": "%"}
+        ],
+        "viva_topics": [
+            "Why is the EMF method called pessimistic and MMF method called optimistic?",
+            "Why does SCC characteristic remain linear even at high field currents?",
+            "How does saturation affect synchronous reactance Zs?"
+        ]
+    },
+    "exp_induction_generator_load": {
+        "id": "exp_induction_generator_load",
+        "title": "Load Test on 3-Phase Induction Generator",
+        "machine_type": "induction_motor",
+        "aim": "To operate a 3-phase squirrel cage induction machine in super-synchronous generator mode (N > Ns, s < 0) driven by prime mover, and determine its generation efficiency, power factor, and electrical output characteristics.",
+        "apparatus": ["3-Phase Induction Machine", "DC Motor Prime Mover", "3-Phase AC Mains / Capacitor Bank", "Digital Tachometer", "3-Phase Power Analyzer", "DC Field Rheostat"],
+        "theory": (
+            "When an induction machine is driven by a mechanical prime mover above synchronous speed (N > Ns), the rotor slip becomes negative (s < 0). "
+            "The rotor conductors cut the stator rotating field in reverse relative direction, causing mechanical power input to be converted into electrical power output delivered to the grid. "
+            "The machine requires lagging reactive VARs from grid (or parallel capacitors) for magnetic excitation."
+        ),
+        "equations": [
+            r"s = \frac{N_s - N}{N_s} < 0 \quad (\text{Super-synchronous speed } N > N_s)",
+            r"P_{\text{mech,in}} = T_{\text{prime\_mover}} \times \omega_m",
+            r"P_{\text{elec,out}} = \sqrt{3} V_L I_L \cos\phi \text{ (Delivered to grid)}",
+            r"\eta_{\text{generator}} = \frac{P_{\text{elec,out}}}{P_{\text{mech,in}}} \times 100\%"
+        ],
+        "procedure_steps": [
+            "Connect induction machine to 3-phase AC supply network.",
+            "Start DC prime mover and gradually increase speed up to synchronous speed (1500 RPM).",
+            "Increase prime mover speed above synchronous speed (e.g. 1515 to 1560 RPM). Observe negative wattmeter reading turning positive output direction.",
+            "Record mechanical input torque, rotor speed N (> 1500 RPM), stator line current, line voltage, active power delivered, and reactive VARs absorbed.",
+            "Plot generated electrical power vs speed and generator efficiency vs active power output."
+        ],
+        "observation_columns": [
+            {"key": "speed", "label": "Speed (N)", "unit": "RPM"},
+            {"key": "slip", "label": "Slip (s)", "unit": "pu"},
+            {"key": "v_line", "label": "V_line", "unit": "V"},
+            {"key": "i_line", "label": "I_line", "unit": "A"},
+            {"key": "p_elec_out", "label": "P_elec", "unit": "W"},
+            {"key": "pf", "label": "Power Factor", "unit": ""},
+            {"key": "efficiency", "label": "Gen Efficiency", "unit": "%"}
+        ],
+        "viva_topics": [
+            "What supplies the magnetizing VARs needed by an isolated induction generator?",
+            "What happens if an induction generator loses grid connection while running?",
+            "Why is an induction generator widely used in wind turbine power generation?"
+        ]
+    },
+    "exp_alt_zpf_regulation": {
+        "id": "exp_alt_zpf_regulation",
+        "title": "Voltage Regulation of Alternator by ZPF (Potier Triangle) Method",
+        "machine_type": "synchronous_alternator",
+        "aim": "To predetermine the voltage regulation of a 3-phase alternator using Zero Power Factor (ZPF) lag characteristic and Potier Triangle construction.",
+        "apparatus": ["3-Phase Alternator driven by Prime Mover", "3-Phase Inductive ZPF Load Bank", "DC Excitation Unit", "Voltmeters", "Ammeters"],
+        "theory": (
+            "The ZPF / Potier Triangle method accurately separates the Potier leakage reactance drop (I*X_L) from the armature reaction field MMF (MQ). "
+            "It gives the most accurate predetermination of voltage regulation under saturation conditions."
+        ),
+        "equations": [
+            r"PQ = I X_L \quad (\text{Potier Leakage Reactance Drop})",
+            r"MQ = I_{f1} \quad (\text{Armature Reaction MMF})",
+            r"E = \sqrt{(V\cos\phi + I R_a)^2 + (V\sin\phi \pm I X_L)^2}",
+            r"I_f = \sqrt{I_{f1}^2 + I_{f2}^2 - 2 I_{f1} I_{f2} \cos(90^\circ \pm \phi)}",
+            r"\% \text{Reg} = \frac{E_0 - V}{V} \times 100\%"
+        ],
+        "procedure_steps": [
+            "Obtain Open Circuit Characteristic (OCC) by measuring E0 vs If at synchronous speed.",
+            "Obtain ZPF point at rated voltage V and rated current I at zero power factor lagging.",
+            "Construct Potier Triangle ΔPMN on OCC-ZPF plot. Determine Potier leakage reactance XL from vertical leg PQ and armature reaction field current If1 from horizontal leg MQ.",
+            "Calculate excitation voltage E. Find corresponding field current If2 from OCC curve.",
+            "Combine If1 and If2 vectorially to get total field current If. Read no-load voltage E0 from OCC and calculate percentage voltage regulation."
+        ],
+        "observation_columns": [
+            {"key": "if_field", "label": "I_f", "unit": "A"},
+            {"key": "v_zpf", "label": "V_zpf", "unit": "V"},
+            {"key": "i_rated", "label": "I_rated", "unit": "A"},
+            {"key": "potier_xl", "label": "X_L", "unit": "Ω"},
+            {"key": "ar_if1", "label": "I_f1 (AR)", "unit": "A"},
+            {"key": "reg_zpf", "label": "Reg (ZPF)", "unit": "%"}
+        ],
+        "viva_topics": [
+            "Why is the Potier triangle method more accurate than EMF and MMF methods?",
+            "What physical quantity is represented by the vertical leg PQ of the Potier triangle?",
+            "Why is a zero power factor lagging load required for this test?"
+        ]
+    },
+    "exp_alt_infinite_bus_v_curves": {
+        "id": "exp_alt_infinite_bus_v_curves",
+        "title": "V and Inverted V Curves of Alternator Connected to Infinite Bus Bar",
+        "machine_type": "synchronous_alternator",
+        "aim": "To plot the V-curves (armature line current vs field current) and inverted V-curves (power factor vs field current) of a 3-phase alternator connected to an infinite busbar at constant power output.",
+        "apparatus": ["3-Phase Alternator with DC Prime Mover", "Synchronizing Panel with TPST Switch & Lamps", "DC Field Rheostats", "Power Analyzer"],
+        "theory": (
+            "When an alternator is synchronized to an infinite busbar, its terminal voltage and frequency are clamped by the grid. "
+            "Varying prime mover mechanical power input changes active power output P. "
+            "Varying DC field current If changes reactive power Q and power factor. Under-excitation causes lagging power factor (supplies VARs to grid), while over-excitation causes leading power factor."
+        ),
+        "equations": [
+            r"P_{\text{grid}} = \sqrt{3} V_L I_L \cos\phi = \text{constant}",
+            r"Q_{\text{grid}} = \sqrt{3} V_L I_L \sin\phi \quad (\text{Varies with } I_f)",
+            r"\text{Minimum } I_L \text{ occurs at unity power factor } (\cos\phi = 1.0)"
+        ],
+        "procedure_steps": [
+            "Synchronize the alternator with the infinite busbar using dark lamp / synchroscope method.",
+            "Adjust DC prime mover speed/torque to set active power output to one-third of rated capacity.",
+            "Maintain constant active power. Vary alternator field current If from under-excitation to over-excitation.",
+            "At each step, record Field Current If, Armature Current IL, Line Voltage VL, Active Power P, and Power Factor cos phi.",
+            "Plot IL vs If (V-curve) and cos phi vs If (Inverted V-curve)."
+        ],
+        "observation_columns": [
+            {"key": "if_field", "label": "Field Current (If)", "unit": "A"},
+            {"key": "i_armature", "label": "Line Current (IL)", "unit": "A"},
+            {"key": "active_power", "label": "Active Power (P)", "unit": "W"},
+            {"key": "power_factor", "label": "Power Factor", "unit": ""},
+            {"key": "pf_mode", "label": "PF Mode", "unit": ""}
+        ],
+        "viva_topics": [
+            "What controls active power output P of a grid-connected alternator?",
+            "What controls reactive power output Q and power factor of a grid-connected alternator?",
+            "What is an infinite busbar?"
+        ]
     }
 }
 

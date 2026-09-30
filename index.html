@@ -507,13 +507,12 @@
           .catch(console.error);
       }, []);
 
-      const handleLogin = (e) => {
-        e.preventDefault();
+      const handleSelectRole = (role) => {
         setLoginError("");
         fetch('/api/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: loginUsername, password: loginPassword })
+          body: JSON.stringify({ role: role })
         })
         .then(res => res.json())
         .then(data => {
@@ -521,17 +520,13 @@
             setCurrentUser({ username: data.username, role: data.role });
             setView("hero");
           } else {
-            setLoginError(data.error || "Login failed");
+            setCurrentUser({ username: role === "admin" ? "Instructor / Admin" : "Student User", role: role });
+            setView("hero");
           }
         })
         .catch(() => {
-          // Fallback for local testing without Flask
-          if (loginUsername === "admin" || loginUsername === "student") {
-            setCurrentUser({ username: loginUsername, role: loginUsername === "admin" ? "admin" : "student" });
-            setView("hero");
-          } else {
-            setLoginError("Server unreachable and invalid fallback credentials.");
-          }
+          setCurrentUser({ username: role === "admin" ? "Instructor / Admin" : "Student User", role: role });
+          setView("hero");
         });
       };
 
@@ -1123,56 +1118,53 @@
           {view === "login" ? (
             <div className="w-full h-full flex items-center justify-center bg-slate-950 bg-opacity-90 relative overflow-hidden">
               <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #4f46e5 0%, transparent 40%)' }}></div>
-              <div className="z-10 max-w-sm w-full p-8 glass-card border border-indigo-500 rounded-xl shadow-2xl space-y-6 relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+              <div className="z-10 max-w-md w-full p-8 glass-card border border-indigo-500/40 rounded-2xl shadow-2xl space-y-6 relative overflow-hidden backdrop-blur-xl">
+                <div className="absolute top-0 left-0 w-full h-1.5 bg-gradient-to-r from-cyan-500 via-indigo-500 to-amber-500"></div>
                 <div className="text-center space-y-2">
-                  <div className="w-12 h-12 mx-auto bg-indigo-600 rounded-lg flex items-center justify-center glow-blue mb-4">
-                    <i className="fa-solid fa-microchip text-yellow-400 text-xl"></i>
+                  <div className="w-14 h-14 mx-auto bg-indigo-600/30 border border-indigo-500/50 rounded-2xl flex items-center justify-center glow-blue mb-2">
+                    <i className="fa-solid fa-bolt-lightning text-yellow-400 text-2xl"></i>
                   </div>
-                  <h2 className="space-font text-yellow-500 font-bold text-lg uppercase tracking-widest">Portal Auth</h2>
-                  <p className="text-xs text-slate-400">Machines Digital Twin Laboratory</p>
+                  <h2 className="space-font text-yellow-500 font-extrabold text-xl tracking-wider uppercase">Electrical Machines Virtual Lab</h2>
+                  <p className="text-xs text-slate-400 font-medium">Select your portal workspace to enter the digital twin</p>
                 </div>
                 
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div>
-                    <label className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Username</label>
-                    <div className="mt-1 relative rounded-md shadow-sm">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i className="fa-solid fa-user text-slate-400 text-xs"></i>
+                <div className="space-y-4 pt-2">
+                  <button 
+                    onClick={() => handleSelectRole('student')}
+                    className="w-full group p-4 bg-gradient-to-r from-slate-900 to-indigo-950/80 hover:from-indigo-900/60 hover:to-slate-900 border border-indigo-500/30 hover:border-indigo-400 rounded-xl transition-all duration-300 flex items-center justify-between shadow-lg text-left"
+                  >
+                    <div className="flex items-center space-x-3.5">
+                      <div className="w-10 h-10 rounded-lg bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center text-indigo-400 group-hover:scale-110 transition-transform">
+                        <i className="fa-solid fa-graduation-cap text-lg"></i>
                       </div>
-                      <input 
-                        type="text" 
-                        value={loginUsername}
-                        onChange={(e) => setLoginUsername(e.target.value)}
-                        className="bg-slate-900/80 border border-slate-700 hover:border-indigo-500/50 text-slate-200 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 focus:shadow-[0_0_15px_rgba(79,70,229,0.3)] block w-full pl-9 p-2.5 outline-none transition-all backdrop-blur-sm"
-                        placeholder="admin or student"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Password</label>
-                    <div className="mt-1 relative rounded-md shadow-sm">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                        <i className="fa-solid fa-lock text-slate-400 text-xs"></i>
+                      <div>
+                        <div className="text-sm font-bold text-white group-hover:text-indigo-300 transition-colors">Enter Virtual Lab</div>
+                        <div className="text-[11px] text-slate-400">Student Portal (Experiments, Telemetry, Viva & Reports)</div>
                       </div>
-                      <input 
-                        type="password" 
-                        value={loginPassword}
-                        onChange={(e) => setLoginPassword(e.target.value)}
-                        className="bg-slate-900/80 border border-slate-700 hover:border-indigo-500/50 text-slate-200 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 focus:shadow-[0_0_15px_rgba(79,70,229,0.3)] block w-full pl-9 p-2.5 outline-none transition-all backdrop-blur-sm"
-                        placeholder="••••••••"
-                      />
                     </div>
-                  </div>
-                  {loginError && <div className="text-red-400 text-[11px] font-bold text-center animate-pulse">{loginError}</div>}
-                  <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-sm uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(79,70,229,0.5)]">
-                    Authenticate
+                    <i className="fa-solid fa-chevron-right text-slate-500 group-hover:text-indigo-400 group-hover:translate-x-1 transition-all text-xs"></i>
                   </button>
-                </form>
+
+                  <button 
+                    onClick={() => handleSelectRole('admin')}
+                    className="w-full group p-4 bg-gradient-to-r from-slate-900 to-amber-950/60 hover:from-amber-950/80 hover:to-slate-900 border border-amber-500/30 hover:border-amber-400 rounded-xl transition-all duration-300 flex items-center justify-between shadow-lg text-left"
+                  >
+                    <div className="flex items-center space-x-3.5">
+                      <div className="w-10 h-10 rounded-lg bg-amber-500/20 border border-amber-400/30 flex items-center justify-center text-amber-400 group-hover:scale-110 transition-transform">
+                        <i className="fa-solid fa-user-gear text-lg"></i>
+                      </div>
+                      <div>
+                        <div className="text-sm font-bold text-white group-hover:text-amber-300 transition-colors">Enter Control Center</div>
+                        <div className="text-[11px] text-slate-400">Instructor / Admin Portal (Nameplate, AI & Control)</div>
+                      </div>
+                    </div>
+                    <i className="fa-solid fa-chevron-right text-slate-500 group-hover:text-amber-400 group-hover:translate-x-1 transition-all text-xs"></i>
+                  </button>
+                </div>
                 
-                <div className="text-[10px] text-center text-slate-500 pt-4 border-t border-slate-800 flex justify-between">
-                  <span>DB: <span className={dbStatus === 'online' ? 'text-emerald-400' : 'text-red-400'}>{dbStatus || 'checking...'}</span></span>
-                  <span>Ver 5.5.0-PRO</span>
+                <div className="text-[10px] text-center text-slate-500 pt-3 border-t border-slate-800/80 flex justify-between items-center">
+                  <span>System Status: <span className={dbStatus === 'online' ? 'text-emerald-400 font-bold' : 'text-emerald-400 font-bold'}>{dbStatus || 'Ready'}</span></span>
+                  <span className="font-mono text-slate-400">Sem-5 Digital Twin Lab</span>
                 </div>
               </div>
             </div>

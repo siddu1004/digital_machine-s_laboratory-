@@ -161,11 +161,11 @@ def test_all_10_machines_physics_and_12_experiments(client):
     Verifies that all 10 preset machines simulate without error using deterministic physics
     and all 12 standardized experiments are accessible via the API.
     """
-    # 1. Verify 12 Experiments via API
+    # 1. Verify Experiments via API
     exp_resp = client.get("/api/experiments")
     assert exp_resp.status_code == 200
     experiments = exp_resp.get_json()
-    assert len(experiments) == 12, f"Expected 12 experiments, got {len(experiments)}"
+    assert len(experiments) >= 12, f"Expected at least 12 experiments, got {len(experiments)}"
     
     # Check key experiments exist
     exp_ids = [e["id"] for e in experiments]
@@ -179,6 +179,10 @@ def test_all_10_machines_physics_and_12_experiments(client):
     assert "exp_transformer_oc_sc" in exp_ids
     assert "exp_transformer_load_test" in exp_ids
     assert "exp_3ph_transformer_vector_parallel" in exp_ids
+    assert "exp_alt_emf_mmf_regulation" in exp_ids
+    assert "exp_induction_generator_load" in exp_ids
+    assert "exp_alt_zpf_regulation" in exp_ids
+    assert "exp_alt_infinite_bus_v_curves" in exp_ids
 
     # 2. Verify Deterministic Physics Solvers across all 10 machines
     mgr = NameplateManager()
