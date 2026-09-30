@@ -8,13 +8,19 @@ import os
 import json
 import math
 import time
-import pandas as pd
 import numpy as np
-from scipy.optimize import minimize
-from sklearn.linear_model import LinearRegression
-from sklearn.preprocessing import PolynomialFeatures, StandardScaler
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.neural_network import MLPRegressor
+
+try:
+    import pandas as pd
+    from scipy.optimize import minimize
+    from sklearn.linear_model import LinearRegression
+    from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+    from sklearn.ensemble import RandomForestRegressor
+    from sklearn.neural_network import MLPRegressor
+    SKLEARN_AVAILABLE = True
+except ImportError:
+    SKLEARN_AVAILABLE = False
+
 
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
@@ -190,106 +196,78 @@ def generate_motor_synthetic_data(params, nominal_voltage, num_points=200):
         })
     return pd.DataFrame(rows)
 
-df_synth_415v = generate_motor_synthetic_data(params_415v, 415.0)
-df_synth_220v = generate_motor_synthetic_data(params_220v, 220.0)
+TRAINED_MODELS_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "core", "models", "trained_models.json")
 
-models_415v = train_and_serialize_models(
-    df_synth_415v,
-    ["V_line", "slip", "frequency"],
-    ["I_line", "P_in", "T_shaft", "P_out", "eff", "pf"]
-)
-models_220v = train_and_serialize_models(
-    df_synth_220v,
-    ["V_line", "slip", "frequency"],
-    ["I_line", "P_in", "T_shaft", "P_out", "eff", "pf"]
-)
+if os.path.exists(TRAINED_MODELS_PATH):
+    with open(TRAINED_MODELS_PATH, "r", encoding="utf-8") as f:
+        config_data = json.load(f)
+elif SKLEARN_AVAILABLE:
+    df_synth_415v = generate_motor_synthetic_data(params_415v, 415.0)
+    df_synth_220v = generate_motor_synthetic_data(params_220v, 220.0)
 
-# -------------------------------------------------------------
-# ALTERNATOR DATASETS & CALIBRATION
-# -------------------------------------------------------------
-data_alternator = {
-    "If": [0.0, 0.2, 0.4, 0.6, 0.8, 1.0, 1.2, 1.4, 1.6, 1.8],
-    "Voc_line": [20.0, 110.0, 210.0, 310.0, 380.0, 420.0, 450.0, 470.0, 485.0, 495.0],
-    "Isc_line": [0.0, 1.2, 2.4, 3.6, 4.8, 6.0, 7.2, 8.4, 9.6, 10.8]
-}
+    models_415v = train_and_serialize_models(
+        df_synth_415v,
+        ["V_line", "slip", "frequency"],
+        ["I_line", "P_in", "T_shaft", "P_out", "eff", "pf"]
+    )
+    models_220v = train_and_serialize_models(
+        df_synth_220v,
+        ["V_line", "slip", "frequency"],
+        ["I_line", "P_in", "T_shaft", "P_out", "eff", "pf"]
+    )
 
-R_a_est = 0.6
-X_s_est = 4.8
-E_ph_est = 240.0
+    df_synth_alt = generate_alternator_synthetic_data()
+    models_alternator = train_and_serialize_models(
+        df_synth_alt,
+        ["FieldCurrent", "ArmatureCurrent", "PFAngle"],
+        ["VoltageRegulation", "Efficiency", "Losses", "Vt_line", "Eph"]
+    )
 
-def generate_alternator_synthetic_data(num_points=200):
-    np.random.seed(42)
-    If_arr = np.random.uniform(0.1, 2.0, num_points)
-    Ia_arr = np.random.uniform(0.0, 8.0, num_points)
-    phi_arr = np.random.uniform(-0.8, 0.8, num_points)
-    
-    rows = []
-    sync_phys = SynchronousMachinePhysics()
-    for i in range(num_points):
-        res = sync_phys.calculate({
-            "speed_rpm": 1500.0,
-            "field_current": If_arr[i],
-            "armature_current": Ia_arr[i],
-            "power_factor": phi_arr[i]
-        }, {"ra": R_a_est, "xs": X_s_est, "rated_voltage": 415.0})
-        
-        rows.append({
-            "FieldCurrent": If_arr[i],
-            "ArmatureCurrent": Ia_arr[i],
-            "PFAngle": phi_arr[i],
-            "VoltageRegulation": res["voltage_regulation_pct"],
-            "Efficiency": res["efficiency_pct"],
-            "Losses": res["total_losses_w"],
-            "Vt_line": res["vt_line"],
-            "Eph": res["eph"]
-        })
-    return pd.DataFrame(rows)
-
-df_synth_alt = generate_alternator_synthetic_data()
-models_alternator = train_and_serialize_models(
-    df_synth_alt,
-    ["FieldCurrent", "ArmatureCurrent", "PFAngle"],
-    ["VoltageRegulation", "Efficiency", "Losses", "Vt_line", "Eph"]
-)
-
-config_data = {
-    "dataset_415v": {
-        "experimental": data_415v,
-        "fitted_params": {
-            "R1": round(params_415v[0], 4),
-            "R2_prime": round(params_415v[1], 4),
-            "X1": round(params_415v[2], 4),
-            "X2_prime": round(params_415v[3], 4),
-            "Xm": round(params_415v[4], 4),
-            "Rc": round(params_415v[5], 4),
-            "P_rot": round(params_415v[6], 4)
+    config_data = {
+        "dataset_415v": {
+            "experimental": data_415v,
+            "fitted_params": {
+                "R1": round(params_415v[0], 4),
+                "R2_prime": round(params_415v[1], 4),
+                "X1": round(params_415v[2], 4),
+                "X2_prime": round(params_415v[3], 4),
+                "Xm": round(params_415v[4], 4),
+                "Rc": round(params_415v[5], 4),
+                "P_rot": round(params_415v[6], 4)
+            },
+            "models": models_415v
         },
-        "models": models_415v
-    },
-    "dataset_220v": {
-        "experimental": data_220v,
-        "fitted_params": {
-            "R1": round(params_220v[0], 4),
-            "R2_prime": round(params_220v[1], 4),
-            "X1": round(params_220v[2], 4),
-            "X2_prime": round(params_220v[3], 4),
-            "Xm": round(params_220v[4], 4),
-            "Rc": round(params_220v[5], 4),
-            "P_rot": round(params_220v[6], 4)
+        "dataset_220v": {
+            "experimental": data_220v,
+            "fitted_params": {
+                "R1": round(params_220v[0], 4),
+                "R2_prime": round(params_220v[1], 4),
+                "X1": round(params_220v[2], 4),
+                "X2_prime": round(params_220v[3], 4),
+                "Xm": round(params_220v[4], 4),
+                "Rc": round(params_220v[5], 4),
+                "P_rot": round(params_220v[6], 4)
+            },
+            "models": models_220v
         },
-        "models": models_220v
-    },
-    "alternator": {
-        "experimental": data_alternator,
-        "fitted_params": {
-            "Ra": R_a_est,
-            "Xs": X_s_est,
-            "Eph": E_ph_est,
-            "r2": 0.985
-        },
-        "models": models_alternator
+        "alternator": {
+            "experimental": data_alternator,
+            "fitted_params": {
+                "Ra": R_a_est,
+                "Xs": X_s_est,
+                "Eph": E_ph_est,
+                "r2": 0.985
+            },
+            "models": models_alternator
+        }
     }
-}
+else:
+    # Minimal fallback structure
+    config_data = {
+        "dataset_415v": {"experimental": data_415v, "fitted_params": {}, "models": {}},
+        "dataset_220v": {"experimental": data_220v, "fitted_params": {}, "models": {}},
+        "alternator": {"experimental": data_alternator, "fitted_params": {}, "models": {}}
+    }
 
 # -------------------------------------------------------------
 # REST API ENDPOINTS
@@ -297,7 +275,7 @@ config_data = {
 
 @app.route("/")
 def serve_frontend():
-    html_file_path = os.path.join(os.path.dirname(__file__), "index.html")
+    html_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "index.html")
     if os.path.exists(html_file_path):
         with open(html_file_path, "r", encoding="utf-8") as f:
             html_content = f.read()
@@ -307,12 +285,13 @@ def serve_frontend():
             "const SERVER_DATA = null;",
             f"const SERVER_DATA = {json_str};"
         )
-        return injected_html
+        return injected_html, 200, {"Content-Type": "text/html; charset=utf-8"}
     return "Error: index.html not found.", 404
 
 @app.route("/static/<path:filename>")
 def serve_static(filename):
-    return send_from_directory("static", filename)
+    static_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")
+    return send_from_directory(static_dir, filename)
 
 @app.route("/api/machines", methods=["GET"])
 def get_machines():
