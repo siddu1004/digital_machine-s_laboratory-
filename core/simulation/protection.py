@@ -68,39 +68,49 @@ class ProtectionSystem:
 
         incident = None
 
-        # 1. Instantaneous Short Circuit
-        if i_line >= self.limits.get("instant_short_circuit_current", 25.0) or "short_circuit" in self.active_faults:
+        state = telemetry.get("state", "OFF")
+        if state in ["OFF", "EMERGENCY_STOP", "FAULT"]:
+            return False, None, None
+
+        # 1. Instantaneous Short Circuit (> 4x rated or explicit fault)
+        instant_sc_limit = float(self.limits.get("instant_short_circuit_current", max(40.0, float(self.limits.get("max_current", 12.0)) * 3.5)))
+        if i_line >= instant_sc_limit or "short_circuit" in self.active_faults:
             self.tripped = True
-            self.trip_reason = f"INSTANTANEOUS OVERCURRENT / SHORT CIRCUIT (I = {i_line:.1f} A >= {self.limits.get('instant_short_circuit_current')} A)"
-            incident = self._log_incident(machine_id, "Short Circuit / Overcurrent", i_line, self.limits.get("instant_short_circuit_current"), "TRIP")
+            self.trip_reason = f"INSTANTANEOUS OVERCURRENT / SHORT CIRCUIT (I = {i_line:.1f} A >= {instant_sc_limit:.1f} A)"
+            incident = self._log_incident(machine_id, "Short Circuit / Overcurrent", i_line, instant_sc_limit, "TRIP")
             return True, self.trip_reason, incident
 
         # 2. Thermal Overload
-        if temp_c >= self.limits.get("max_temp_c", 125.0) or "excessive_temperature" in self.active_faults:
+        max_temp = float(self.limits.get("max_temp_c", 125.0))
+        if temp_c >= max_temp or "excessive_temperature" in self.active_faults:
             self.tripped = True
-            self.trip_reason = f"THERMAL OVERLOAD TRIP: Winding Temp {temp_c:.1f} °C exceeded rating {self.limits.get('max_temp_c')} °C"
-            incident = self._log_incident(machine_id, "Thermal Overload", temp_c, self.limits.get("max_temp_c"), "TRIP")
+            self.trip_reason = f"THERMAL OVERLOAD TRIP: Winding Temp {temp_c:.1f} °C exceeded rating {max_temp:.1f} °C"
+            incident = self._log_incident(machine_id, "Thermal Overload", temp_c, max_temp, "TRIP")
             return True, self.trip_reason, incident
 
-        # 3. Continuous Overcurrent / Overload
-        if i_line >= self.limits.get("overload_current_threshold", 9.5) or "overload" in self.active_faults:
+        # 3. Continuous Overcurrent / Overload (immune to normal startup inrush < 5.0 seconds)
+        is_starting = (state == "STARTING" and float(telemetry.get("acceleration_time_s", 0.0)) < 5.0)
+        overload_threshold = float(self.limits.get("overload_trip_current", self.limits.get("max_primary_current", self.limits.get("overload_current_threshold", 9.5))))
+        if "overload" in self.active_faults or (not is_starting and i_line >= overload_threshold):
             self.tripped = True
-            self.trip_reason = f"OVERLOAD TRIP: Current {i_line:.2f} A sustained above limit {self.limits.get('overload_current_threshold')} A"
-            incident = self._log_incident(machine_id, "Overload Current", i_line, self.limits.get("overload_current_threshold"), "TRIP")
+            self.trip_reason = f"OVERLOAD TRIP: Current {i_line:.2f} A sustained above limit {overload_threshold:.1f} A"
+            incident = self._log_incident(machine_id, "Overload Current", i_line, overload_threshold, "TRIP")
             return True, self.trip_reason, incident
 
         # 4. Overvoltage
-        if v_line >= self.limits.get("max_voltage", 460.0) or "overvoltage" in self.active_faults:
+        max_v = float(self.limits.get("max_voltage", 460.0))
+        if v_line >= max_v or "overvoltage" in self.active_faults:
             self.tripped = True
-            self.trip_reason = f"OVERVOLTAGE TRIP: Voltage {v_line:.1f} V exceeded limit {self.limits.get('max_voltage')} V"
-            incident = self._log_incident(machine_id, "Overvoltage", v_line, self.limits.get("max_voltage"), "TRIP")
+            self.trip_reason = f"OVERVOLTAGE TRIP: Voltage {v_line:.1f} V exceeded limit {max_v:.1f} V"
+            incident = self._log_incident(machine_id, "Overvoltage", v_line, max_v, "TRIP")
             return True, self.trip_reason, incident
 
-        # 5. Undervoltage
-        if v_line <= self.limits.get("min_voltage", 350.0) or "undervoltage" in self.active_faults:
+        # 5. Undervoltage (active only when energized and voltage sags severely below rating)
+        min_v = float(self.limits.get("min_voltage", 180.0 if v_line < 300.0 else 340.0))
+        if v_line > 10.0 and (v_line <= min_v or "undervoltage" in self.active_faults):
             self.tripped = True
-            self.trip_reason = f"UNDERVOLTAGE TRIP: Line Voltage {v_line:.1f} V below minimum threshold {self.limits.get('min_voltage')} V"
-            incident = self._log_incident(machine_id, "Undervoltage", v_line, self.limits.get("min_voltage"), "TRIP")
+            self.trip_reason = f"UNDERVOLTAGE TRIP: Line Voltage {v_line:.1f} V below minimum threshold {min_v:.1f} V"
+            incident = self._log_incident(machine_id, "Undervoltage", v_line, min_v, "TRIP")
             return True, self.trip_reason, incident
 
         # 6. Locked Rotor

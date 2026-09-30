@@ -155,6 +155,12 @@ EXPERIMENTS_REGISTRY: Dict[str, Dict[str, Any]] = {
         "aim": "To determine equivalent circuit parameters, predetermine efficiency and voltage regulation at various loads and power factors without actual loading.",
         "apparatus": ["1-Phase Transformer (230V/115V, 3kVA)", "Variac (0-270V)", "Voltmeters", "Ammeters", "LPF & UPF Wattmeters"],
         "theory": "OC test on LV side yields core loss Rc and Xm. SC test on HV side with LV shorted yields equivalent series resistance R01 and leakage reactance X01.",
+        "equations": [
+            r"R_c = \frac{V_0^2}{W_0}",
+            r"X_m = \frac{V_0^2}{Q_0} = \frac{V_0}{I_m}",
+            r"R_{01} = \frac{W_{sc}}{I_{sc}^2}",
+            r"Z_{01} = \frac{V_{sc}}{I_{sc}}, \quad X_{01} = \sqrt{Z_{01}^2 - R_{01}^2}"
+        ],
         "procedure_steps": [
             "Perform OC test: Keep HV winding open, apply rated 115V to LV winding, measure V0, I0, W0.",
             "Perform SC test: Dead short LV winding, apply low voltage to HV winding to circulate rated current, record Vsc, Isc, Wsc."
@@ -164,6 +170,202 @@ EXPERIMENTS_REGISTRY: Dict[str, Dict[str, Any]] = {
             {"key": "voltage", "label": "Voltage", "unit": "V"},
             {"key": "current", "label": "Current", "unit": "A"},
             {"key": "power", "label": "Power", "unit": "W"}
+        ],
+        "viva_topics": [
+            "Why is the OC test performed on the LV side?",
+            "Why is copper loss negligible during the OC test?",
+            "What is the significance of LPF wattmeter in OC test?"
+        ]
+    },
+    "exp_im_speed_control": {
+        "id": "exp_im_speed_control",
+        "title": "Speed Control of 3-Phase Induction Motor (V/f Control & Stator Voltage)",
+        "machine_type": "induction_motor",
+        "aim": "To investigate speed control characteristics of a 3-phase induction motor by variable voltage variable frequency (V/f) control and stator voltage control.",
+        "apparatus": ["3-Phase Induction Motor", "Variable Frequency Drive (VFD) Inverter", "3-Phase Variac", "Digital Tachometer", "Power Analyzer"],
+        "theory": "Synchronous speed Ns = 120f/P depends directly on supply frequency f. By maintaining a constant V/f ratio, maximum torque is kept constant while operating speed is controlled smoothly over a wide range without magnetic core saturation.",
+        "equations": [
+            r"N_s = \frac{120 \times f}{P}",
+            r"\Phi_{\text{airgap}} \propto \frac{V}{f} \approx \text{constant}",
+            r"T_{\text{max}} \propto \left(\frac{V}{f}\right)^2 \approx \text{constant}"
+        ],
+        "procedure_steps": [
+            "Connect the induction motor to the variable frequency AC source.",
+            "Vary supply frequency in steps from 20 Hz to 60 Hz while adjusting voltage proportionally to keep V/f constant (8.3 V/Hz).",
+            "At each frequency step, measure motor shaft speed, line voltage, current, and starting torque.",
+            "Plot speed vs frequency and torque vs speed curves."
+        ],
+        "observation_columns": [
+            {"key": "frequency", "label": "Frequency (f)", "unit": "Hz"},
+            {"key": "v_line", "label": "Voltage (V)", "unit": "V"},
+            {"key": "v_f_ratio", "label": "V/f Ratio", "unit": "V/Hz"},
+            {"key": "speed", "label": "Speed (N)", "unit": "RPM"},
+            {"key": "i_line", "label": "Current (I)", "unit": "A"}
+        ],
+        "viva_topics": [
+            "Why must V/f ratio be maintained constant below base frequency?",
+            "What happens to core flux if frequency is reduced without lowering voltage?",
+            "Why is stator resistance compensation boost required at very low frequencies?"
+        ]
+    },
+    "exp_alt_synchronization": {
+        "id": "exp_alt_synchronization",
+        "title": "Synchronization of Alternator with Infinite Bus (Three-Lamp & Synchroscope)",
+        "machine_type": "synchronous_alternator",
+        "aim": "To synchronize an incoming 3-phase alternator with the infinite busbar using dark lamp, bright lamp, and synchroscope methods.",
+        "apparatus": ["3-Phase Alternator with DC Prime Mover", "Synchronizing Switch", "Three Synchronizing Lamps", "Synchroscope", "Dual Voltmeter", "Dual Frequency Meter"],
+        "theory": "For safe paralleling without circulating transient currents, five conditions must be satisfied: identical terminal voltage magnitudes, identical frequencies, identical phase sequence, zero phase angle displacement, and matching waveform shapes.",
+        "equations": [
+            r"V_{\text{incoming}} = V_{\text{bus}}",
+            r"f_{\text{incoming}} = f_{\text{bus}} \pm 0.1 \text{ Hz}",
+            r"\Delta \theta = 0^\circ"
+        ],
+        "procedure_steps": [
+            "Drive alternator to rated speed (1500 RPM) using prime mover.",
+            "Adjust DC field rheostat until alternator line voltage exactly matches infinite busbar voltage.",
+            "Observe the synchronization lamps. In dark lamp connection, lamps flicker simultaneously if phase sequence is identical.",
+            "Adjust prime mover speed fine trim until flicker rate becomes very slow (< 1 cycle per 5 seconds).",
+            "Close synchronizing switch exactly at the instant when the top lamp is dark (or synchroscope pointer points to 12 o'clock)."
+        ],
+        "observation_columns": [
+            {"key": "v_bus", "label": "V_bus", "unit": "V"},
+            {"key": "v_alt", "label": "V_alt", "unit": "V"},
+            {"key": "f_bus", "label": "f_bus", "unit": "Hz"},
+            {"key": "f_alt", "label": "f_alt", "unit": "Hz"},
+            {"key": "phase_angle", "label": "Phase Diff (Δθ)", "unit": "deg"},
+            {"key": "status", "label": "Lamp State", "unit": ""}
+        ],
+        "viva_topics": [
+            "What happens if the synchronizing switch is closed when the phase angle difference is 180 degrees?",
+            "How does the synchroscope indicate whether the incoming alternator is running faster or slower?",
+            "What is synchronizing power and synchronizing torque?"
+        ]
+    },
+    "exp_dc_shunt_speed_control": {
+        "id": "exp_dc_shunt_speed_control",
+        "title": "Speed Control of DC Shunt Motor (Armature Voltage & Field Flux Control)",
+        "machine_type": "dc_shunt_motor",
+        "aim": "To control the speed of a DC shunt motor below rated speed by armature voltage control and above rated speed by field flux weakening.",
+        "apparatus": ["DC Shunt Motor (220V, 3HP)", "Armature Rheostat", "Field Rheostat", "Digital Tachometer", "Ammeters", "Voltmeter"],
+        "theory": "Motor speed is governed by N = (Vt - Ia*Ra) / (k*phi). By introducing external resistance in the armature circuit (or varying armature voltage), speed is varied below base speed. By introducing resistance in field circuit, flux phi decreases, driving speed above base speed (flux weakening mode).",
+        "equations": [
+            r"N = \frac{V_t - I_a(R_a + R_{\text{ext}})}{k \Phi}",
+            r"\text{Armature control: } N < N_{\text{rated}} \quad (\text{Constant Torque drive})",
+            r"\text{Field control: } N > N_{\text{rated}} \quad (\text{Constant Power drive})"
+        ],
+        "procedure_steps": [
+            "Connect the DC shunt motor with armature and field rheostats.",
+            "Part A (Armature Control): Keep field current at rated maximum. Vary armature resistance from max to min, recording armature voltage and speed.",
+            "Part B (Field Weakening): Keep armature voltage at rated 220V. Increase field rheostat resistance to decrease field current from rated down to safe limit, recording speed vs If."
+        ],
+        "observation_columns": [
+            {"key": "control_mode", "label": "Mode", "unit": ""},
+            {"key": "armature_voltage", "label": "V_arm", "unit": "V"},
+            {"key": "field_current", "label": "I_field", "unit": "A"},
+            {"key": "speed", "label": "Speed (N)", "unit": "RPM"},
+            {"key": "armature_current", "label": "I_arm", "unit": "A"}
+        ],
+        "viva_topics": [
+            "Why is field control suitable for constant-power applications?",
+            "What is the danger of opening the field circuit of a running DC shunt motor?",
+            "Why can armature rheostatic control only achieve speeds below rated speed?"
+        ]
+    },
+    "exp_sync_motor_v_curves": {
+        "id": "exp_sync_motor_v_curves",
+        "title": "V-Curves and Inverted V-Curves of Synchronous Motor",
+        "machine_type": "synchronous_motor",
+        "aim": "To determine the V-curves (armature current vs field current) and inverted V-curves (power factor vs field current) of a 3-phase synchronous motor at no-load and full-load.",
+        "apparatus": ["3-Phase Synchronous Motor (415V, 5HP)", "DC Field Excitation Supply (0-220V, 5A)", "3-Phase Power Factor Meter", "AC Ammeter", "DC Ammeter"],
+        "theory": "A synchronous motor operates at constant synchronous speed Ns = 120f/P regardless of load up to pull-out torque. Varying the DC field excitation changes the generated back EMF Ef. At under-excitation, Ef*cos(delta) < V_ph, causing the motor to draw lagging current (acts like an inductor). At normal excitation, PF = 1.0 (minimum Ia). At over-excitation, Ef*cos(delta) > V_ph, drawing leading current (acts like a synchronous condenser).",
+        "equations": [
+            r"\mathbf{V}_{\text{ph}} = \mathbf{E}_f + \mathbf{I}_a (R_a + jX_s)",
+            r"P_{\text{in}} = \frac{3 V_{\text{ph}} E_f}{X_s} \sin\delta",
+            r"\text{Unity PF at: } E_f \cos\delta = V_{\text{ph}} - I_a R_a"
+        ],
+        "procedure_steps": [
+            "Start synchronous motor using damper windings / auxiliary starter and bring into synchronism at no-load.",
+            "Vary DC field excitation current from minimum excitation (under-excited) up to maximum permissible field current (over-excited).",
+            "At each field current step, record Armature Current (Ia), Field Current (If), and Power Factor (cos phi).",
+            "Repeat the procedure under 50% rated mechanical shaft load.",
+            "Plot Ia vs If (V-curve) and cos phi vs If (Inverted V-curve)."
+        ],
+        "observation_columns": [
+            {"key": "field_current", "label": "I_field (If)", "unit": "A"},
+            {"key": "armature_current", "label": "I_armature (Ia)", "unit": "A"},
+            {"key": "power_factor", "label": "Power Factor (cos φ)", "unit": ""},
+            {"key": "pf_mode", "label": "PF Mode", "unit": ""},
+            {"key": "active_power", "label": "P_in", "unit": "W"}
+        ],
+        "viva_topics": [
+            "Why does armature current reach a minimum at unity power factor?",
+            "What is a synchronous condenser and where is it used in utility power grids?",
+            "What determines the pull-out torque of a synchronous motor?"
+        ]
+    },
+    "exp_transformer_load_test": {
+        "id": "exp_transformer_load_test",
+        "title": "Direct Load Test on Single-Phase Transformer for Efficiency & Regulation",
+        "machine_type": "single_phase_transformer",
+        "aim": "To conduct direct load test on a single-phase transformer and determine its efficiency and voltage regulation from no-load to 125% full load.",
+        "apparatus": ["1-Phase Transformer (230V/115V, 3kVA)", "Single-Phase Load Bank (Resistive & Inductive)", "Digital Ammeters", "Digital Voltmeters", "Digital Wattmeters"],
+        "theory": "Direct loading subjects the transformer to simultaneous core and copper losses under actual operating conditions. As secondary load current I2 increases, secondary terminal voltage V2 decreases for lagging loads due to internal resistance and leakage reactance voltage drops. Efficiency eta = (P_out / P_in) * 100%.",
+        "equations": [
+            r"\text{Efficiency } \eta = \frac{V_2 I_2 \cos\phi_2}{W_1} \times 100\%",
+            r"\text{Voltage Regulation } \% = \frac{V_{2,\text{no-load}} - V_{2,\text{load}}}{V_{2,\text{no-load}}} \times 100\%"
+        ],
+        "procedure_steps": [
+            "Connect primary winding to 230V AC mains through input voltmeter, ammeter, and wattmeter.",
+            "Connect secondary winding to load bank through output voltmeter, ammeter, and wattmeter.",
+            "Energize transformer with load switch OPEN; record no-load primary and secondary voltages.",
+            "Increase load current in regular steps up to 125% rated current. At each step, record V1, I1, W1, V2, I2, and W2.",
+            "Plot efficiency vs output power and secondary voltage vs load current."
+        ],
+        "observation_columns": [
+            {"key": "v1_primary", "label": "V1", "unit": "V"},
+            {"key": "i1_primary", "label": "I1", "unit": "A"},
+            {"key": "p1_input", "label": "W1 (P_in)", "unit": "W"},
+            {"key": "v2_secondary", "label": "V2", "unit": "V"},
+            {"key": "i2_secondary", "label": "I2", "unit": "A"},
+            {"key": "p2_output", "label": "W2 (P_out)", "unit": "W"},
+            {"key": "efficiency", "label": "Efficiency (η)", "unit": "%"},
+            {"key": "regulation", "label": "Voltage Reg", "unit": "%"}
+        ],
+        "viva_topics": [
+            "At what condition is the efficiency of a transformer maximum?",
+            "Why is direct load test limited to small transformers in practice?",
+            "How does load power factor affect voltage regulation?"
+        ]
+    },
+    "exp_3ph_transformer_vector_parallel": {
+        "id": "exp_3ph_transformer_vector_parallel",
+        "title": "Vector Group Identification & Parallel Operation of 3-Phase Transformers",
+        "machine_type": "three_phase_transformer",
+        "aim": "To verify vector group connection (Dyn11, Ynd1) and demonstrate load sharing during parallel operation of two 3-phase transformers.",
+        "apparatus": ["Two 3-Phase Transformers (415V/230V, 10kVA)", "3-Phase Load Bank", "AC Voltmeters", "Phase Angle Meter", "Synchronization Switch"],
+        "theory": "Parallel operation requires equal voltage ratios, identical vector group phase shift (e.g. both Dyn11), identical phase sequence, and per-unit impedances inversely proportional to kVA ratings to ensure proportional load sharing without circulating currents.",
+        "equations": [
+            r"\frac{S_{A}}{S_{B}} = \frac{Z_{B}}{Z_{A}}",
+            r"I_{\text{circulating}} = \frac{E_A - E_B}{Z_A + Z_B}"
+        ],
+        "procedure_steps": [
+            "Verify polarity and vector group phase shift of each transformer using voltmeter method.",
+            "Connect primaries of both transformers to 415V 3-phase AC supply in parallel.",
+            "Connect secondaries with one terminal common. Measure potential difference across remaining terminal pairs to verify zero voltage before paralleling.",
+            "Close paralleling switch and apply 3-phase balanced load.",
+            "Measure load currents I_total, I_A, I_B, and terminal voltage to evaluate proportional load sharing."
+        ],
+        "observation_columns": [
+            {"key": "v_bus", "label": "V_bus", "unit": "V"},
+            {"key": "i_load", "label": "I_total", "unit": "A"},
+            {"key": "i_trafo_a", "label": "I_Trafo_A", "unit": "A"},
+            {"key": "i_trafo_b", "label": "I_Trafo_B", "unit": "A"},
+            {"key": "circulating_current", "label": "I_circ", "unit": "A"}
+        ],
+        "viva_topics": [
+            "What are the mandatory conditions for parallel operation of three-phase transformers?",
+            "Can a Dyn11 transformer be operated in parallel with a Yd1 transformer?",
+            "What is the consequence of unequal per-unit impedances in parallel transformers?"
         ]
     }
 }

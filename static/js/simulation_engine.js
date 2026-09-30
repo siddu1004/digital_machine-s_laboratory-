@@ -120,58 +120,169 @@ window.SimulationEngine = (function() {
         this.state = "RUNNING";
       }
 
-      // Physics calculation (Induction motor equivalent circuit)
+      const mType = (this.config.identity && this.config.identity.machine_type) || this.config.type || "induction_motor";
       const p = (this.config.parameters) || {};
-      const r1 = p.r1 || 1.5;
-      const x1 = p.x1 || 3.5;
-      const rc = p.rc || 500.0;
-      const xm = p.xm || 80.0;
-      const r2_prime = p.r2_prime || 1.8;
-      const x2_prime = p.x2_prime || 3.5;
-      const p_rot = p.p_rot || 100.0;
       const poles = (this.config.identity && this.config.identity.poles) || 4;
+      let telemetry = {};
 
-      // Estimate operating slip for load torque
-      let s = 0.005 + (this.loadTorque / ratedTorque) * 0.045;
-      if (this.activeFaults["locked_rotor"]) s = 1.0;
+      if (mType.includes("alternator") || mType.includes("generator") && !mType.includes("dc")) {
+        const fieldCurrent = p.rated_field_current || 1.25;
+        const ia = Math.max(0.0, this.loadTorque * (4.17 / ratedTorque));
+        const phys = window.MachinePhysics.solveAlternator(1500.0, fieldCurrent, ia, 0.85, p.ra || 0.6, p.xs || 4.8, this.appliedVoltage);
+        const targetTemp = this.ambientTemp + (phys.cu_loss + 220.0) * 0.04;
+        this.windingTemp += (targetTemp - this.windingTemp) * 0.05;
 
-      let phys = window.MachinePhysics.solveInductionMotor(
-        this.appliedVoltage, this.appliedFrequency, s,
-        r1, x1, rc, xm, r2_prime, x2_prime, p_rot, poles
-      );
+        telemetry = {
+          timestamp: Date.now(),
+          state: this.state,
+          machine_type: mType,
+          v_line: Number(phys.vt_line.toFixed(1)),
+          i_line: Number(phys.armature_current.toFixed(2)),
+          speed_rpm: Number(phys.speed_rpm.toFixed(1)),
+          ns_rpm: 1500.0,
+          slip: 0.0,
+          torque_nm: Number(this.loadTorque.toFixed(2)),
+          power_in_w: Number((phys.p_out + phys.cu_loss + 220.0).toFixed(1)),
+          power_out_w: Number(phys.p_out.toFixed(1)),
+          power_factor: Number(phys.power_factor.toFixed(3)),
+          efficiency_pct: Number(phys.efficiency_pct.toFixed(1)),
+          voltage_regulation_pct: Number(phys.voltage_regulation_pct.toFixed(2)),
+          total_losses_w: Number((phys.cu_loss + 220.0).toFixed(1)),
+          winding_temp_c: Number(this.windingTemp.toFixed(1)),
+          protection_tripped: this.protectionTripped,
+          trip_reason: this.tripReason
+        };
+      } else if (mType.includes("dc")) {
+        const phys = window.MachinePhysics.solveDCMachine(this.appliedVoltage, this.loadTorque, 0.0, 0.0, mType);
+        const targetTemp = this.ambientTemp + phys.total_losses_w * 0.045;
+        this.windingTemp += (targetTemp - this.windingTemp) * 0.05;
 
-      // Fault injections influence physics
-      if (this.activeFaults["short_circuit"]) {
-        phys.i_line *= 4.5;
+        telemetry = {
+          timestamp: Date.now(),
+          state: this.state,
+          machine_type: mType,
+          v_line: Number(this.appliedVoltage.toFixed(1)),
+          i_line: Number(phys.line_current_a.toFixed(2)),
+          speed_rpm: Number(phys.speed_rpm.toFixed(1)),
+          ns_rpm: 0.0,
+          slip: 0.0,
+          torque_nm: Number(this.loadTorque.toFixed(2)),
+          power_in_w: Number(phys.input_power_w.toFixed(1)),
+          power_out_w: Number(phys.output_power_w.toFixed(1)),
+          power_factor: 1.0,
+          efficiency_pct: Number(phys.efficiency_pct.toFixed(1)),
+          total_losses_w: Number(phys.total_losses_w.toFixed(1)),
+          winding_temp_c: Number(this.windingTemp.toFixed(1)),
+          protection_tripped: this.protectionTripped,
+          trip_reason: this.tripReason
+        };
+      } else if (mType.includes("transformer")) {
+        const is3ph = mType.includes("three_phase") || (this.config.identity && this.config.identity.phase === 3);
+        const loadFrac = Math.min(1.5, Math.max(0.0, this.loadTorque / 10.0 || 0.8));
+        const ratedKva = (this.config.identity && this.config.identity.rated_kva) || 3.0;
+        const v2Rated = (this.config.identity && this.config.identity.v2_rated) || 115.0;
+        const phys = window.MachinePhysics.solveTransformer(this.appliedVoltage, v2Rated, ratedKva, loadFrac, 0.85, is3ph);
+        const targetTemp = this.ambientTemp + phys.total_losses_w * 0.035;
+        this.windingTemp += (targetTemp - this.windingTemp) * 0.05;
+
+        const denom = (is3ph ? Math.sqrt(3.0) : 1.0) * this.appliedVoltage * 0.85;
+        const i1 = denom > 0 ? phys.input_power_w / denom : 0.0;
+
+        telemetry = {
+          timestamp: Date.now(),
+          state: this.state,
+          machine_type: mType,
+          v_line: Number(phys.v1_volts.toFixed(1)),
+          v_secondary: Number(phys.v2_terminal_volts.toFixed(1)),
+          i_line: Number(i1.toFixed(2)),
+          i_secondary: Number(phys.i2_load_current_a.toFixed(2)),
+          speed_rpm: 0.0,
+          ns_rpm: 0.0,
+          slip: 0.0,
+          torque_nm: 0.0,
+          power_in_w: Number(phys.input_power_w.toFixed(1)),
+          power_out_w: Number(phys.output_power_w.toFixed(1)),
+          power_factor: 0.85,
+          efficiency_pct: Number(phys.efficiency_pct.toFixed(1)),
+          voltage_regulation_pct: Number(phys.voltage_regulation_pct.toFixed(2)),
+          total_losses_w: Number(phys.total_losses_w.toFixed(1)),
+          winding_temp_c: Number(this.windingTemp.toFixed(1)),
+          protection_tripped: this.protectionTripped,
+          trip_reason: this.tripReason
+        };
+      } else if (mType.includes("synchronous_motor")) {
+        const loadW = this.loadTorque * (2.0 * Math.PI * 1500.0 / 60.0);
+        const phys = window.MachinePhysics.solveSynchronousMotor(this.appliedVoltage, this.appliedFrequency, loadW, 1.25, poles, p.xs || 4.5, p.ra || 0.5);
+        const targetTemp = this.ambientTemp + phys.total_losses_w * 0.045;
+        this.windingTemp += (targetTemp - this.windingTemp) * 0.05;
+
+        telemetry = {
+          timestamp: Date.now(),
+          state: this.state,
+          machine_type: mType,
+          v_line: Number(this.appliedVoltage.toFixed(1)),
+          i_line: Number(phys.armature_current_a.toFixed(2)),
+          speed_rpm: Number(phys.speed_rpm.toFixed(1)),
+          ns_rpm: Number(phys.synchronous_speed_rpm.toFixed(1)),
+          slip: 0.0,
+          torque_nm: Number(this.loadTorque.toFixed(2)),
+          power_in_w: Number(phys.input_power_w.toFixed(1)),
+          power_out_w: Number(phys.output_power_w.toFixed(1)),
+          power_factor: Number(phys.power_factor.toFixed(3)),
+          efficiency_pct: Number(phys.efficiency_pct.toFixed(1)),
+          torque_angle_deg: Number(phys.torque_angle_delta_deg.toFixed(2)),
+          total_losses_w: Number(phys.total_losses_w.toFixed(1)),
+          winding_temp_c: Number(this.windingTemp.toFixed(1)),
+          protection_tripped: this.protectionTripped,
+          trip_reason: this.tripReason
+        };
+      } else {
+        // Induction Motor
+        const r1 = p.r1 || 1.5;
+        const x1 = p.x1 || 3.5;
+        const rc = p.rc || 500.0;
+        const xm = p.xm || 80.0;
+        const r2_prime = p.r2_prime || 1.8;
+        const x2_prime = p.x2_prime || 3.5;
+        const p_rot = p.p_rot || 100.0;
+
+        let s = 0.005 + (this.loadTorque / ratedTorque) * 0.045;
+        if (this.activeFaults["locked_rotor"]) s = 1.0;
+
+        let phys = window.MachinePhysics.solveInductionMotor(
+          this.appliedVoltage, this.appliedFrequency, s,
+          r1, x1, rc, xm, r2_prime, x2_prime, p_rot, poles
+        );
+
+        if (this.activeFaults["short_circuit"]) phys.i_line *= 4.5;
+        if (this.activeFaults["cooling_failure"]) this.windingTemp += 1.8;
+
+        const targetTemp = this.ambientTemp + phys.total_losses * 0.045;
+        this.windingTemp += (targetTemp - this.windingTemp) * 0.05;
+
+        telemetry = {
+          timestamp: Date.now(),
+          state: this.state,
+          machine_type: mType,
+          v_line: Number(this.appliedVoltage.toFixed(1)),
+          i_line: Number(phys.i_line.toFixed(2)),
+          speed_rpm: Number(phys.speed_rpm.toFixed(1)),
+          ns_rpm: Number(phys.ns_rpm.toFixed(1)),
+          slip: Number(phys.slip.toFixed(4)),
+          torque_nm: Number(this.loadTorque.toFixed(2)),
+          power_in_w: Number(phys.p_in.toFixed(1)),
+          power_out_w: Number(phys.p_out.toFixed(1)),
+          power_factor: Number(phys.pf.toFixed(3)),
+          efficiency_pct: Number(phys.efficiency.toFixed(1)),
+          stator_cu_loss: Number(phys.p_s_cu.toFixed(1)),
+          rotor_cu_loss: Number(phys.p_r_cu.toFixed(1)),
+          core_loss: Number(phys.p_core.toFixed(1)),
+          total_losses_w: Number(phys.total_losses.toFixed(1)),
+          winding_temp_c: Number(this.windingTemp.toFixed(1)),
+          protection_tripped: this.protectionTripped,
+          trip_reason: this.tripReason
+        };
       }
-      if (this.activeFaults["cooling_failure"]) {
-        this.windingTemp += 1.8;
-      }
-
-      // Thermal dynamics
-      const targetTemp = this.ambientTemp + phys.total_losses * 0.045;
-      this.windingTemp += (targetTemp - this.windingTemp) * 0.05;
-
-      const telemetry = {
-        timestamp: Date.now(),
-        state: this.state,
-        v_line: Number(this.appliedVoltage.toFixed(1)),
-        i_line: Number(phys.i_line.toFixed(2)),
-        speed_rpm: Number(phys.speed_rpm.toFixed(1)),
-        ns_rpm: Number(phys.ns_rpm.toFixed(1)),
-        slip: Number(phys.slip.toFixed(4)),
-        torque_nm: Number(this.loadTorque.toFixed(2)),
-        power_in_w: Number(phys.p_in.toFixed(1)),
-        power_out_w: Number(phys.p_out.toFixed(1)),
-        power_factor: Number(phys.pf.toFixed(3)),
-        efficiency_pct: Number(phys.efficiency.toFixed(1)),
-        stator_cu_loss: Number(phys.p_s_cu.toFixed(1)),
-        rotor_cu_loss: Number(phys.p_r_cu.toFixed(1)),
-        core_loss: Number(phys.p_core.toFixed(1)),
-        winding_temp_c: Number(this.windingTemp.toFixed(1)),
-        protection_tripped: this.protectionTripped,
-        trip_reason: this.tripReason
-      };
 
       // Protection evaluation
       this._evaluateProtection(telemetry);

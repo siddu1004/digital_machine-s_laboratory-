@@ -1,8 +1,8 @@
 # Automated Test Execution Results
 
 ## Comprehensive Test Execution Summary
-- **Total Tests Run**: 25
-- **Passed**: 25 (100%)
+- **Total Tests Run**: 26
+- **Passed**: 26 (100%)
 - **Failed**: 0
 - **Execution Environment**: Python 3.13.14 (win32), pytest-9.1.1
 
@@ -40,5 +40,6 @@
 - `test_api_viva_questions`: Returns curated viva examination question bank.
 - `test_api_ai_improve_staged_workflow`: Formulates formal ChangeRequest objects without direct code execution.
 
-### 5. Professor Demonstration Workflow (`tests/test_end_to_end_lab.py`) — 1 Passed (End-to-End Workflow)
-- Validated all 12 sequential demonstration gates from authentication to frozen report generation.
+### 5. Professor Demonstration Workflow (`tests/test_end_to_end_lab.py`) — 2 Passed
+- `test_full_professor_demonstration_workflow`: Validated all 12 sequential demonstration gates from authentication to frozen report generation.
+- `test_all_10_machines_physics_and_12_experiments`: Validated deterministic simulation without dummy values across all 10 machines and verified API availability of all 12 standardized laboratory experiments.

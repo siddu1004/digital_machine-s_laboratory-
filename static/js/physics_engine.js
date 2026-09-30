@@ -151,10 +151,157 @@ window.MachinePhysics = (function() {
     };
   }
 
+  function solveDCMachine(terminal_voltage, load_torque, field_rheostat = 0.0, armature_rheostat = 0.0, machine_type = "shunt") {
+    const ra_base = 0.85;
+    const rf_base = 180.0;
+    const k_phi_nominal = 1.15;
+    const ra_total = ra_base + armature_rheostat;
+    const rf_total = rf_base + field_rheostat;
+
+    let if_current = 0.0;
+    let k_phi = k_phi_nominal;
+
+    if (machine_type === "dc_series_motor" || machine_type === "series") {
+      // In series motor, field is in series with armature
+      const t_demand = Math.max(0.2, load_torque);
+      // T = k_f * Ia^2
+      const k_f = 0.045;
+      const ia = Math.sqrt(t_demand / k_f);
+      k_phi = k_f * ia;
+      const eb = Math.max(5.0, terminal_voltage - ia * (ra_total + 0.35));
+      const omega_m = eb / (k_phi + 1e-4);
+      const speed_rpm = Math.min(4000.0, omega_m * (60.0 / (2.0 * Math.PI)));
+      const p_out = omega_m * t_demand;
+      const p_in = terminal_voltage * ia;
+      const losses = Math.max(50.0, p_in - p_out);
+      const eff = p_in > 0 ? (p_out / p_in) * 100.0 : 0.0;
+
+      return {
+        speed_rpm,
+        line_current_a: ia,
+        armature_current_a: ia,
+        field_current_a: ia,
+        back_emf_v: eb,
+        load_torque_nm: t_demand,
+        developed_torque_nm: t_demand,
+        input_power_w: p_in,
+        output_power_w: p_out,
+        total_losses_w: losses,
+        efficiency_pct: Math.min(100.0, Math.max(0.0, eff))
+      };
+    } else {
+      // Shunt, compound, or separately excited
+      if_current = rf_total > 0 ? terminal_voltage / rf_total : 1.2;
+      k_phi = k_phi_nominal * Math.min(1.2, if_current / (terminal_voltage / rf_base));
+      const t_demand = Math.max(0.0, load_torque);
+      const ia = (t_demand + 0.5) / (k_phi + 1e-4);
+      const eb = Math.max(5.0, terminal_voltage - ia * ra_total);
+      const omega_m = eb / (k_phi + 1e-4);
+      const speed_rpm = omega_m * (60.0 / (2.0 * Math.PI));
+      const p_out = omega_m * t_demand;
+      const i_line = ia + if_current;
+      const p_in = terminal_voltage * i_line;
+      const losses = Math.max(40.0, p_in - p_out);
+      const eff = p_in > 0 ? (p_out / p_in) * 100.0 : 0.0;
+
+      return {
+        speed_rpm,
+        line_current_a: i_line,
+        armature_current_a: ia,
+        field_current_a: if_current,
+        back_emf_v: eb,
+        load_torque_nm: t_demand,
+        developed_torque_nm: t_demand + 0.5,
+        input_power_w: p_in,
+        output_power_w: p_out,
+        total_losses_w: losses,
+        efficiency_pct: Math.min(100.0, Math.max(0.0, eff))
+      };
+    }
+  }
+
+  function solveTransformer(v1_rated, v2_rated, rated_kva, load_fraction, power_factor, is_3ph = false) {
+    const pf = Math.abs(power_factor) || 0.85;
+    const s_load_kva = rated_kva * load_fraction;
+    const p_out = s_load_kva * 1000.0 * pf;
+    const p_core = rated_kva * 20.0; // ~2% core loss
+    const p_cu_fl = rated_kva * 35.0; // ~3.5% full-load copper loss
+    const p_cu = p_cu_fl * (load_fraction * load_fraction);
+    const total_losses = p_core + p_cu;
+    const p_in = p_out + total_losses;
+    const eff = p_in > 0 ? (p_out / p_in) * 100.0 : 0.0;
+
+    // Voltage regulation approx: VR% = load_fraction * (R_pu*cos(phi) + X_pu*sin(phi)) * 100
+    const phi = Math.acos(pf);
+    const vr_pct = load_fraction * (0.025 * Math.cos(phi) + 0.045 * Math.sin(phi)) * 100.0;
+    const v2_actual = v2_rated * (1.0 - vr_pct / 100.0);
+    const denom = is_3ph ? Math.sqrt(3.0) * v2_rated : v2_rated;
+    const i2_load = (s_load_kva * 1000.0) / denom;
+
+    return {
+      v1_volts: v1_rated,
+      v2_terminal_volts: Math.max(0.0, v2_actual),
+      i2_load_current_a: i2_load,
+      output_power_w: p_out,
+      input_power_w: p_in,
+      core_loss_w: p_core,
+      copper_loss_w: p_cu,
+      total_losses_w: total_losses,
+      efficiency_pct: Math.min(100.0, Math.max(0.0, eff)),
+      voltage_regulation_pct: vr_pct
+    };
+  }
+
+  function solveSynchronousMotor(v_line, frequency, load_power_w, field_current, poles = 4, xs = 4.5, ra = 0.5) {
+    const ns_rpm = synchronousSpeed(frequency, poles);
+    const omega_s = angularVelocity(ns_rpm);
+    const v_ph = v_line / Math.sqrt(3.0);
+    const ef_ph = (v_ph * 0.95) * (field_current / 1.25);
+    const max_power = (3.0 * v_ph * ef_ph) / xs;
+    const ratio = max_power > 0 ? load_power_w / max_power : 0.0;
+    const is_stable = ratio <= 1.0;
+    const delta_rad = is_stable ? Math.asin(Math.min(1.0, Math.max(-1.0, ratio))) : Math.PI / 2.0;
+    const delta_deg = delta_rad * (180.0 / Math.PI);
+
+    // Phasor Ia = (V_ph - Ef*(cos(delta) - j*sin(delta))) / (Ra + j*Xs)
+    const ef_re = ef_ph * Math.cos(delta_rad);
+    const ef_im = -ef_ph * Math.sin(delta_rad);
+    const num_re = v_ph - ef_re;
+    const num_im = -ef_im;
+    const den_mag2 = ra * ra + xs * xs;
+    const ia_re = (num_re * ra + num_im * xs) / den_mag2;
+    const ia_im = (num_im * ra - num_re * xs) / den_mag2;
+    const ia_mag = Math.sqrt(ia_re * ia_re + ia_im * ia_im);
+    const phi = Math.atan2(ia_im, ia_re);
+    const pf = Math.cos(phi);
+
+    const p_in = 3.0 * v_ph * ia_mag * pf;
+    const p_loss = Math.max(50.0, p_in - load_power_w);
+    const eff = p_in > 0 ? (load_power_w / p_in) * 100.0 : 0.0;
+    const t_shaft = omega_s > 0 ? load_power_w / omega_s : 0.0;
+
+    return {
+      speed_rpm: ns_rpm,
+      synchronous_speed_rpm: ns_rpm,
+      armature_current_a: ia_mag,
+      field_current_a: field_current,
+      power_factor: pf,
+      torque_angle_delta_deg: delta_deg,
+      shaft_torque_nm: t_shaft,
+      input_power_w: p_in,
+      output_power_w: load_power_w,
+      efficiency_pct: Math.min(100.0, Math.max(0.0, eff)),
+      total_losses_w: p_loss
+    };
+  }
+
   return {
     synchronousSpeed,
     angularVelocity,
     solveInductionMotor,
-    solveAlternator
+    solveAlternator,
+    solveDCMachine,
+    solveTransformer,
+    solveSynchronousMotor
   };
 })();

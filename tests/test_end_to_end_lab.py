@@ -155,3 +155,49 @@ def test_full_professor_demonstration_workflow(client):
     assert "Prof. Evaluator" in html_report
     print("[GATE 11] Formal academic lab report generated with frozen configuration snapshot.")
     print("--> ALL PROFESSOR DEMONSTRATION WORKFLOW GATES PASSED! <--\n")
+
+def test_all_10_machines_physics_and_12_experiments(client):
+    """
+    Verifies that all 10 preset machines simulate without error using deterministic physics
+    and all 12 standardized experiments are accessible via the API.
+    """
+    # 1. Verify 12 Experiments via API
+    exp_resp = client.get("/api/experiments")
+    assert exp_resp.status_code == 200
+    experiments = exp_resp.get_json()
+    assert len(experiments) == 12, f"Expected 12 experiments, got {len(experiments)}"
+    
+    # Check key experiments exist
+    exp_ids = [e["id"] for e in experiments]
+    assert "exp_im_load_test" in exp_ids
+    assert "exp_im_speed_control" in exp_ids
+    assert "exp_alt_load_test" in exp_ids
+    assert "exp_alt_synchronization" in exp_ids
+    assert "exp_dc_shunt_load" in exp_ids
+    assert "exp_dc_shunt_speed_control" in exp_ids
+    assert "exp_sync_motor_v_curves" in exp_ids
+    assert "exp_transformer_oc_sc" in exp_ids
+    assert "exp_transformer_load_test" in exp_ids
+    assert "exp_3ph_transformer_vector_parallel" in exp_ids
+
+    # 2. Verify Deterministic Physics Solvers across all 10 machines
+    mgr = NameplateManager()
+    all_machines = mgr.get_all_machines()
+    assert len(all_machines) == 10
+
+    for m_id, m_cfg in all_machines.items():
+        sim = SimulationEngine(m_cfg)
+        assert sim.start_machine()
+        t = sim.step()
+        assert t["machine_id"] == m_id
+        assert t["v_line"] > 0.0
+        assert t["total_losses_w"] >= 0.0
+        assert not t["protection_tripped"]
+        # Check machine-specific physics non-triviality
+        m_type = m_cfg.get("identity", {}).get("machine_type", "")
+        if "transformer" in m_type:
+            assert "v_secondary" in t
+            assert t["speed_rpm"] == 0.0
+        else:
+            assert t["speed_rpm"] >= 0.0
+

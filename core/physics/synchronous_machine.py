@@ -42,8 +42,10 @@ class SynchronousMachinePhysics(MachinePhysicsModel):
         # Open-circuit generated EMF per phase (incorporating non-linear magnetic saturation)
         # S-curve: Eph = k * (speed / N_rated) * tanh(c * If)
         base_emf_ph = (rated_voltage_line / np.sqrt(3.0))
-        # Non-linear saturation curve:
-        eph = base_emf_ph * (speed_rpm / 1500.0) * (2.0 * np.tanh(field_current / 1.5))
+        # Non-linear saturation curve normalized to rated voltage at rated excitation:
+        rated_if = float(params.get("rated_field_current", 1.25))
+        sat_factor = float(np.tanh(field_current / 0.9) / np.tanh(rated_if / 0.9)) if rated_if > 0 else 1.0
+        eph = base_emf_ph * (speed_rpm / 1500.0) * sat_factor
         eph_line = eph * np.sqrt(3.0)
 
         # Power factor angle
