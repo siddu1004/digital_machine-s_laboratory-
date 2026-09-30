@@ -35,3 +35,25 @@ CONFIGURE → CONNECT → START → OPERATE → MEASURE → RECORD → ANALYZE �
 | AGENT 25 | Performance Engineer | Telemetry buffers, throttled redraws | Active | Telemetry buffer & benchmarks |
 | AGENT 26 | Accessibility Engineer | Keyboard navigation, high contrast | Active | WCAG ARIA support |
 | AGENT 27 | Documentation Engineer | Complete manual, theoretical basis | Active | README.md & theory docs |
+
+## Experiment Agent Assignments
+
+| Experiment ID | UI Agent | Test Agent | ML Agent | Integration Agent |
+|---|---|---|---|---|
+| exp_im_no_load | AGENT 30 (UI Engineer) | AGENT 31 (Physics Test Engineer) | AGENT 32 (AI/ML Engineer) | AGENT 28 (Supervisor) |
+| exp_im_blocked_rotor | AGENT 30 (UI Engineer) | AGENT 31 (Physics Test Engineer) | AGENT 32 (AI/ML Engineer) | AGENT 28 (Supervisor) |
+| exp_im_speed_control | AGENT 30 (UI Engineer) | AGENT 31 (Physics Test Engineer) | AGENT 32 (AI/ML Engineer) | AGENT 28 (Supervisor) |
+| exp_alt_load_test | AGENT 30 (UI Engineer) | AGENT 31 (Physics Test Engineer) | AGENT 32 (AI/ML Engineer) | AGENT 28 (Supervisor) |
+| exp_alt_emf_mmf_regulation | AGENT 30 (UI Engineer) | AGENT 31 (Physics Test Engineer) | AGENT 32 (AI/ML Engineer) | AGENT 28 (Supervisor) |
+| exp_induction_generator_load | AGENT 30 (UI Engineer) | AGENT 31 (Physics Test Engineer) | AGENT 32 (AI/ML Engineer) | AGENT 28 (Supervisor) |
+| exp_alt_zpf_regulation | AGENT 30 (UI Engineer) | AGENT 31 (Physics Test Engineer) | AGENT 32 (AI/ML Engineer) | AGENT 28 (Supervisor) |
+| exp_alt_infinite_bus_v_curves | AGENT 30 (UI Engineer) | AGENT 31 (Physics Test Engineer) | AGENT 32 (AI/ML Engineer) | AGENT 28 (Supervisor) |
+
+## New Agent Definitions
+
+| Agent ID | Role | Focus Area | Status | Deliverables |
+|---|---|---|---|---|
+| AGENT 28 | Supervisor | Orchestrate experiment agents, ensure communication | Active | Coordination protocols, message routing |
+| AGENT 30 | UI Engineer | Front‑end experiment interfaces, telemetry visualisation | Active | UI components for each experiment |
+| AGENT 31 | Physics Test Engineer | Automated physics validation, conserved quantities | Active | test_physics_experiments.py |
+| AGENT 32 | AI/ML Engineer | Machine‑learning models for prediction & error analysis | Active | ml_experiment_models/ |
