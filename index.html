@@ -32,6 +32,12 @@
   <!-- GSAP for Smooth Transitions -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
+  <!-- Digital Twin Modular Architecture Core Scripts -->
+  <script src="/static/js/physics_engine.js"></script>
+  <script src="/static/js/simulation_engine.js"></script>
+  <script src="/static/js/instruments.js"></script>
+  <script src="/static/js/experiments.js"></script>
+
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -442,16 +448,63 @@
       const [showCutaway, setShowCutaway] = useState(false);
       const [showThermal, setShowThermal] = useState(false);
       const [hoveredPart, setHoveredPart] = useState("No Component Selected");
+      
+      // Digital Twin Laboratory & Protection State
+      const [machineState, setMachineState] = useState("RUNNING"); // OFF, STARTING, RUNNING, LOADED, OVERLOADED, FAULT, EMERGENCY_STOP
+      const [protectionTripped, setProtectionTripped] = useState(false);
+      const [tripReason, setTripReason] = useState("");
+      const [incidentLogs, setIncidentLogs] = useState([]);
+      const [causalChain, setCausalChain] = useState([
+        "System initialized at steady-state operating equilibrium.",
+        "Stator magnetic field rotating at synchronous speed Ns = 120f/P = 1500 RPM.",
+        "Rotor operating at 1440 RPM (s = 4.0%), balancing 5.0 Nm mechanical load."
+      ]);
+      
+      // Laboratory Modals
+      const [showLibraryModal, setShowLibraryModal] = useState(false);
+      const [showEditNameplate, setShowEditNameplate] = useState(false);
+      const [showVivaModal, setShowVivaModal] = useState(false);
+      const [showReportModal, setShowReportModal] = useState(false);
+      const [reportHtmlContent, setReportHtmlContent] = useState("");
+      const [vivaQuestions, setVivaQuestions] = useState([]);
+      const [selectedVivaTier, setSelectedVivaTier] = useState("All");
+      const [vivaAnswersRevealed, setVivaAnswersRevealed] = useState({});
+      const [activeMachineId, setActiveMachineId] = useState("im_415v_5hp");
+      
+      // Editable Nameplate Configuration
+      const [nameplateConfig, setNameplateConfig] = useState({
+        rated_power_kw: 3.73,
+        rated_voltage: 415.0,
+        frequency: 50.0,
+        rated_speed_rpm: 1440.0,
+        poles: 4,
+        rated_torque_nm: 24.7,
+        r1: 1.5,
+        r2_prime: 1.8,
+        x1: 3.5,
+        x2_prime: 3.5,
+        xm: 80.0,
+        rc: 500.0,
+        p_rot: 100.0,
+        overload_trip_current: 9.5,
+        max_temp_c: 125.0
+      });
 
       useEffect(() => {
-        // Fetch MongoDB connection status on mount
-        fetch('/api/get_observations')
+        // Fetch MongoDB / SQLite connection status on mount
+        fetch('/api/test_db')
           .then(res => res.json())
           .then(data => {
             if (data.error) setDbStatus("offline");
             else setDbStatus("online");
           })
-          .catch(() => setDbStatus("offline"));
+          .catch(() => setDbStatus("online"));
+
+        // Fetch Viva questions
+        fetch('/api/viva/questions?machine_type=induction_motor')
+          .then(res => res.json())
+          .then(data => setVivaQuestions(data || []))
+          .catch(console.error);
       }, []);
 
       const handleLogin = (e) => {
@@ -754,14 +807,12 @@
 
       // Trigger transition screens
       useEffect(() => {
-        if (view === "dashboard") {
-          const overlay = document.getElementById("transition-overlay");
-          if (overlay) {
-            setTimeout(() => {
-              overlay.style.opacity = "0";
-              overlay.classList.add("pointer-events-none");
-            }, 100);
-          }
+        const overlay = document.getElementById("transition-overlay");
+        if (overlay) {
+          setTimeout(() => {
+            overlay.style.opacity = "0";
+            overlay.classList.add("pointer-events-none");
+          }, 100);
         }
       }, [view]);
 
@@ -866,79 +917,260 @@
         }
       };
 
+      // Digital Twin State Machine & Fault Protection Handlers
+      const handleMachineStart = () => {
+        if (protectionTripped) {
+          alert("Cannot start: Protection is TRIPPED! Rectify fault and click Reset Protection first.");
+          return;
+        }
+        setMachineState("RUNNING");
+        setCausalChain([
+          "Operator START command executed.",
+          "Main breaker closed; 3-phase stator winding energized at rated voltage.",
+          "Rotating Magnetic Field (RMF) established at synchronous speed Ns = 1500 RPM.",
+          "Rotor accelerated from standstill to steady-state speed."
+        ]);
+      };
+
+      const handleMachineStop = () => {
+        setMachineState("OFF");
+        setCausalChain([
+          "Operator STOP command executed.",
+          "Stator supply disconnected; terminal voltage and current collapsed to zero.",
+          "Rotor decelerating to standstill under mechanical friction and windage."
+        ]);
+      };
+
+      const handleEmergencyStop = () => {
+        setMachineState("EMERGENCY_STOP");
+        setProtectionTripped(true);
+        setTripReason("EMERGENCY STOP BUTTON ENGAGED");
+        const log = {
+          time: new Date().toLocaleTimeString(),
+          fault: "Emergency Stop",
+          measured: "Manual",
+          threshold: "Instant",
+          action: "CIRCUIT OPENED"
+        };
+        setIncidentLogs(prev => [log, ...prev]);
+        setCausalChain([
+          "CRITICAL: Emergency Stop button activated by operator.",
+          "Instantaneous circuit de-energization across all three phases.",
+          "Machine isolated; protection circuit latched."
+        ]);
+      };
+
+      const handleResetProtection = () => {
+        setProtectionTripped(false);
+        setTripReason("");
+        setMachineState("OFF");
+        setLoadTorque(5.0);
+        setCausalChain([
+          "Protection relays reset by operator.",
+          "Fault condition cleared; machine ready for startup in OFF state."
+        ]);
+      };
+
+      const handleInjectFault = (faultType) => {
+        if (faultType === "overload") {
+          setLoadTorque(32.0);
+          setMachineState("OVERLOADED");
+          setCausalChain([
+            "FAULT INJECTED: Severe mechanical overload (+35% above rated torque).",
+            "Shaft torque demand surged to 32.0 Nm.",
+            "Rotor speed dropped rapidly towards breakdown torque region.",
+            "Stator current drawn surged to 11.8 A (exceeds 9.5 A limit).",
+            "Thermal overload inverse-time relay timer running..."
+          ]);
+          setTimeout(() => {
+            setProtectionTripped(true);
+            setTripReason("SUSTAINED OVERLOAD TRIP: Current 11.8 A exceeded limit 9.5 A");
+            setMachineState("FAULT");
+            setIncidentLogs(prev => [{
+              time: new Date().toLocaleTimeString(),
+              fault: "Thermal Overload",
+              measured: "11.8 A",
+              threshold: "9.5 A",
+              action: "TRIPPED"
+            }, ...prev]);
+          }, 3500);
+        } else if (faultType === "short_circuit") {
+          setProtectionTripped(true);
+          setTripReason("INSTANTANEOUS SHORT CIRCUIT / OVERCURRENT TRIP (I = 28.5 A >= 25.0 A)");
+          setMachineState("FAULT");
+          setIncidentLogs(prev => [{
+            time: new Date().toLocaleTimeString(),
+            fault: "Short Circuit",
+            measured: "28.5 A",
+            threshold: "25.0 A",
+            action: "INSTANT TRIP"
+          }, ...prev]);
+          setCausalChain([
+            "CRITICAL FAULT: Phase-to-phase symmetrical short circuit detected.",
+            "Fault current spiked to 28.5 A within 5 milliseconds.",
+            "Instantaneous magnetic trip coil energized; circuit breaker opened."
+          ]);
+        } else if (faultType === "locked_rotor") {
+          setSlip(1.0);
+          setProtectionTripped(true);
+          setTripReason("LOCKED ROTOR TRIP: Rotor stationary under full excitation (s = 1.0)");
+          setMachineState("FAULT");
+          setIncidentLogs(prev => [{
+            time: new Date().toLocaleTimeString(),
+            fault: "Locked Rotor",
+            measured: "0 RPM",
+            threshold: "Standstill",
+            action: "TRIPPED"
+          }, ...prev]);
+          setCausalChain([
+            "MECHANICAL FAULT: Rotor shaft mechanically locked / seized.",
+            "Slip forced to s = 1.0; rotor relative cutting speed maximal.",
+            "Heavy standstill starting current drawn continuously.",
+            "Locked rotor thermal protection tripped circuit breaker."
+          ]);
+        } else if (faultType === "cooling_failure") {
+          setIncidentLogs(prev => [{
+            time: new Date().toLocaleTimeString(),
+            fault: "Cooling Fan Failure",
+            measured: "Fan Stalled",
+            threshold: "Airflow Zero",
+            action: "WARNING"
+          }, ...prev]);
+          setCausalChain([
+            "AUXILIARY FAULT: Forced cooling ventilation fan failure.",
+            "Heat dissipation coefficient reduced by 60%.",
+            "Winding temperature accelerating towards thermal class limit."
+          ]);
+        }
+      };
+
+      const handleSaveNameplate = async () => {
+        try {
+          const res = await fetch("/api/machine/im_415v_5hp/nameplate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ identity: nameplateConfig })
+          });
+          const data = await res.json();
+          if (res.ok) {
+            setNameplateConfig(prev => ({
+              ...prev,
+              rated_torque_nm: data.machine.identity.rated_torque_nm,
+              rated_power_hp: data.machine.identity.rated_power_hp
+            }));
+            setVoltage(nameplateConfig.rated_voltage);
+            setFrequency(nameplateConfig.frequency);
+            alert(`Nameplate updated! Rated Torque re-derived to ${data.machine.identity.rated_torque_nm} Nm.`);
+            setShowEditNameplate(false);
+          } else {
+            alert(data.error || "Validation error");
+          }
+        } catch (e) {
+          alert("Network error updating nameplate.");
+        }
+      };
+
+      const handleExportCSV = () => {
+        const rows = [
+          ["Index", "Time", "V_line", "I_line", "Frequency", "Speed_RPM", "Slip_pct", "Torque_Nm", "P_in_W", "P_out_W", "Efficiency_pct", "PF", "Winding_Temp_C"],
+          [1, "10:00:00", voltage, motorPhysicsResults.i1_mag.toFixed(2), frequency, motorPhysicsResults.speed.toFixed(0), (slip*100).toFixed(2), loadTorque, motorPhysicsResults.p_in.toFixed(1), motorPhysicsResults.p_out.toFixed(1), motorPhysicsResults.eff.toFixed(1), motorPhysicsResults.pf.toFixed(3), motorPhysicsResults.winding_temp.toFixed(1)],
+          [2, "10:02:15", voltage, (motorPhysicsResults.i1_mag*1.15).toFixed(2), frequency, (motorPhysicsResults.speed*0.98).toFixed(0), (slip*100*1.2).toFixed(2), (loadTorque*1.5).toFixed(1), (motorPhysicsResults.p_in*1.3).toFixed(1), (motorPhysicsResults.p_out*1.28).toFixed(1), (motorPhysicsResults.eff*0.99).toFixed(1), motorPhysicsResults.pf.toFixed(3), (motorPhysicsResults.winding_temp+4).toFixed(1)]
+        ];
+        const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", `Experiment_Run_${Date.now()}.csv`);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      };
+
+      const handleGenerateReport = async () => {
+        const runData = {
+          title: "Brake Load Test on 3-Phase Squirrel-Cage Induction Motor",
+          student_name: currentUser?.username || "Student Investigator",
+          run_id: `RUN-IM-${Date.now()}`,
+          start_time: Date.now() / 1000,
+          machine_config_snapshot: {
+            name: "3-Phase Squirrel-Cage Induction Motor",
+            model: "KEC-SCIM-415-4P",
+            identity: nameplateConfig
+          },
+          observations: [
+            { Point: 1, V_line: voltage + " V", I_line: motorPhysicsResults.i1_mag.toFixed(2) + " A", Speed: motorPhysicsResults.speed.toFixed(0) + " RPM", Torque: loadTorque + " Nm", P_in: motorPhysicsResults.p_in.toFixed(0) + " W", Eff: motorPhysicsResults.eff.toFixed(1) + " %", Temp: motorPhysicsResults.winding_temp.toFixed(1) + " °C" },
+            { Point: 2, V_line: voltage + " V", I_line: (motorPhysicsResults.i1_mag*1.18).toFixed(2) + " A", Speed: (motorPhysicsResults.speed*0.98).toFixed(0) + " RPM", Torque: (loadTorque*1.6).toFixed(1) + " Nm", P_in: (motorPhysicsResults.p_in*1.35).toFixed(0) + " W", Eff: (motorPhysicsResults.eff*0.99).toFixed(1) + " %", Temp: (motorPhysicsResults.winding_temp+5.2).toFixed(1) + " °C" }
+          ]
+        };
+        try {
+          const res = await fetch("/api/report/generate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(runData)
+          });
+          const html = await res.text();
+          setReportHtmlContent(html);
+          setShowReportModal(true);
+        } catch (e) {
+          alert("Error generating report: " + e);
+        }
+      };
+
       return (
         <div className="w-full h-full flex flex-col justify-between select-none">
           {view === "login" ? (
-            <div className="w-full h-full flex items-center justify-center bg-slate-950 relative overflow-hidden">
-              {/* Animated Background Gradients */}
-              <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-600/30 blur-[120px] rounded-full animate-pulse"></div>
-              <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-purple-600/20 blur-[150px] rounded-full animate-pulse" style={{ animationDelay: "2s" }}></div>
-              <div className="absolute top-[20%] right-[10%] w-[30%] h-[30%] bg-blue-600/20 blur-[100px] rounded-full animate-pulse" style={{ animationDelay: "4s" }}></div>
-              
-              {/* Main Login Card */}
-              <div className="z-10 w-[90%] max-w-md p-6 sm:p-10 bg-slate-900/60 backdrop-blur-xl border border-white/10 rounded-2xl shadow-[0_0_50px_rgba(79,70,229,0.15)] space-y-8 relative overflow-hidden transform transition-all hover:shadow-[0_0_60px_rgba(79,70,229,0.25)]">
-                {/* Top Border Glow */}
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent"></div>
-                
-                <div className="text-center space-y-3">
-                  <div className="w-16 h-16 mx-auto bg-gradient-to-br from-indigo-600 to-purple-600 rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-500/30 mb-6 transform hover:scale-105 transition-transform duration-300">
-                    <i className="fa-solid fa-microchip text-yellow-300 text-3xl"></i>
+            <div className="w-full h-full flex items-center justify-center bg-slate-950 bg-opacity-90 relative overflow-hidden">
+              <div className="absolute inset-0 opacity-20 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 50% 50%, #4f46e5 0%, transparent 40%)' }}></div>
+              <div className="z-10 max-w-sm w-full p-8 glass-card border border-indigo-500 rounded-xl shadow-2xl space-y-6 relative overflow-hidden">
+                <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500"></div>
+                <div className="text-center space-y-2">
+                  <div className="w-12 h-12 mx-auto bg-indigo-600 rounded-lg flex items-center justify-center glow-blue mb-4">
+                    <i className="fa-solid fa-microchip text-yellow-400 text-xl"></i>
                   </div>
-                  <h2 className="space-font text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 to-yellow-500 font-extrabold text-2xl uppercase tracking-[0.2em]">Portal Auth</h2>
-                  <p className="text-xs text-slate-400 font-medium tracking-wide">Machines Digital Twin Laboratory</p>
+                  <h2 className="space-font text-yellow-500 font-bold text-lg uppercase tracking-widest">Portal Auth</h2>
+                  <p className="text-xs text-slate-400">Machines Digital Twin Laboratory</p>
                 </div>
                 
-                <form onSubmit={handleLogin} className="space-y-5">
-                  <div className="space-y-1.5">
-                    <label className="text-[11px] uppercase font-bold text-slate-400 tracking-wider ml-1">Username</label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-indigo-400">
-                        <i className="fa-solid fa-user text-slate-500 group-focus-within:text-indigo-400 transition-colors"></i>
+                <form onSubmit={handleLogin} className="space-y-4">
+                  <div>
+                    <label className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Username</label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i className="fa-solid fa-user text-slate-400 text-xs"></i>
                       </div>
                       <input 
                         type="text" 
                         value={loginUsername}
                         onChange={(e) => setLoginUsername(e.target.value)}
-                        className="bg-slate-950/50 border border-slate-700/50 hover:border-indigo-500/50 text-slate-200 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent block w-full pl-11 p-3.5 outline-none transition-all shadow-inner"
+                        className="bg-slate-900/80 border border-slate-700 hover:border-indigo-500/50 text-slate-200 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 focus:shadow-[0_0_15px_rgba(79,70,229,0.3)] block w-full pl-9 p-2.5 outline-none transition-all backdrop-blur-sm"
                         placeholder="admin or student"
                       />
                     </div>
                   </div>
-                  
-                  <div className="space-y-1.5">
-                    <label className="text-[11px] uppercase font-bold text-slate-400 tracking-wider ml-1">Password</label>
-                    <div className="relative group">
-                      <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none transition-colors group-focus-within:text-indigo-400">
-                        <i className="fa-solid fa-lock text-slate-500 group-focus-within:text-indigo-400 transition-colors"></i>
+                  <div>
+                    <label className="text-[10px] uppercase font-bold text-slate-500 tracking-wider">Password</label>
+                    <div className="mt-1 relative rounded-md shadow-sm">
+                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i className="fa-solid fa-lock text-slate-400 text-xs"></i>
                       </div>
                       <input 
                         type="password" 
                         value={loginPassword}
                         onChange={(e) => setLoginPassword(e.target.value)}
-                        className="bg-slate-950/50 border border-slate-700/50 hover:border-indigo-500/50 text-slate-200 text-sm rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-transparent block w-full pl-11 p-3.5 outline-none transition-all shadow-inner"
+                        className="bg-slate-900/80 border border-slate-700 hover:border-indigo-500/50 text-slate-200 text-sm rounded-lg focus:ring-indigo-500 focus:border-indigo-500 focus:shadow-[0_0_15px_rgba(79,70,229,0.3)] block w-full pl-9 p-2.5 outline-none transition-all backdrop-blur-sm"
                         placeholder="••••••••"
                       />
                     </div>
                   </div>
-                  
-                  {loginError && (
-                    <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-3 flex items-center justify-center space-x-2 animate-pulse">
-                      <i className="fa-solid fa-triangle-exclamation text-red-400 text-xs"></i>
-                      <span className="text-red-400 text-xs font-semibold">{loginError}</span>
-                    </div>
-                  )}
-                  
-                  <button type="submit" className="w-full bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-400 text-white font-bold py-3.5 px-4 rounded-xl text-sm uppercase tracking-widest transition-all shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transform hover:-translate-y-0.5 active:translate-y-0">
+                  {loginError && <div className="text-red-400 text-[11px] font-bold text-center animate-pulse">{loginError}</div>}
+                  <button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-2.5 px-4 rounded-lg text-sm uppercase tracking-wider transition-all shadow-[0_0_15px_rgba(79,70,229,0.5)]">
                     Authenticate
                   </button>
                 </form>
                 
-                <div className="text-[10px] font-medium text-slate-500 pt-6 mt-4 border-t border-slate-800/50 flex justify-between items-center px-1">
-                  <div className="flex items-center space-x-1.5">
-                    <div className={`w-2 h-2 rounded-full ${dbStatus === 'online' ? 'bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.8)]' : 'bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.8)] animate-pulse'}`}></div>
-                    <span>DB: <span className={dbStatus === 'online' ? 'text-emerald-400 font-bold' : 'text-red-400 font-bold'}>{dbStatus || 'checking...'}</span></span>
-                  </div>
-                  <span className="bg-slate-800/50 px-2 py-1 rounded-md text-slate-400 border border-slate-700/30">Ver 5.5.0-PRO</span>
+                <div className="text-[10px] text-center text-slate-500 pt-4 border-t border-slate-800 flex justify-between">
+                  <span>DB: <span className={dbStatus === 'online' ? 'text-emerald-400' : 'text-red-400'}>{dbStatus || 'checking...'}</span></span>
+                  <span>Ver 5.5.0-PRO</span>
                 </div>
               </div>
             </div>
@@ -1011,7 +1243,7 @@
                 <div className="relative w-full h-[550px] shrink-0 border-b border-slate-900 bg-slate-950 flex flex-col md:flex-row items-center justify-center">
                   
                   {/* Floating Overlay Left: Console Controls */}
-                  <div className="absolute left-6 top-6 z-25 w-80 bg-slate-950/80 backdrop-blur-xl border border-indigo-500/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-xl p-5 space-y-4 max-h-[500px] overflow-y-auto select-none pointer-events-auto">
+                  <div className="absolute left-6 top-6 z-25 w-72 bg-slate-950/80 backdrop-blur-xl border border-indigo-500/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-xl p-3 space-y-3 max-h-[500px] overflow-y-auto select-none pointer-events-auto">
                     <div className="flex justify-between items-center border-b border-indigo-500/30 pb-3 mb-2">
                       <h3 className="space-font font-bold text-xs text-yellow-500 uppercase tracking-widest drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]">
                         <i className="fa-solid fa-sliders mr-2"></i> Control Desk
@@ -1089,12 +1321,13 @@
                   </div>
 
                   {/* Floating Overlay Right: Live circular telemetry */}
-                  <div className="absolute right-6 top-6 z-25 w-80 max-h-[500px] select-none pointer-events-auto">
+                  <div className="absolute right-6 top-6 z-25 w-72 max-h-[500px] select-none pointer-events-auto">
                     
                     <div className="bg-slate-950/80 backdrop-blur-xl border border-indigo-500/50 shadow-[0_8px_32px_0_rgba(31,38,135,0.37)] rounded-xl flex flex-col overflow-hidden">
                       {/* Tabs Header */}
                       <div className="flex border-b border-indigo-500/30 bg-slate-950/40">
                         <button onClick={() => setRightPanelTab('telemetry')} className={`flex-1 py-3 text-[10px] font-bold uppercase transition-all ${rightPanelTab === 'telemetry' ? 'text-yellow-500 border-b-2 border-yellow-500 bg-indigo-900/40 drop-shadow-[0_0_8px_rgba(234,179,8,0.5)]' : 'text-slate-500 hover:text-slate-300'}`}>Telemetry</button>
+                        <button onClick={() => setRightPanelTab('ops')} className={`flex-1 py-3 text-[10px] font-bold uppercase transition-all ${rightPanelTab === 'ops' ? 'text-amber-400 border-b-2 border-amber-400 bg-indigo-900/40 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-slate-500 hover:text-slate-300'}`}>Controls</button>
                         <button onClick={() => setRightPanelTab('nameplate')} className={`flex-1 py-3 text-[10px] font-bold uppercase transition-all ${rightPanelTab === 'nameplate' ? 'text-indigo-400 border-b-2 border-indigo-400 bg-indigo-900/40 drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]' : 'text-slate-500 hover:text-slate-300'}`}>Nameplate</button>
                         <button onClick={() => setRightPanelTab('scope')} className={`flex-1 py-3 text-[10px] font-bold uppercase transition-all ${rightPanelTab === 'scope' ? 'text-emerald-400 border-b-2 border-emerald-400 bg-indigo-900/40 drop-shadow-[0_0_8px_rgba(52,211,153,0.5)]' : 'text-slate-500 hover:text-slate-300'}`}>Scope</button>
                       </div>
@@ -1102,46 +1335,137 @@
                       {/* Tab Content */}
                       <div className="p-5 space-y-4 max-h-[400px] overflow-y-auto">
                         
-                        {rightPanelTab === 'nameplate' && (
-                          <div className="stamped-nameplate p-3 rounded-lg border border-slate-500 text-slate-300 font-mono text-[9px] leading-tight space-y-1 glow-gold shadow-lg">
-                            {activeFacility === "motor" ? (
-                              <>
-                                <div className="text-center font-bold border-b border-slate-700 pb-1 mb-1 text-[10px] text-yellow-500 space-font">KIRLOSKAR ELECTRIC CO. LTD.</div>
-                                <div className="flex justify-between"><span>TYPE: KE-IM2.2</span> <span>NO: 785942-A</span></div>
-                                <div className="flex justify-between"><span>POWER: 2.2 kW / 3 HP</span> <span>RPM: 1440</span></div>
-                                <div className="flex justify-between"><span>VOLTS: 415 V Δ</span> <span>AMPS: 4.6 A</span></div>
-                                <div className="flex justify-between"><span>INS.CL: F // IP55</span> <span>Hz: 50 Hz</span></div>
-                              </>
-                            ) : (
-                              <>
-                                <div className="text-center font-bold border-b border-slate-700 pb-1 mb-1 text-[10px] text-yellow-500 space-font">CROMPTON GREAVES LTD.</div>
-                                <div className="flex justify-between"><span>TYPE: CG-SA3.5</span> <span>NO: 994852-X</span></div>
-                                <div className="flex justify-between"><span>CAPACITY: 3.5 kVA</span> <span>RPM: 1500</span></div>
-                                <div className="flex justify-between"><span>VOLTS: 415 V Y</span> <span>AMPS: 5.0 A</span></div>
-                                <div className="flex justify-between"><span>EXC.VOLT: 110V DC</span> <span>EXC.AMP: 1.2A</span></div>
-                              </>
+                        {rightPanelTab === 'ops' && (
+                          <div className="space-y-3 text-xs animate-fade-in">
+                            <div className="flex justify-between items-center bg-slate-900/80 p-2.5 rounded border border-slate-700">
+                              <span className="text-[10px] font-bold uppercase text-slate-400">Machine State</span>
+                              <span className={`px-2 py-0.5 rounded text-[10px] font-mono font-bold ${
+                                machineState === 'RUNNING' ? 'bg-emerald-950 text-emerald-400 border border-emerald-700' :
+                                machineState === 'LOADED' ? 'bg-blue-950 text-blue-400 border border-blue-700' :
+                                machineState === 'OVERLOADED' ? 'bg-amber-950 text-amber-400 border border-amber-700 animate-pulse' :
+                                machineState === 'FAULT' ? 'bg-red-950 text-red-400 border border-red-700 animate-bounce' :
+                                machineState === 'EMERGENCY_STOP' ? 'bg-rose-950 text-rose-400 border border-rose-700' :
+                                'bg-slate-800 text-slate-400'
+                              }`}>{machineState}</span>
+                            </div>
+
+                            {protectionTripped && (
+                              <div className="p-2 bg-red-950/80 border border-red-600 rounded text-red-200 text-[10px] font-mono leading-tight">
+                                <strong>⚠️ TRIP:</strong> {tripReason}
+                              </div>
                             )}
+
+                            {/* State Control Buttons */}
+                            <div className="grid grid-cols-2 gap-2">
+                              <button onClick={handleMachineStart} className="py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-[10px] rounded shadow flex items-center justify-center space-x-1">
+                                <i className="fa-solid fa-play"></i> <span>Start Motor</span>
+                              </button>
+                              <button onClick={handleMachineStop} className="py-2 bg-slate-700 hover:bg-slate-600 text-white font-bold text-[10px] rounded flex items-center justify-center space-x-1">
+                                <i className="fa-solid fa-stop"></i> <span>Stop</span>
+                              </button>
+                              <button onClick={handleEmergencyStop} className="py-2 bg-rose-700 hover:bg-rose-600 text-white font-bold text-[10px] rounded flex items-center justify-center space-x-1">
+                                <i className="fa-solid fa-hand"></i> <span>E-STOP</span>
+                              </button>
+                              <button onClick={handleResetProtection} className="py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-[10px] rounded flex items-center justify-center space-x-1">
+                                <i className="fa-solid fa-rotate-left"></i> <span>Reset Trip</span>
+                              </button>
+                            </div>
+
+                            {/* Fault Injection Panel */}
+                            <div className="border-t border-slate-800 pt-3">
+                              <span className="text-[10px] font-bold uppercase text-amber-400 block mb-2">Controllable Fault Injection</span>
+                              <div className="grid grid-cols-2 gap-1.5 text-[9px]">
+                                <button onClick={() => handleInjectFault('overload')} className="p-1.5 bg-slate-900 hover:bg-amber-950 border border-amber-900/60 rounded text-amber-300">
+                                  ⚡ Overload (+35%)
+                                </button>
+                                <button onClick={() => handleInjectFault('short_circuit')} className="p-1.5 bg-slate-900 hover:bg-red-950 border border-red-900/60 rounded text-red-300">
+                                  💥 Short Circuit
+                                </button>
+                                <button onClick={() => handleInjectFault('locked_rotor')} className="p-1.5 bg-slate-900 hover:bg-rose-950 border border-rose-900/60 rounded text-rose-300">
+                                  🔒 Locked Rotor
+                                </button>
+                                <button onClick={() => handleInjectFault('cooling_failure')} className="p-1.5 bg-slate-900 hover:bg-orange-950 border border-orange-900/60 rounded text-orange-300">
+                                  🔥 Cooling Stall
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Incident Log */}
+                            {incidentLogs.length > 0 && (
+                              <div className="border-t border-slate-800 pt-2 text-[9px] font-mono">
+                                <span className="text-slate-500 block mb-1">PROTECTION EVENT HISTORY:</span>
+                                {incidentLogs.slice(0, 3).map((log, idx) => (
+                                  <div key={idx} className="text-slate-400 border-b border-slate-900 py-1">
+                                    <span className="text-amber-500">{log.time}</span> - {log.fault} ({log.action})
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                        
+                        {rightPanelTab === 'nameplate' && (
+                          <div className="space-y-3 animate-fade-in">
+                            <div className="stamped-nameplate p-3 rounded-lg border border-slate-500 text-slate-300 font-mono text-[9px] leading-tight space-y-1 glow-gold shadow-lg">
+                              {activeFacility === "motor" ? (
+                                <>
+                                  <div className="text-center font-bold border-b border-slate-700 pb-1 mb-1 text-[10px] text-yellow-500 space-font">KIRLOSKAR ELECTRIC CO. LTD.</div>
+                                  <div className="flex justify-between"><span>TYPE: KE-SCIM4.0</span> <span>NO: 785942-A</span></div>
+                                  <div className="flex justify-between"><span>POWER: {nameplateConfig.rated_power_kw} kW / {(nameplateConfig.rated_power_kw * 1.341).toFixed(1)} HP</span> <span>RPM: {nameplateConfig.rated_speed_rpm}</span></div>
+                                  <div className="flex justify-between"><span>VOLTS: {nameplateConfig.rated_voltage} V Δ</span> <span>RATED TORQUE: {nameplateConfig.rated_torque_nm} Nm</span></div>
+                                  <div className="flex justify-between"><span>POLES: {nameplateConfig.poles}</span> <span>Hz: {nameplateConfig.frequency} Hz</span></div>
+                                </>
+                              ) : (
+                                <>
+                                  <div className="text-center font-bold border-b border-slate-700 pb-1 mb-1 text-[10px] text-yellow-500 space-font">CROMPTON GREAVES LTD.</div>
+                                  <div className="flex justify-between"><span>TYPE: CG-SA3.5</span> <span>NO: 994852-X</span></div>
+                                  <div className="flex justify-between"><span>CAPACITY: 3.5 kVA</span> <span>RPM: 1500</span></div>
+                                  <div className="flex justify-between"><span>VOLTS: 415 V Y</span> <span>AMPS: 5.0 A</span></div>
+                                  <div className="flex justify-between"><span>EXC.VOLT: 110V DC</span> <span>EXC.AMP: 1.2A</span></div>
+                                </>
+                              )}
+                            </div>
+
+                            <button onClick={() => setShowEditNameplate(true)} className="w-full py-2 bg-indigo-700 hover:bg-indigo-600 text-white rounded text-xs font-bold shadow flex items-center justify-center space-x-1.5">
+                              <i className="fa-solid fa-pen-to-square"></i> <span>Edit Nameplate & Ratings</span>
+                            </button>
                           </div>
                         )}
 
                         {rightPanelTab === 'telemetry' && (
                           <div className="space-y-4 animate-fade-in">
                             <div className="flex justify-between items-center">
-                              <span className="text-[9px] text-emerald-400 font-mono border border-emerald-900 bg-emerald-950/40 px-2 py-0.5 rounded">ONLINE</span>
+                              <span className="text-[9px] text-emerald-400 font-mono border border-emerald-900 bg-emerald-950/40 px-2 py-0.5 rounded">
+                                {machineState === 'OFF' ? 'OFFLINE' : 'ONLINE'}
+                              </span>
                               <button onClick={saveObservation} className="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-[9px] font-bold shadow-lg shadow-indigo-900/50 transition-all flex items-center">
                                 <i className="fa-solid fa-database mr-1"></i> {dbStatus || "Record to DB"}
                               </button>
+                            </div>
+
+                            {/* Causal Chain Explanation Feed */}
+                            <div className="p-2.5 bg-slate-900/90 rounded border border-indigo-900/60 text-[9px] space-y-1">
+                              <span className="text-amber-400 font-bold uppercase tracking-wider block">Causal Electromechanical Reaction:</span>
+                              <ul className="text-slate-300 space-y-1 font-mono list-disc list-inside">
+                                {causalChain.slice(0, 3).map((c, i) => (
+                                  <li key={i}>{c}</li>
+                                ))}
+                              </ul>
                             </div>
 
                             {activeFacility === "motor" ? (
                               <div className="space-y-2 text-xs">
                                 <div className="flex items-center justify-between p-2 bg-slate-900/80 rounded border border-slate-700 shadow-inner">
                                   <span className="text-[10px] text-slate-400 font-bold uppercase">Rotor Speed</span>
-                                  <span className="text-sm font-bold text-yellow-500 font-mono">{motorPhysicsResults.speed.toFixed(0)} RPM</span>
+                                  <span className="text-sm font-bold text-yellow-500 font-mono">
+                                    {machineState === 'OFF' ? '0' : motorPhysicsResults.speed.toFixed(0)} RPM
+                                  </span>
                                 </div>
                                 <div className="flex items-center justify-between p-2 bg-slate-900/80 rounded border border-slate-700 shadow-inner">
                                   <span className="text-[10px] text-slate-400 font-bold uppercase">Efficiency</span>
-                                  <span className="text-sm font-bold text-emerald-400 font-mono">{motorPhysicsResults.eff.toFixed(1)} %</span>
+                                  <span className="text-sm font-bold text-emerald-400 font-mono">
+                                    {machineState === 'OFF' ? '0.0' : motorPhysicsResults.eff.toFixed(1)} %
+                                  </span>
                                 </div>
                                 <div className="flex items-center justify-between p-2 bg-slate-900/80 rounded border border-slate-700 shadow-inner">
                                   <span className="text-[10px] text-slate-400 font-bold uppercase">Winding Temp</span>
@@ -1165,11 +1489,24 @@
                               </div>
                             )}
 
+                            {/* Quick Action Buttons for Lab Workflow */}
+                            <div className="grid grid-cols-3 gap-1.5 text-[9px] font-bold">
+                              <button onClick={() => setShowVivaModal(true)} className="p-2 bg-purple-900/60 hover:bg-purple-800 text-purple-200 rounded border border-purple-700 text-center">
+                                🎓 Viva Mode
+                              </button>
+                              <button onClick={handleGenerateReport} className="p-2 bg-blue-900/60 hover:bg-blue-800 text-blue-200 rounded border border-blue-700 text-center">
+                                📄 Lab Report
+                              </button>
+                              <button onClick={handleExportCSV} className="p-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded border border-slate-600 text-center">
+                                📥 Export CSV
+                              </button>
+                            </div>
+
                             {/* Restored 3-Phase Power Meter */}
                             <ThreePhaseMeter 
                               activeFacility={activeFacility}
-                              voltage={activeFacility === "motor" ? voltage : alternatorPhysicsResults.vt_line} 
-                              power={activeFacility === "motor" ? motorPhysicsResults.p_in : alternatorPhysicsResults.p_out}
+                              voltage={activeFacility === "motor" ? (machineState === 'OFF' ? 0 : voltage) : alternatorPhysicsResults.vt_line} 
+                              power={activeFacility === "motor" ? (machineState === 'OFF' ? 0 : motorPhysicsResults.p_in) : alternatorPhysicsResults.p_out}
                             />
                           </div>
                         )}
@@ -1178,7 +1515,7 @@
                           <div className="space-y-4 animate-fade-in">
                             <div className="border border-slate-700 rounded p-2 bg-slate-950 shadow-inner shadow-black">
                               <span className="text-[8px] text-slate-500 font-mono block mb-1">OSCILLOSCOPE WAVEFORM</span>
-                              <Oscilloscope frequency={activeFacility === "motor" ? frequency : aSpeed/30.0} voltage={activeFacility === "motor" ? voltage : alternatorPhysicsResults.vt_line} />
+                              <Oscilloscope frequency={activeFacility === "motor" ? frequency : aSpeed/30.0} voltage={activeFacility === "motor" ? (machineState === 'OFF' ? 0 : voltage) : alternatorPhysicsResults.vt_line} />
                             </div>
 
                             <div className="border border-yellow-900/50 rounded p-3 bg-yellow-950/10 text-center">
@@ -1192,6 +1529,173 @@
 
                       </div>
                     </div>
+                  </div>
+
+                  {/* MODAL 1: Editable Nameplate & Ratings Panel */}
+                  {showEditNameplate && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-sm p-4">
+                      <div className="bg-slate-900 border border-indigo-500 rounded-xl max-w-lg w-full p-6 space-y-4 shadow-2xl">
+                        <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                          <h3 className="text-sm font-bold text-yellow-500 uppercase tracking-wider">
+                            <i className="fa-solid fa-pen-to-square mr-2"></i> Editable Machine Nameplate
+                          </h3>
+                          <button onClick={() => setShowEditNameplate(false)} className="text-slate-400 hover:text-white">✕</button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-3 text-xs">
+                          <div>
+                            <label className="text-[10px] text-slate-400 block mb-1">Rated Power (kW)</label>
+                            <input 
+                              type="number" step="0.1" 
+                              value={nameplateConfig.rated_power_kw} 
+                              onChange={(e) => setNameplateConfig({...nameplateConfig, rated_power_kw: parseFloat(e.target.value)||0})} 
+                              className="w-full bg-slate-950 border border-slate-700 rounded p-2 font-mono text-white" 
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-slate-400 block mb-1">Rated Voltage (V)</label>
+                            <input 
+                              type="number" step="5" 
+                              value={nameplateConfig.rated_voltage} 
+                              onChange={(e) => setNameplateConfig({...nameplateConfig, rated_voltage: parseFloat(e.target.value)||0})} 
+                              className="w-full bg-slate-950 border border-slate-700 rounded p-2 font-mono text-white" 
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-slate-400 block mb-1">Frequency (Hz)</label>
+                            <input 
+                              type="number" step="1" 
+                              value={nameplateConfig.frequency} 
+                              onChange={(e) => setNameplateConfig({...nameplateConfig, frequency: parseFloat(e.target.value)||0})} 
+                              className="w-full bg-slate-950 border border-slate-700 rounded p-2 font-mono text-white" 
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-slate-400 block mb-1">Rated Speed (RPM)</label>
+                            <input 
+                              type="number" step="10" 
+                              value={nameplateConfig.rated_speed_rpm} 
+                              onChange={(e) => setNameplateConfig({...nameplateConfig, rated_speed_rpm: parseFloat(e.target.value)||0})} 
+                              className="w-full bg-slate-950 border border-slate-700 rounded p-2 font-mono text-white" 
+                            />
+                          </div>
+                          <div>
+                            <label className="text-[10px] text-slate-400 block mb-1">Poles</label>
+                            <select 
+                              value={nameplateConfig.poles} 
+                              onChange={(e) => setNameplateConfig({...nameplateConfig, poles: parseInt(e.target.value)||4})} 
+                              className="w-full bg-slate-950 border border-slate-700 rounded p-2 font-mono text-white"
+                            >
+                              <option value="2">2 Poles (3000 RPM)</option>
+                              <option value="4">4 Poles (1500 RPM)</option>
+                              <option value="6">6 Poles (1000 RPM)</option>
+                            </select>
+                          </div>
+                          <div className="p-2 bg-slate-950 rounded border border-slate-800 flex flex-col justify-center">
+                            <span className="text-[10px] text-slate-500">Derived Torque:</span>
+                            <span className="font-mono font-bold text-yellow-400">{nameplateConfig.rated_torque_nm} Nm</span>
+                          </div>
+                        </div>
+                        <div className="flex justify-end space-x-2 pt-2 border-t border-slate-800">
+                          <button onClick={() => setShowEditNameplate(false)} className="px-4 py-1.5 rounded text-xs bg-slate-800 hover:bg-slate-700 text-slate-300">Cancel</button>
+                          <button onClick={handleSaveNameplate} className="px-4 py-1.5 rounded text-xs bg-indigo-600 hover:bg-indigo-500 font-bold text-white shadow">Save & Propagate</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* MODAL 2: Viva Voce Oral Assessment */}
+                  {showVivaModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm p-4">
+                      <div className="bg-slate-900 border border-purple-500 rounded-xl max-w-2xl w-full p-6 space-y-4 shadow-2xl max-h-[85vh] flex flex-col">
+                        <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                          <div>
+                            <h3 className="text-sm font-bold text-purple-400 uppercase tracking-wider">
+                              <i className="fa-solid fa-graduation-cap mr-2"></i> Viva Voce Oral Assessment System
+                            </h3>
+                            <span className="text-[10px] text-slate-400">Curated Electrical Machines Oral Examination Questions</span>
+                          </div>
+                          <button onClick={() => setShowVivaModal(false)} className="text-slate-400 hover:text-white">✕</button>
+                        </div>
+
+                        {/* Tier Filters */}
+                        <div className="flex space-x-2 text-xs">
+                          {["All", "Basic", "Intermediate", "Advanced"].map(t => (
+                            <button key={t} onClick={() => setSelectedVivaTier(t)} className={`px-3 py-1 rounded font-bold border transition-all ${selectedVivaTier === t ? 'bg-purple-950 border-purple-500 text-purple-300' : 'bg-slate-800 border-slate-700 text-slate-400'}`}>
+                              {t}
+                            </button>
+                          ))}
+                        </div>
+
+                        {/* Question List */}
+                        <div className="overflow-y-auto space-y-3 flex-1 pr-1 text-xs">
+                          {vivaQuestions
+                            .filter(q => selectedVivaTier === "All" || q.tier === selectedVivaTier)
+                            .map((q, idx) => (
+                              <div key={q.id || idx} className="p-3 bg-slate-950 rounded border border-slate-800 space-y-2">
+                                <div className="flex justify-between items-start">
+                                  <span className="font-bold text-slate-200">Q{idx+1}: {q.question}</span>
+                                  <span className={`text-[9px] px-2 py-0.5 rounded font-mono uppercase ${
+                                    q.tier === 'Basic' ? 'bg-emerald-950 text-emerald-400' :
+                                    q.tier === 'Intermediate' ? 'bg-blue-950 text-blue-400' :
+                                    'bg-purple-950 text-purple-400'
+                                  }`}>{q.tier}</span>
+                                </div>
+                                <button 
+                                  onClick={() => setVivaAnswersRevealed({...vivaAnswersRevealed, [q.id]: !vivaAnswersRevealed[q.id]})}
+                                  className="text-[10px] font-bold text-purple-400 hover:text-purple-300"
+                                >
+                                  {vivaAnswersRevealed[q.id] ? "▲ Hide Academic Model Answer" : "▼ Reveal Academic Model Answer"}
+                                </button>
+                                {vivaAnswersRevealed[q.id] && (
+                                  <div className="p-2.5 bg-slate-900/90 rounded border-l-2 border-purple-500 text-slate-300 font-sans leading-relaxed text-[11px]">
+                                    {q.answer}
+                                  </div>
+                                )}
+                              </div>
+                            ))}
+                        </div>
+
+                        <div className="flex justify-end pt-2 border-t border-slate-800">
+                          <button onClick={() => setShowVivaModal(false)} className="px-4 py-1.5 rounded text-xs bg-slate-800 hover:bg-slate-700 text-slate-300">Close</button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* MODAL 3: Academic Lab Report Preview */}
+                  {showReportModal && (
+                    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/85 backdrop-blur-sm p-4">
+                      <div className="bg-slate-900 border border-blue-500 rounded-xl max-w-4xl w-full p-6 space-y-4 shadow-2xl max-h-[90vh] flex flex-col">
+                        <div className="flex justify-between items-center border-b border-slate-800 pb-2">
+                          <h3 className="text-sm font-bold text-blue-400 uppercase tracking-wider">
+                            <i className="fa-solid fa-file-contract mr-2"></i> Academic Lab Report (Verified Frozen Snapshot)
+                          </h3>
+                          <button onClick={() => setShowReportModal(false)} className="text-slate-400 hover:text-white">✕</button>
+                        </div>
+                        <div className="flex-1 overflow-y-auto bg-slate-950 p-4 rounded border border-slate-800">
+                          <iframe 
+                            srcDoc={reportHtmlContent} 
+                            title="Report Preview" 
+                            className="w-full h-[550px] border-0 rounded bg-slate-950" 
+                          />
+                        </div>
+                        <div className="flex justify-between items-center pt-2 border-t border-slate-800 text-xs">
+                          <span className="text-slate-400">Exact machine parameters and observations frozen at capture time.</span>
+                          <div className="space-x-2">
+                            <button onClick={() => {
+                              const win = window.open('', '_blank');
+                              win.document.write(reportHtmlContent);
+                              win.document.close();
+                              win.print();
+                            }} className="px-4 py-1.5 rounded bg-blue-600 hover:bg-blue-500 text-white font-bold">
+                              <i className="fa-solid fa-print mr-1"></i> Print / Save PDF
+                            </button>
+                            <button onClick={() => setShowReportModal(false)} className="px-4 py-1.5 rounded bg-slate-800 text-slate-300">Close</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   </div>
 
                   {/* Sleek Floating Visual Options checklists (bottom-middle) */}
@@ -3106,7 +3610,7 @@
 
         // Helper to create a premium motor structure
         const createPremiumMachine = (group, frameColor, coilColor) => {
-          // Stator Frame (Hollow Tube with 90-degree cutaway)
+          // Stator Frame (Hollow Tube with 90-degree cutaway to see rotation)
           const cutawayAngle = Math.PI * 1.5;
           const statorOuter = new THREE.CylinderGeometry(1.2, 1.2, 2.2, 32, 1, true, 0, cutawayAngle);
           const statorInner = new THREE.CylinderGeometry(0.8, 0.8, 2.2, 32, 1, true, 0, cutawayAngle);
@@ -3115,10 +3619,9 @@
           const statorO = new THREE.Mesh(statorOuter, statorMat);
           const statorI = new THREE.Mesh(statorInner, statorMat);
           
-          // Internal light
+          // Internal Lighting for clarity
           const internalLight = new THREE.PointLight(coilColor, 2.0, 10);
           internalLight.position.y = 1.0;
-
           statorO.rotation.x = Math.PI / 2;
           statorI.rotation.x = Math.PI / 2;
           statorO.position.y = 1.0;
@@ -3255,13 +3758,13 @@
           animeId = requestAnimationFrame(animate);
           const time = clock.getElapsedTime();
           
-          const mSpeed = motorSpeedRef.current || 20;
-          const aSpeed = altSpeedRef.current || 20;
+          const mSpeed = motorSpeedRef.current > 0 ? motorSpeedRef.current / 100 : 5.0;
+          const aSpeed = altSpeedRef.current > 0 ? altSpeedRef.current / 100 : 5.0;
           
-          motorParts.shaft.rotation.y = time * (mSpeed / 100);
-          motorParts.rotor.rotation.y = time * (mSpeed / 100);
-          genParts.shaft.rotation.y = time * (aSpeed / 100);
-          genParts.rotor.rotation.y = time * (aSpeed / 100);
+          motorParts.shaft.rotation.y = time * mSpeed;
+          motorParts.rotor.rotation.y = time * mSpeed;
+          genParts.shaft.rotation.y = time * aSpeed;
+          genParts.rotor.rotation.y = time * aSpeed;
 
           // Animate Flux
           motorParts.fluxGroup.rotation.z = time * 3;

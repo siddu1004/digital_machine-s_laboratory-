@@ -1,0 +1,339 @@
+{
+  "machines": [
+    {
+      "id": "im_415v_5hp",
+      "type": "induction_motor",
+      "name": "3-Phase Squirrel-Cage Induction Motor (415V, 5.0 HP)",
+      "manufacturer": "Kirloskar Electric / Lab Standard",
+      "model": "KEC-SCIM-415-4P",
+      "serial_number": "LAB-IM-2026-001",
+      "identity": {
+        "rated_power_kw": 3.73,
+        "rated_power_hp": 5.0,
+        "rated_voltage": 415.0,
+        "rated_current": 7.5,
+        "frequency": 50.0,
+        "poles": 4,
+        "phase": 3,
+        "connection": "Delta",
+        "power_factor": 0.84,
+        "efficiency": 85.0,
+        "rated_speed_rpm": 1440.0,
+        "rated_torque_nm": 24.7,
+        "insulation_class": "Class F",
+        "duty": "S1 Continuous"
+      },
+      "parameters": {
+        "r1": 1.5,
+        "r2_prime": 1.8,
+        "x1": 3.5,
+        "x2_prime": 3.5,
+        "xm": 80.0,
+        "rc": 500.0,
+        "p_rot": 100.0,
+        "inertia_j": 0.045,
+        "friction_b": 0.002,
+        "thermal_resistance": 0.045,
+        "thermal_capacitance": 450.0,
+        "max_winding_temp": 130.0
+      },
+      "limits": {
+        "max_voltage": 460.0,
+        "min_voltage": 360.0,
+        "max_current": 12.0,
+        "overload_trip_current": 9.5,
+        "max_speed": 1600.0,
+        "max_temp_c": 125.0
+      }
+    },
+    {
+      "id": "im_220v_3hp",
+      "type": "induction_motor",
+      "name": "3-Phase Induction Motor (220V Star, 3.0 HP)",
+      "manufacturer": "Siemens Industrial / Lab Educational",
+      "model": "1LA7-083-4AA",
+      "serial_number": "LAB-IM-2026-002",
+      "identity": {
+        "rated_power_kw": 2.2,
+        "rated_power_hp": 3.0,
+        "rated_voltage": 220.0,
+        "rated_current": 5.8,
+        "frequency": 50.0,
+        "poles": 4,
+        "phase": 3,
+        "connection": "Star",
+        "power_factor": 0.81,
+        "efficiency": 82.5,
+        "rated_speed_rpm": 1465.0,
+        "rated_torque_nm": 14.3,
+        "insulation_class": "Class B",
+        "duty": "S1 Continuous"
+      },
+      "parameters": {
+        "r1": 0.95,
+        "r2_prime": 1.15,
+        "x1": 2.2,
+        "x2_prime": 2.2,
+        "xm": 55.0,
+        "rc": 380.0,
+        "p_rot": 75.0,
+        "inertia_j": 0.03,
+        "friction_b": 0.0018,
+        "thermal_resistance": 0.055,
+        "thermal_capacitance": 380.0,
+        "max_winding_temp": 120.0
+      },
+      "limits": {
+        "max_voltage": 245.0,
+        "min_voltage": 190.0,
+        "max_current": 8.5,
+        "overload_trip_current": 7.2,
+        "max_speed": 1600.0,
+        "max_temp_c": 115.0
+      }
+    },
+    {
+      "id": "sync_gen_415v_3kva",
+      "type": "synchronous_alternator",
+      "name": "3-Phase Salient Pole Synchronous Alternator (3.0 kVA)",
+      "manufacturer": "Stamford / Cummins Generator",
+      "model": "SOL2-G1",
+      "serial_number": "LAB-SG-2026-001",
+      "identity": {
+        "rated_power_kw": 2.4,
+        "rated_power_hp": 3.2,
+        "rated_voltage": 415.0,
+        "rated_current": 4.17,
+        "frequency": 50.0,
+        "poles": 4,
+        "phase": 3,
+        "connection": "Star with Neutral",
+        "power_factor": 0.8,
+        "efficiency": 86.0,
+        "rated_speed_rpm": 1500.0,
+        "insulation_class": "Class H",
+        "duty": "Continuous"
+      },
+      "parameters": {
+        "ra": 0.6,
+        "xs": 4.8,
+        "rated_field_current": 1.25,
+        "max_field_current": 2.5,
+        "rot_loss": 180.0,
+        "thermal_resistance": 0.04,
+        "max_winding_temp": 140.0
+      },
+      "limits": {
+        "max_voltage": 460.0,
+        "max_current": 6.5,
+        "max_temp_c": 135.0,
+        "max_field_current": 2.8
+      }
+    },
+    {
+      "id": "dc_shunt_220v_3hp",
+      "type": "dc_shunt_motor",
+      "name": "DC Shunt Motor (220V, 3.0 HP)",
+      "manufacturer": "Crompton Greaves",
+      "model": "CG-DCS-220",
+      "serial_number": "LAB-DC-2026-001",
+      "identity": {
+        "rated_power_kw": 2.2,
+        "rated_power_hp": 3.0,
+        "rated_voltage": 220.0,
+        "rated_current": 12.0,
+        "rated_speed_rpm": 1500.0,
+        "rated_torque_nm": 14.0,
+        "duty": "Continuous"
+      },
+      "parameters": {
+        "ra": 0.85,
+        "rf": 195.0,
+        "k_phi_base": 1.28,
+        "brush_drop": 2.0,
+        "p_rot": 95.0,
+        "thermal_resistance": 0.05
+      },
+      "limits": {
+        "max_voltage": 240.0,
+        "max_current": 18.0,
+        "max_speed": 2200.0,
+        "max_temp_c": 110.0
+      }
+    },
+    {
+      "id": "dc_series_220v_3hp",
+      "type": "dc_series_motor",
+      "name": "DC Series Motor (Traction Demo, 220V, 3.0 HP)",
+      "manufacturer": "GE Electric Traction",
+      "model": "GE-SER-220",
+      "serial_number": "LAB-DCS-2026-002",
+      "identity": {
+        "rated_power_kw": 2.2,
+        "rated_power_hp": 3.0,
+        "rated_voltage": 220.0,
+        "rated_current": 12.5,
+        "rated_speed_rpm": 1200.0,
+        "rated_torque_nm": 17.5,
+        "duty": "Intermittent / Traction"
+      },
+      "parameters": {
+        "ra": 0.65,
+        "rse": 0.35,
+        "k_series": 0.048,
+        "brush_drop": 2.0,
+        "p_rot": 85.0
+      },
+      "limits": {
+        "max_voltage": 240.0,
+        "max_current": 20.0,
+        "max_speed": 3500.0,
+        "max_temp_c": 115.0
+      }
+    },
+    {
+      "id": "dc_compound_220v",
+      "type": "dc_compound_motor",
+      "name": "DC Cumulative Compound Motor (220V, 3.0 HP)",
+      "manufacturer": "Baldor Reliance",
+      "model": "CDP-350",
+      "serial_number": "LAB-DCC-2026-003",
+      "identity": {
+        "rated_power_kw": 2.2,
+        "rated_voltage": 220.0,
+        "rated_current": 12.2,
+        "rated_speed_rpm": 1450.0,
+        "rated_torque_nm": 14.5
+      },
+      "parameters": {
+        "ra": 0.8,
+        "rf": 190.0,
+        "rse": 0.2,
+        "k_phi_base": 1.25,
+        "brush_drop": 2.0,
+        "p_rot": 90.0
+      },
+      "limits": {
+        "max_voltage": 240.0,
+        "max_current": 18.0,
+        "max_speed": 2200.0,
+        "max_temp_c": 115.0
+      }
+    },
+    {
+      "id": "dc_gen_sep_220v",
+      "type": "separately_excited_dc",
+      "name": "Separately Excited DC Generator (220V, 2.5 kW)",
+      "manufacturer": "Siemens Lab",
+      "model": "1GG-220-G",
+      "serial_number": "LAB-DCG-2026-004",
+      "identity": {
+        "rated_power_kw": 2.5,
+        "rated_voltage": 220.0,
+        "rated_current": 11.4,
+        "rated_speed_rpm": 1500.0
+      },
+      "parameters": {
+        "ra": 0.75,
+        "rf": 180.0,
+        "k_phi_base": 1.3,
+        "brush_drop": 2.0,
+        "p_rot": 100.0
+      },
+      "limits": {
+        "max_voltage": 250.0,
+        "max_current": 16.0,
+        "max_temp_c": 115.0
+      }
+    },
+    {
+      "id": "sync_motor_415v_5hp",
+      "type": "synchronous_motor",
+      "name": "3-Phase Synchronous Motor (415V, 5.0 HP)",
+      "manufacturer": "ABB Industry",
+      "model": "AMB-0415",
+      "serial_number": "LAB-SM-2026-001",
+      "identity": {
+        "rated_power_kw": 3.73,
+        "rated_voltage": 415.0,
+        "rated_current": 6.8,
+        "frequency": 50.0,
+        "poles": 4,
+        "phase": 3,
+        "rated_speed_rpm": 1500.0
+      },
+      "parameters": {
+        "ra": 0.5,
+        "xs": 5.2,
+        "rated_field_current": 1.5,
+        "p_rot": 180.0
+      },
+      "limits": {
+        "max_voltage": 450.0,
+        "max_current": 10.0,
+        "max_temp_c": 125.0
+      }
+    },
+    {
+      "id": "transformer_1ph_3kva",
+      "type": "single_phase_transformer",
+      "name": "Single Phase Distribution Transformer (230V / 115V, 3.0 kVA)",
+      "manufacturer": "Schneider Electric",
+      "model": "ABL-TRANS-1PH",
+      "serial_number": "LAB-XF-2026-001",
+      "identity": {
+        "rated_power_kw": 3.0,
+        "rated_kva": 3.0,
+        "v1_rated": 230.0,
+        "v2_rated": 115.0,
+        "frequency": 50.0,
+        "phase": 1,
+        "efficiency": 96.5
+      },
+      "parameters": {
+        "r1": 0.45,
+        "x1": 0.75,
+        "r2": 0.11,
+        "x2": 0.19,
+        "rc": 750.0,
+        "xm": 240.0
+      },
+      "limits": {
+        "max_primary_voltage": 255.0,
+        "max_primary_current": 16.0,
+        "max_temp_c": 95.0
+      }
+    },
+    {
+      "id": "transformer_3ph_10kva",
+      "type": "three_phase_transformer",
+      "name": "3-Phase Power Transformer (415V / 240V, 10.0 kVA, Dyn11)",
+      "manufacturer": "Voltamp Transformers",
+      "model": "VT-3PH-10K",
+      "serial_number": "LAB-XF-2026-002",
+      "identity": {
+        "rated_power_kw": 10.0,
+        "rated_kva": 10.0,
+        "v1_rated": 415.0,
+        "v2_rated": 240.0,
+        "frequency": 50.0,
+        "phase": 3,
+        "vector_group": "Dyn11",
+        "efficiency": 97.2
+      },
+      "parameters": {
+        "r1": 0.35,
+        "x1": 0.65,
+        "r2": 0.08,
+        "x2": 0.15,
+        "rc": 1200.0,
+        "xm": 450.0
+      },
+      "limits": {
+        "max_primary_voltage": 460.0,
+        "max_primary_current": 20.0,
+        "max_temp_c": 105.0
+      }
+    }
+  ]
+}
