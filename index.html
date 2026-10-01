@@ -951,7 +951,7 @@
             Eph: alternatorPhysicsResults.Eph,
             vr: alternatorPhysicsResults.vr
           };
-          const res = await fetch("http://localhost:5000/api/record_observation", {
+          const res = await fetch("/api/record_observation", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
