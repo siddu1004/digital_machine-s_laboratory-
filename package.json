@@ -1,31 +1,23 @@
 {
   "name": "machines_extention",
   "version": "1.0.0",
-  "description": "[![Tests](https://img.shields.io/badge/Tests-25%20Passed%20(100%25)-emerald.svg)]()\r [![Physics](https://img.shields.io/badge/Physics-IEEE%20Equivalent%20Circuits-blue.svg)]()\r [![Security](https://img.shields.io/badge/Security-Hardened%20%26%20Zero%20Leaks-purple.svg)]()\r [![Architecture](https://img.shields.io/badge/Architecture-Modular%20Multi--Agent-amber.svg)]()",
+  "description": "Electrical Machines Digital Twin & Virtual Laboratory",
   "main": "index.js",
-  "directories": {
-    "test": "tests"
-  },
   "scripts": {
     "typecheck": "tsc --noEmit",
-    "build": "tsc && node build.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "node build.js",
+    "test": "python -m pytest tests/ -q"
+  },
+  "dependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@types/three": "^0.160.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.3.3"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/siddu1004/digital_machine-s_laboratory-.git"
   },
-  "keywords": [],
-  "type": "commonjs",
-  "bugs": {
-    "url": "https://github.com/siddu1004/digital_machine-s_laboratory-/issues"
-  },
-  "homepage": "https://github.com/siddu1004/digital_machine-s_laboratory-#readme",
-  "devDependencies": {
-    "@types/react": "^19.3.0",
-    "@types/react-dom": "^19.3.0",
-    "@types/three": "^0.186.0",
-    "esbuild": "^0.28.2",
-    "typescript": "^7.0.2"
-  }
+  "type": "commonjs"
 }
