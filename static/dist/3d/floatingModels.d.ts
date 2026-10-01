@@ -33,6 +33,8 @@ export declare class VirtualSpaceManager {
         onHover?: (bundle: ExperimentMeshBundle | null) => void;
     });
     private setupLighting;
+    coreMesh?: THREE.Mesh;
+    innerCoreMesh?: THREE.Mesh;
     private setupFloorGrid;
     private buildExperimentPlatforms;
     private bindEvents;

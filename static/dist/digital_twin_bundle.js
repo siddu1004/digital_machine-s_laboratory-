@@ -2132,33 +2132,6 @@ var DigitalTwinApp = (() => {
       icon: "fa-network-wired"
     }
   };
-  var PHILOSOPHICAL_APHORISMS = [
-    {
-      quote: "If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.",
-      author: "Nikola Tesla",
-      role: "Rotating Field Architecture"
-    },
-    {
-      quote: "Geometry existed before the creation; it is co-eternal with the mind of God.",
-      author: "Johannes Kepler",
-      role: "Harmonic Invariance"
-    },
-    {
-      quote: "Nothing is too wonderful to be true, if it be consistent with the laws of nature.",
-      author: "Michael Faraday",
-      role: "Electromagnetic Induction"
-    },
-    {
-      quote: "There is no question which cannot be answered by mathematics.",
-      author: "Carl Friedrich Gauss",
-      role: "Differential Manifold"
-    },
-    {
-      quote: "The complex plane transforms alternating currents from transient mystery into pure circular geometry.",
-      author: "Charles Proteus Steinmetz",
-      role: "AC Symbolic Method"
-    }
-  ];
   var LandingHero = ({
     onLaunchExperiment,
     currentUser,
@@ -2458,7 +2431,7 @@ var DigitalTwinApp = (() => {
         title: "Reset View"
       },
       /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-rotate-left" })
-    ))), !activeBundle && /* @__PURE__ */ import_react3.default.createElement("div", { className: "hidden sm:block absolute bottom-4 right-6 max-w-lg z-30 pointer-events-auto bg-slate-950/90 backdrop-blur-md border border-indigo-900/60 p-3.5 rounded-2xl shadow-2xl space-y-2" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center justify-between border-b border-indigo-950 pb-2" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "w-2 h-2 rounded-full bg-indigo-400 animate-ping" }), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[10px] font-mono uppercase tracking-wider text-indigo-300 font-bold" }, "Differential Council \u2022 Heptagonal Virtual Ring (N=7)")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2 text-[10px] font-mono text-slate-400" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-yellow-400" }, "R = 17.0m"), /* @__PURE__ */ import_react3.default.createElement("span", null, "\u2022"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-emerald-400" }, "\u03A6 = 1.618"), /* @__PURE__ */ import_react3.default.createElement("span", null, "\u2022"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-cyan-400" }, "50 Hz"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-start space-x-3 pt-1" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-7 h-7 rounded-lg bg-purple-950/80 border border-purple-600/40 flex items-center justify-center text-purple-300 text-xs flex-shrink-0 mt-0.5" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-quote-left" })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex-1 min-w-0" }, /* @__PURE__ */ import_react3.default.createElement("p", { className: "text-xs text-amber-200/90 italic font-serif leading-snug" }, '"', PHILOSOPHICAL_APHORISMS[aphorismIdx].quote, '"'), /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-1 flex items-center justify-between text-[10px]" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-purple-300 font-semibold font-mono" }, "\u2014 ", PHILOSOPHICAL_APHORISMS[aphorismIdx].author), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-slate-500 font-mono" }, PHILOSOPHICAL_APHORISMS[aphorismIdx].role))))), guideModalExpId && /* @__PURE__ */ import_react3.default.createElement(
+    ))), guideModalExpId && /* @__PURE__ */ import_react3.default.createElement(
       StudentGuideModal,
       {
         experimentId: guideModalExpId,

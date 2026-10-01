@@ -41,6 +41,17 @@ from core.physics.synchronous_machine import SynchronousMachinePhysics
 app = Flask(__name__, static_folder="static")
 CORS(app)
 
+@app.route("/", methods=["GET"])
+def serve_index():
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    return send_from_directory(root_dir, "index.html")
+
+@app.route("/static/<path:filename>", methods=["GET"])
+def serve_static_files(filename):
+    root_dir = os.path.dirname(os.path.abspath(__file__))
+    static_dir = os.path.join(root_dir, "static")
+    return send_from_directory(static_dir, filename)
+
 # Initialize Core Services
 db_service = DatabaseService()
 nameplate_manager = NameplateManager()

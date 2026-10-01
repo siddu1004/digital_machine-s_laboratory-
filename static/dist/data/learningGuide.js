@@ -66,7 +66,18 @@ export const STUDENT_LEARNING_GUIDES = {
                 answer: 'To account for the Skin Effect and eddy currents in the stator copper conductors at 50 Hz, which forces the current to flow near the conductor surface, decreasing effective cross-section.',
                 conceptCategory: 'Measurement'
             }
-        ]
+        ],
+        philosophicalInsight: {
+            theme: 'The Archetype of the Infinite Circle',
+            essence: 'The physical behavior of an induction motor traces an unbroken circle on the complex phasor plane. Even amidst nonlinear mechanical friction, core hysteresis, and stator heating, the fundamental electrical relationship maps strictly into circular geometry.',
+            quote: 'Geometry existed before the creation; it is co-eternal with the mind of God.',
+            author: 'Johannes Kepler'
+        },
+        mathematicalStructure: {
+            symmetryGroup: 'Conformal circle mapping in complex admittance plane',
+            governingDifferentialEq: 'V_1(t) = R_1 i_1 + L_1 (di_1/dt) + M (d(i_2 e^{j\\theta})/dt)',
+            geometricLocus: 'Bilinear Mobius transformation of straight line R2/s into circular locus'
+        }
     },
     exp3: {
         experimentId: 'exp3',
@@ -112,7 +123,18 @@ export const STUDENT_LEARNING_GUIDES = {
                 answer: 'No. Squirrel cage rotors have end-rings short-circuiting all bars permanently; external resistances can only be introduced via slip rings in wound-rotor induction motors.',
                 conceptCategory: 'Applications'
             }
-        ]
+        ],
+        philosophicalInsight: {
+            theme: 'The Quantization of Electromagnetic Velocity',
+            essence: 'Speed in a rotating machine is not an arbitrary variable; it is fundamentally quantized by the spatial harmonic configuration of magnetic pole pairs. To change poles is to alter the very geometry of space through which the rotor journeys.',
+            quote: 'Motion is the manifestation of geometry changing its mind.',
+            author: 'Henri Poincaré'
+        },
+        mathematicalStructure: {
+            symmetryGroup: 'Discrete cyclic permutation group Z_P of stator winding coils',
+            governingDifferentialEq: 'T_e(t) - T_L(t) = J (d\\omega_m / dt) + B \\omega_m',
+            geometricLocus: 'Torque-Speed curve scaling as T \\propto s V^2 / R_2'
+        }
     },
     exp5: {
         experimentId: 'exp5',
@@ -161,7 +183,18 @@ export const STUDENT_LEARNING_GUIDES = {
                 answer: 'Because huge loads are not available in a laboratory to dissipate full electrical power, and the energy cost and prime mover size would be prohibitive.',
                 conceptCategory: 'Applications'
             }
-        ]
+        ],
+        philosophicalInsight: {
+            theme: 'The Inescapable Law of Equilibrium',
+            essence: 'Every watt of electrical power delivered to the external load creates an opposing armature reaction flux inside the machine. You cannot extract energy from nature without the universe pushing back with equal and opposite force.',
+            quote: 'Energy cannot be drawn without giving equal resistance to the cosmos.',
+            author: 'Heinrich Lenz'
+        },
+        mathematicalStructure: {
+            symmetryGroup: 'Terminal phasor voltage polygon V_t = E_0 - I_a(R_a + jX_s)',
+            governingDifferentialEq: 'v_{abc}(t) = -R_s i_{abc} - d\\lambda_{abc}/dt',
+            geometricLocus: 'Drooping hyperbolic voltage regulation curve V_t(I_L)'
+        }
     },
     exp6_a: {
         experimentId: 'exp6_a',
@@ -210,7 +243,18 @@ export const STUDENT_LEARNING_GUIDES = {
                 answer: 'Yes! At leading power factor loads (capacitive loads), the armature reaction is magnetizing, boosting the terminal voltage on load, making (E₀ - V) negative.',
                 conceptCategory: 'Theory'
             }
-        ]
+        ],
+        philosophicalInsight: {
+            theme: 'The Complementary Duality of Physics',
+            essence: 'The EMF method treats the armature reaction as a fictitious inductive reactance drop (Xs), while the MMF method treats both leakage and reaction as magnetomotive vectors. Each model is an approximation of the underlying nonlinear electromagnetic continuum.',
+            quote: 'Opposites are complementary, not contradictory.',
+            author: 'Niels Bohr'
+        },
+        mathematicalStructure: {
+            symmetryGroup: 'Phasor triangle equilibrium: E_0^2 = (V\\cos\\phi + IR_a)^2 + (V\\sin\\phi + IX_s)^2',
+            governingDifferentialEq: 'd\\psi_d/dt = -R i_d - \\omega \\psi_q + v_d',
+            geometricLocus: 'Intersection of the linear air-gap line and core saturation knee'
+        }
     },
     exp6_b: {
         experimentId: 'exp6_b',
@@ -258,7 +302,18 @@ export const STUDENT_LEARNING_GUIDES = {
                 answer: 'Rugged construction (no slip rings or brushes for squirrel cage), no synchronization required, automatically drops excitation if the grid faults, making it ideal for wind turbines.',
                 conceptCategory: 'Applications'
             }
-        ]
+        ],
+        philosophicalInsight: {
+            theme: 'The Transmutation of Taking into Giving',
+            essence: 'When forced past its synchronous threshold, the motor experiences a phase inversion of its electromagnetic soul. It ceases to consume power from the universe and begins to generate, transforming mechanical kinetic energy into pure electrical luminance.',
+            quote: 'Beyond the synchronous boundary, consumption turns into creation.',
+            author: 'Nikola Tesla'
+        },
+        mathematicalStructure: {
+            symmetryGroup: 'Negative resistance branch: R_2\'/s < 0 for s < 0',
+            governingDifferentialEq: 'd^2 v / dt^2 + (1 / RC) (dv/dt) + (1 / LC) v = 0',
+            geometricLocus: 'Resonant self-excitation intersection of magnetizing curve and capacitive load line'
+        }
     },
     exp7: {
         experimentId: 'exp7',
@@ -307,7 +362,18 @@ export const STUDENT_LEARNING_GUIDES = {
                 answer: 'It is purely demagnetizing, directly weakening the main field flux along the direct axis.',
                 conceptCategory: 'Theory'
             }
-        ]
+        ],
+        philosophicalInsight: {
+            theme: 'The Art of Separation: Void vs Iron',
+            essence: 'Potier’s triangle is the intellectual scalpel of electromagnetic engineering. It dissects the invisible into two distinct physical entities: that which leaks into the airy void (leakage reactance Xl) and that which alters the iron crystalline soul of the core (armature reaction Fa).',
+            quote: 'Distinguish the shadow from the substance, and you shall command the light.',
+            author: 'Michael Faraday'
+        },
+        mathematicalStructure: {
+            symmetryGroup: 'Right-angled triangular vector decomposition of MMF and EMF',
+            governingDifferentialEq: 'E_r = V + I_a (R_a + jX_l), \\quad \\vec{F}_R = \\vec{F}_f + \\vec{F}_a',
+            geometricLocus: 'Hypotenuse congruent and parallel to the initial linear tangent of the OCC'
+        }
     },
     exp8: {
         experimentId: 'exp8',
@@ -357,7 +423,18 @@ export const STUDENT_LEARNING_GUIDES = {
                 answer: 'The machine delivers lagging reactive power (VARs) to the grid, operating at a leading power factor relative to the machine convention, acting as a synchronous condenser to support grid voltage.',
                 conceptCategory: 'Applications'
             }
-        ]
+        ],
+        philosophicalInsight: {
+            theme: 'The Harmony of Three Dark Stars',
+            essence: 'Paralleling an isolated generator with an infinite electrical grid is the ultimate communion of human engineering. At the precise instant when all three lamps go pitch black, the solitary machine harmonizes with the continental grid—a drop merging seamlessly into the ocean.',
+            quote: 'In perfect darkness, alignment is born. The single generator finds peace in the infinite bus.',
+            author: 'Charles Proteus Steinmetz'
+        },
+        mathematicalStructure: {
+            symmetryGroup: 'Phase alignment manifold & U(1) infinite bus synchronization',
+            governingDifferentialEq: 'P(\\delta) = \\frac{E V}{X_s} \\sin\\delta = \\text{const}, \\quad Q(\\delta) = \\frac{V}{X_s}(E\\cos\\delta - V)',
+            geometricLocus: 'V-curve hyperbola of minimum armature current at unity power factor'
+        }
     }
 };
 //# sourceMappingURL=learningGuide.js.map

@@ -4,13 +4,24 @@
  * Source: C:\Users\saisi\OneDrive\Documents\machineslabmaterials-sem-5
  */
 import * as THREE from 'three';
+import { soundEngine } from '../audio/soundEngine';
+// Mathematical Heptagonal Ring Layout: R = 17.0, angle theta_k = (2 * PI * k / 7) - PI/2
+const R_RING = 17.0;
+const getHeptagonCoords = (index) => {
+    const theta = (2 * Math.PI * index) / 7 - Math.PI / 2;
+    return {
+        x: Math.round(R_RING * Math.cos(theta) * 10) / 10,
+        y: 0,
+        z: Math.round(R_RING * Math.sin(theta) * 10) / 10
+    };
+};
 export const EXPERIMENT_3D_CONFIGS = [
     {
         id: 'exp2',
         name: 'EXP 2: Induction Motor Circle Diagram',
         category: 'induction',
         facility: 'motor',
-        gridCoordinates: { x: -14, y: 0, z: -4 },
+        gridCoordinates: getHeptagonCoords(0),
         accentColor: 0xeab308, // Gold
         colorHex: '#eab308',
         badgeText: 'Circle Diagram // 2.2 kW',
@@ -26,7 +37,7 @@ export const EXPERIMENT_3D_CONFIGS = [
         name: 'EXP 3: Motor Speed Control Bench',
         category: 'induction',
         facility: 'motor',
-        gridCoordinates: { x: -9, y: 0, z: 6 },
+        gridCoordinates: getHeptagonCoords(1),
         accentColor: 0x38bdf8, // Sky Blue
         colorHex: '#38bdf8',
         badgeText: 'Pole / Voltage / Rotor R',
@@ -42,7 +53,7 @@ export const EXPERIMENT_3D_CONFIGS = [
         name: 'EXP 5: Alternator Load Test Bench',
         category: 'synchronous',
         facility: 'alternator',
-        gridCoordinates: { x: 0, y: 0, z: -8 },
+        gridCoordinates: getHeptagonCoords(2),
         accentColor: 0xf59e0b, // Amber
         colorHex: '#f59e0b',
         badgeText: 'Direct Loading // 3.5 kVA',
@@ -58,7 +69,7 @@ export const EXPERIMENT_3D_CONFIGS = [
         name: 'EXP 6A: Alternator EMF & MMF Bench',
         category: 'synchronous',
         facility: 'alternator',
-        gridCoordinates: { x: 0, y: 0, z: 6 },
+        gridCoordinates: getHeptagonCoords(3),
         accentColor: 0x10b981, // Emerald
         colorHex: '#10b981',
         badgeText: 'OCC & SCC // Zs Analysis',
@@ -73,7 +84,7 @@ export const EXPERIMENT_3D_CONFIGS = [
         name: 'EXP 6B: Induction Generator Bench',
         category: 'induction',
         facility: 'generator',
-        gridCoordinates: { x: 9, y: 0, z: -6 },
+        gridCoordinates: getHeptagonCoords(4),
         accentColor: 0x06b6d4, // Cyan
         colorHex: '#06b6d4',
         badgeText: 'Super-Synchronous Gen',
@@ -89,7 +100,7 @@ export const EXPERIMENT_3D_CONFIGS = [
         name: 'EXP 7: Alternator ZPF / Potier Bench',
         category: 'synchronous',
         facility: 'alternator',
-        gridCoordinates: { x: 14, y: 0, z: 4 },
+        gridCoordinates: getHeptagonCoords(5),
         accentColor: 0xa855f7, // Purple
         colorHex: '#a855f7',
         badgeText: 'Potier Triangle & Xl',
@@ -104,7 +115,7 @@ export const EXPERIMENT_3D_CONFIGS = [
         name: 'EXP 8: Infinite Bus Synchronizer',
         category: 'synchronous',
         facility: 'alternator',
-        gridCoordinates: { x: 0, y: 0, z: 14 },
+        gridCoordinates: getHeptagonCoords(6),
         accentColor: 0xf43f5e, // Rose
         colorHex: '#f43f5e',
         badgeText: '3-Lamp Synch & V-Curves',
@@ -175,6 +186,8 @@ export class VirtualSpaceManager {
         goldFillLight.position.set(0, 10, 0);
         this.scene.add(goldFillLight);
     }
+    coreMesh;
+    innerCoreMesh;
     setupFloorGrid() {
         // Sci-fi laboratory grid floor
         const grid = new THREE.GridHelper(100, 100, 0x4f46e5, 0x0f172a);
@@ -187,6 +200,27 @@ export class VirtualSpaceManager {
         centerRing.rotation.x = Math.PI / 2;
         centerRing.position.y = 0.02;
         this.scene.add(centerRing);
+        // Central Infinite Busbar Power Core (Mathematical Harmonic Center at 0, 0, 0)
+        const coreGeom = new THREE.IcosahedronGeometry(1.6, 2);
+        const coreMat = new THREE.MeshStandardMaterial({
+            color: 0x4f46e5,
+            emissive: 0x6366f1,
+            emissiveIntensity: 0.8,
+            wireframe: true
+        });
+        this.coreMesh = new THREE.Mesh(coreGeom, coreMat);
+        this.coreMesh.position.set(0, 2.5, 0);
+        this.scene.add(this.coreMesh);
+        // Inner pulsating energy sphere
+        const innerGeom = new THREE.SphereGeometry(0.9, 24, 24);
+        const innerMat = new THREE.MeshBasicMaterial({
+            color: 0xeab308,
+            transparent: true,
+            opacity: 0.75
+        });
+        this.innerCoreMesh = new THREE.Mesh(innerGeom, innerMat);
+        this.innerCoreMesh.position.set(0, 2.5, 0);
+        this.scene.add(this.innerCoreMesh);
     }
     buildExperimentPlatforms() {
         EXPERIMENT_3D_CONFIGS.forEach((config) => {
@@ -383,6 +417,8 @@ export class VirtualSpaceManager {
         window.addEventListener('resize', onResize);
     }
     focusOnExperiment(id) {
+        soundEngine.playRelayClick();
+        soundEngine.startMachineHum(id === 'exp3' ? 1200 : 1500);
         const bundle = this.bundles.find((b) => b.config.id === id);
         if (!bundle)
             return;
@@ -413,6 +449,7 @@ export class VirtualSpaceManager {
         }
     }
     resetOverviewCamera() {
+        soundEngine.playRelayClick();
         const gsap = window.gsap;
         if (gsap) {
             gsap.to(this.camera.position, {
@@ -436,6 +473,15 @@ export class VirtualSpaceManager {
         const animate = () => {
             this.animationFrameId = requestAnimationFrame(animate);
             const time = this.clock.getElapsedTime();
+            // Animate Central Infinite Bus Core
+            if (this.coreMesh) {
+                this.coreMesh.rotation.y = time * 0.6;
+                this.coreMesh.rotation.x = time * 0.3;
+            }
+            if (this.innerCoreMesh) {
+                const pulse = 1 + 0.12 * Math.sin(time * 3.5);
+                this.innerCoreMesh.scale.set(pulse, pulse, pulse);
+            }
             // Animate rotors, halos, and flux rings
             this.bundles.forEach((bundle) => {
                 // Rotor spin

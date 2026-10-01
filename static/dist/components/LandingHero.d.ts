@@ -4,8 +4,13 @@
  */
 import React from 'react';
 import { ExperimentId } from '../types/experiments';
-interface LandingHeroProps {
+export interface LandingHeroProps {
     onLaunchExperiment: (expId: ExperimentId, facility: string) => void;
+    currentUser?: {
+        role?: string;
+        name?: string;
+    } | null;
+    onLogout?: () => void;
+    onOpenAdmin?: () => void;
 }
 export declare const LandingHero: React.FC<LandingHeroProps>;
-export {};

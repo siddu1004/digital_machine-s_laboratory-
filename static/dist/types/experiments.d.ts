@@ -100,6 +100,17 @@ export interface StudentExperimentGuide {
         answer: string;
         conceptCategory: 'Theory' | 'Measurement' | 'Fault Analysis' | 'Applications';
     }[];
+    philosophicalInsight?: {
+        theme: string;
+        essence: string;
+        quote: string;
+        author: string;
+    };
+    mathematicalStructure?: {
+        symmetryGroup: string;
+        governingDifferentialEq: string;
+        geometricLocus: string;
+    };
 }
 export interface Floating3DExperimentModel {
     id: ExperimentId;

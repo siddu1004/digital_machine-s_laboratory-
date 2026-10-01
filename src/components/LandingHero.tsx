@@ -587,46 +587,6 @@ export const LandingHero: React.FC<LandingHeroProps> = ({
         </div>
       )}
 
-      {/* 5B. OVERVIEW COUNCIL TELEMETRY (GAUSS & HEIDEGGER HUD) */}
-      {!activeBundle && (
-        <div className="hidden sm:block absolute bottom-4 right-6 max-w-lg z-30 pointer-events-auto bg-slate-950/90 backdrop-blur-md border border-indigo-900/60 p-3.5 rounded-2xl shadow-2xl space-y-2">
-          <div className="flex items-center justify-between border-b border-indigo-950 pb-2">
-            <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-indigo-400 animate-ping"></span>
-              <span className="text-[10px] font-mono uppercase tracking-wider text-indigo-300 font-bold">
-                Differential Council • Heptagonal Virtual Ring (N=7)
-              </span>
-            </div>
-            <div className="flex items-center space-x-2 text-[10px] font-mono text-slate-400">
-              <span className="text-yellow-400">R = 17.0m</span>
-              <span>•</span>
-              <span className="text-emerald-400">Φ = 1.618</span>
-              <span>•</span>
-              <span className="text-cyan-400">50 Hz</span>
-            </div>
-          </div>
-
-          <div className="flex items-start space-x-3 pt-1">
-            <div className="w-7 h-7 rounded-lg bg-purple-950/80 border border-purple-600/40 flex items-center justify-center text-purple-300 text-xs flex-shrink-0 mt-0.5">
-              <i className="fa-solid fa-quote-left"></i>
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-amber-200/90 italic font-serif leading-snug">
-                "{PHILOSOPHICAL_APHORISMS[aphorismIdx].quote}"
-              </p>
-              <div className="mt-1 flex items-center justify-between text-[10px]">
-                <span className="text-purple-300 font-semibold font-mono">
-                  — {PHILOSOPHICAL_APHORISMS[aphorismIdx].author}
-                </span>
-                <span className="text-slate-500 font-mono">
-                  {PHILOSOPHICAL_APHORISMS[aphorismIdx].role}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* 6. MODALS */}
       {guideModalExpId && (
         <StudentGuideModal
