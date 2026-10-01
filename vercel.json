@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "outputDirectory": ".",
+  "outputDirectory": "public",
   "rewrites": [
     {
       "source": "/api/(.*)",
