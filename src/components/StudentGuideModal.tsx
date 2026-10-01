@@ -22,7 +22,7 @@ export const StudentGuideModal: React.FC<StudentGuideModalProps> = ({
 }) => {
   const guide = STUDENT_LEARNING_GUIDES[experimentId];
   const observations = SEM5_OBSERVATIONS[experimentId];
-  const [activeTab, setActiveTab] = useState<'theory' | 'procedure' | 'observations' | 'calculations' | 'viva'>('observations');
+  const [activeTab, setActiveTab] = useState<'theory' | 'procedure' | 'observations' | 'calculations' | 'viva' | 'philosophy'>('observations');
   const [vivaCategory, setVivaCategory] = useState<string>('all');
 
   if (!guide || !observations) return null;
@@ -72,6 +72,7 @@ export const StudentGuideModal: React.FC<StudentGuideModalProps> = ({
             { id: 'calculations', label: 'Model Calculations', icon: 'fa-calculator' },
             { id: 'procedure', label: 'Procedure & Safety', icon: 'fa-list-check' },
             { id: 'theory', label: 'Theory & Equations', icon: 'fa-book-open' },
+            { id: 'philosophy', label: 'Philosopher & Math Lens', icon: 'fa-brain' },
             { id: 'viva', label: 'Viva Voce Bank', icon: 'fa-graduation-cap' }
           ].map((tab) => (
             <button
@@ -339,6 +340,133 @@ export const StudentGuideModal: React.FC<StudentGuideModalProps> = ({
                     </div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* TAB 5: PHILOSOPHER & MATHEMATICIAN LENS */}
+          {activeTab === 'philosophy' && (
+            <div className="space-y-6">
+              {/* Header Banner */}
+              <div className="p-4 bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-amber-950/20 border border-purple-500/30 rounded-xl flex items-start space-x-4">
+                <div className="w-10 h-10 rounded-xl bg-purple-900/60 border border-purple-500/50 flex items-center justify-center text-purple-300 text-lg flex-shrink-0 mt-0.5">
+                  <i className="fa-solid fa-atom"></i>
+                </div>
+                <div>
+                  <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                    Epistemology & Differential Symmetry Council
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-900/50 text-purple-300 border border-purple-700/50">
+                      Transcendent UI Lens
+                    </span>
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                    Beyond numbers and meter dials lies an ontological order: rotating magnetic fields mirror celestial mechanics, and complex impedance loci manifest the conformal symmetry of physical law.
+                  </p>
+                </div>
+              </div>
+
+              {/* Two Column Grid: Mathematician vs Philosopher */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                
+                {/* Mathematician Card: Dr. Gauss */}
+                <div className="bg-slate-950/70 border border-indigo-500/30 rounded-xl p-5 space-y-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                  
+                  <div className="flex items-center justify-between border-b border-indigo-900/50 pb-3">
+                    <div className="flex items-center space-x-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-indigo-950 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-xs">
+                        <i className="fa-solid fa-square-root-variable"></i>
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-indigo-200">The Mathematician’s Structure</h4>
+                        <span className="text-[10px] text-slate-400 font-mono">Agent: Dr. Carl Friedrich Gauss</span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800">
+                      Φ = 1.618
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                      <div className="text-[10px] font-mono uppercase text-indigo-400 mb-1 font-semibold flex items-center gap-1.5">
+                        <i className="fa-solid fa-shapes"></i> Symmetry Group & Invariance
+                      </div>
+                      <div className="text-xs font-mono text-slate-200">
+                        {guide.mathematicalStructure?.symmetryGroup || 'Lie Group SO(2) rotational symmetry under 3-phase spatial coordinate projection'}
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                      <div className="text-[10px] font-mono uppercase text-cyan-400 mb-1 font-semibold flex items-center gap-1.5">
+                        <i className="fa-solid fa-wave-square"></i> Governing Differential Equation
+                      </div>
+                      <div className="text-xs font-mono text-cyan-200 bg-slate-950 p-2.5 rounded border border-cyan-900/40 break-all leading-relaxed">
+                        {guide.mathematicalStructure?.governingDifferentialEq || '∇ × E = -∂B/∂t, \\quad J = σ(E + v × B)'}
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                      <div className="text-[10px] font-mono uppercase text-amber-400 mb-1 font-semibold flex items-center gap-1.5">
+                        <i className="fa-solid fa-circle-nodes"></i> Geometric Locus on Complex Plane
+                      </div>
+                      <div className="text-xs text-slate-300 leading-relaxed">
+                        {guide.mathematicalStructure?.geometricLocus || 'Equidistant circular projection and orthogonal trajectory mapping'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Philosopher Card: Prof. Heidegger / Lao Tzu */}
+                <div className="bg-slate-950/70 border border-purple-500/30 rounded-xl p-5 space-y-4 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl pointer-events-none"></div>
+
+                  <div className="flex items-center justify-between border-b border-purple-900/50 pb-3">
+                    <div className="flex items-center space-x-2.5">
+                      <div className="w-7 h-7 rounded-lg bg-purple-950 border border-purple-500/40 flex items-center justify-center text-purple-400 text-xs">
+                        <i className="fa-solid fa-quote-left"></i>
+                      </div>
+                      <div>
+                        <h4 className="text-xs font-bold text-purple-200">The Philosopher’s Lens</h4>
+                        <span className="text-[10px] text-slate-400 font-mono">Agent: Prof. Heidegger & Lao Tzu</span>
+                      </div>
+                    </div>
+                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800">
+                      Ontology
+                    </span>
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                      <div className="text-[10px] font-mono uppercase text-purple-400 mb-1 font-semibold flex items-center gap-1.5">
+                        <i className="fa-solid fa-compass"></i> Ontological Theme
+                      </div>
+                      <div className="text-xs font-semibold text-purple-200">
+                        {guide.philosophicalInsight?.theme || 'The Eternal Rotation of Potential into Kinetic Flux'}
+                      </div>
+                    </div>
+
+                    <div className="bg-slate-900/80 p-3 rounded-lg border border-slate-800">
+                      <div className="text-[10px] font-mono uppercase text-emerald-400 mb-1 font-semibold flex items-center gap-1.5">
+                        <i className="fa-solid fa-eye"></i> The Essence of the Apparatus
+                      </div>
+                      <p className="text-xs text-slate-300 leading-relaxed italic">
+                        "{guide.philosophicalInsight?.essence || 'A machine does not merely consume electrons; it acts as an invisible loom weaving Faraday’s lines of flux into synchronous mechanical torque.'}"
+                      </p>
+                    </div>
+
+                    <div className="bg-gradient-to-br from-purple-950/60 to-slate-900/90 p-4 rounded-lg border border-purple-700/40 relative">
+                      <i className="fa-solid fa-quote-right absolute bottom-3 right-3 text-2xl text-purple-500/10"></i>
+                      <p className="text-xs text-amber-200 font-serif italic mb-2">
+                        "{guide.philosophicalInsight?.quote || 'If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.'}"
+                      </p>
+                      <div className="text-[11px] text-slate-400 font-mono text-right">
+                        — {guide.philosophicalInsight?.author || 'Nikola Tesla'}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           )}

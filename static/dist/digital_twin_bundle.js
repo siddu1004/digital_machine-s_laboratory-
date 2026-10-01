@@ -998,7 +998,18 @@ var DigitalTwinApp = (() => {
           answer: "To account for the Skin Effect and eddy currents in the stator copper conductors at 50 Hz, which forces the current to flow near the conductor surface, decreasing effective cross-section.",
           conceptCategory: "Measurement"
         }
-      ]
+      ],
+      philosophicalInsight: {
+        theme: "The Archetype of the Infinite Circle",
+        essence: "The physical behavior of an induction motor traces an unbroken circle on the complex phasor plane. Even amidst nonlinear mechanical friction, core hysteresis, and stator heating, the fundamental electrical relationship maps strictly into circular geometry.",
+        quote: "Geometry existed before the creation; it is co-eternal with the mind of God.",
+        author: "Johannes Kepler"
+      },
+      mathematicalStructure: {
+        symmetryGroup: "Conformal circle mapping in complex admittance plane",
+        governingDifferentialEq: "V_1(t) = R_1 i_1 + L_1 (di_1/dt) + M (d(i_2 e^{j\\theta})/dt)",
+        geometricLocus: "Bilinear Mobius transformation of straight line R2/s into circular locus"
+      }
     },
     exp3: {
       experimentId: "exp3",
@@ -1044,7 +1055,18 @@ var DigitalTwinApp = (() => {
           answer: "No. Squirrel cage rotors have end-rings short-circuiting all bars permanently; external resistances can only be introduced via slip rings in wound-rotor induction motors.",
           conceptCategory: "Applications"
         }
-      ]
+      ],
+      philosophicalInsight: {
+        theme: "The Quantization of Electromagnetic Velocity",
+        essence: "Speed in a rotating machine is not an arbitrary variable; it is fundamentally quantized by the spatial harmonic configuration of magnetic pole pairs. To change poles is to alter the very geometry of space through which the rotor journeys.",
+        quote: "Motion is the manifestation of geometry changing its mind.",
+        author: "Henri Poincar\xE9"
+      },
+      mathematicalStructure: {
+        symmetryGroup: "Discrete cyclic permutation group Z_P of stator winding coils",
+        governingDifferentialEq: "T_e(t) - T_L(t) = J (d\\omega_m / dt) + B \\omega_m",
+        geometricLocus: "Torque-Speed curve scaling as T \\propto s V^2 / R_2"
+      }
     },
     exp5: {
       experimentId: "exp5",
@@ -1093,7 +1115,18 @@ var DigitalTwinApp = (() => {
           answer: "Because huge loads are not available in a laboratory to dissipate full electrical power, and the energy cost and prime mover size would be prohibitive.",
           conceptCategory: "Applications"
         }
-      ]
+      ],
+      philosophicalInsight: {
+        theme: "The Inescapable Law of Equilibrium",
+        essence: "Every watt of electrical power delivered to the external load creates an opposing armature reaction flux inside the machine. You cannot extract energy from nature without the universe pushing back with equal and opposite force.",
+        quote: "Energy cannot be drawn without giving equal resistance to the cosmos.",
+        author: "Heinrich Lenz"
+      },
+      mathematicalStructure: {
+        symmetryGroup: "Terminal phasor voltage polygon V_t = E_0 - I_a(R_a + jX_s)",
+        governingDifferentialEq: "v_{abc}(t) = -R_s i_{abc} - d\\lambda_{abc}/dt",
+        geometricLocus: "Drooping hyperbolic voltage regulation curve V_t(I_L)"
+      }
     },
     exp6_a: {
       experimentId: "exp6_a",
@@ -1142,7 +1175,18 @@ var DigitalTwinApp = (() => {
           answer: "Yes! At leading power factor loads (capacitive loads), the armature reaction is magnetizing, boosting the terminal voltage on load, making (E\u2080 - V) negative.",
           conceptCategory: "Theory"
         }
-      ]
+      ],
+      philosophicalInsight: {
+        theme: "The Complementary Duality of Physics",
+        essence: "The EMF method treats the armature reaction as a fictitious inductive reactance drop (Xs), while the MMF method treats both leakage and reaction as magnetomotive vectors. Each model is an approximation of the underlying nonlinear electromagnetic continuum.",
+        quote: "Opposites are complementary, not contradictory.",
+        author: "Niels Bohr"
+      },
+      mathematicalStructure: {
+        symmetryGroup: "Phasor triangle equilibrium: E_0^2 = (V\\cos\\phi + IR_a)^2 + (V\\sin\\phi + IX_s)^2",
+        governingDifferentialEq: "d\\psi_d/dt = -R i_d - \\omega \\psi_q + v_d",
+        geometricLocus: "Intersection of the linear air-gap line and core saturation knee"
+      }
     },
     exp6_b: {
       experimentId: "exp6_b",
@@ -1190,7 +1234,18 @@ var DigitalTwinApp = (() => {
           answer: "Rugged construction (no slip rings or brushes for squirrel cage), no synchronization required, automatically drops excitation if the grid faults, making it ideal for wind turbines.",
           conceptCategory: "Applications"
         }
-      ]
+      ],
+      philosophicalInsight: {
+        theme: "The Transmutation of Taking into Giving",
+        essence: "When forced past its synchronous threshold, the motor experiences a phase inversion of its electromagnetic soul. It ceases to consume power from the universe and begins to generate, transforming mechanical kinetic energy into pure electrical luminance.",
+        quote: "Beyond the synchronous boundary, consumption turns into creation.",
+        author: "Nikola Tesla"
+      },
+      mathematicalStructure: {
+        symmetryGroup: "Negative resistance branch: R_2'/s < 0 for s < 0",
+        governingDifferentialEq: "d^2 v / dt^2 + (1 / RC) (dv/dt) + (1 / LC) v = 0",
+        geometricLocus: "Resonant self-excitation intersection of magnetizing curve and capacitive load line"
+      }
     },
     exp7: {
       experimentId: "exp7",
@@ -1239,7 +1294,18 @@ var DigitalTwinApp = (() => {
           answer: "It is purely demagnetizing, directly weakening the main field flux along the direct axis.",
           conceptCategory: "Theory"
         }
-      ]
+      ],
+      philosophicalInsight: {
+        theme: "The Art of Separation: Void vs Iron",
+        essence: "Potier\u2019s triangle is the intellectual scalpel of electromagnetic engineering. It dissects the invisible into two distinct physical entities: that which leaks into the airy void (leakage reactance Xl) and that which alters the iron crystalline soul of the core (armature reaction Fa).",
+        quote: "Distinguish the shadow from the substance, and you shall command the light.",
+        author: "Michael Faraday"
+      },
+      mathematicalStructure: {
+        symmetryGroup: "Right-angled triangular vector decomposition of MMF and EMF",
+        governingDifferentialEq: "E_r = V + I_a (R_a + jX_l), \\quad \\vec{F}_R = \\vec{F}_f + \\vec{F}_a",
+        geometricLocus: "Hypotenuse congruent and parallel to the initial linear tangent of the OCC"
+      }
     },
     exp8: {
       experimentId: "exp8",
@@ -1289,19 +1355,149 @@ var DigitalTwinApp = (() => {
           answer: "The machine delivers lagging reactive power (VARs) to the grid, operating at a leading power factor relative to the machine convention, acting as a synchronous condenser to support grid voltage.",
           conceptCategory: "Applications"
         }
-      ]
+      ],
+      philosophicalInsight: {
+        theme: "The Harmony of Three Dark Stars",
+        essence: "Paralleling an isolated generator with an infinite electrical grid is the ultimate communion of human engineering. At the precise instant when all three lamps go pitch black, the solitary machine harmonizes with the continental grid\u2014a drop merging seamlessly into the ocean.",
+        quote: "In perfect darkness, alignment is born. The single generator finds peace in the infinite bus.",
+        author: "Charles Proteus Steinmetz"
+      },
+      mathematicalStructure: {
+        symmetryGroup: "Phase alignment manifold & U(1) infinite bus synchronization",
+        governingDifferentialEq: "P(\\delta) = \\frac{E V}{X_s} \\sin\\delta = \\text{const}, \\quad Q(\\delta) = \\frac{V}{X_s}(E\\cos\\delta - V)",
+        geometricLocus: "V-curve hyperbola of minimum armature current at unity power factor"
+      }
     }
   };
 
   // src/3d/floatingModels.ts
   var THREE = __toESM(require_three());
+
+  // src/audio/soundEngine.ts
+  var SoundEngine = class {
+    ctx = null;
+    motorOsc = null;
+    motorGain = null;
+    humOsc = null;
+    humGain = null;
+    isMuted = false;
+    isRunning = false;
+    init() {
+      if (!this.ctx && typeof window !== "undefined") {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (AudioCtx) {
+          this.ctx = new AudioCtx();
+        }
+      }
+    }
+    toggleMute() {
+      this.isMuted = !this.isMuted;
+      if (this.motorGain) {
+        this.motorGain.gain.setTargetAtTime(this.isMuted ? 0 : 0.04, this.ctx?.currentTime || 0, 0.05);
+      }
+      if (this.humGain) {
+        this.humGain.gain.setTargetAtTime(this.isMuted ? 0 : 0.02, this.ctx?.currentTime || 0, 0.05);
+      }
+      return this.isMuted;
+    }
+    getMuteState() {
+      return this.isMuted;
+    }
+    startMachineHum(rpm = 1440) {
+      if (this.isRunning) {
+        this.updateRpm(rpm);
+        return;
+      }
+      this.init();
+      if (!this.ctx) return;
+      if (this.ctx.state === "suspended") {
+        this.ctx.resume();
+      }
+      try {
+        this.humOsc = this.ctx.createOscillator();
+        this.humOsc.type = "sawtooth";
+        this.humOsc.frequency.setValueAtTime(50, this.ctx.currentTime);
+        const filter = this.ctx.createBiquadFilter();
+        filter.type = "lowpass";
+        filter.frequency.setValueAtTime(140, this.ctx.currentTime);
+        this.humGain = this.ctx.createGain();
+        this.humGain.gain.setValueAtTime(this.isMuted ? 0 : 0.025, this.ctx.currentTime);
+        this.humOsc.connect(filter);
+        filter.connect(this.humGain);
+        this.humGain.connect(this.ctx.destination);
+        this.humOsc.start();
+        const rotorFreq = 4 * rpm / 120;
+        this.motorOsc = this.ctx.createOscillator();
+        this.motorOsc.type = "sine";
+        this.motorOsc.frequency.setValueAtTime(rotorFreq, this.ctx.currentTime);
+        this.motorGain = this.ctx.createGain();
+        this.motorGain.gain.setValueAtTime(this.isMuted ? 0 : 0.035, this.ctx.currentTime);
+        this.motorOsc.connect(this.motorGain);
+        this.motorGain.connect(this.ctx.destination);
+        this.motorOsc.start();
+        this.isRunning = true;
+      } catch (e) {
+        console.warn("AudioContext autoplay restricted:", e);
+      }
+    }
+    updateRpm(rpm) {
+      if (!this.ctx || !this.motorOsc) return;
+      const freq = Math.max(10, 4 * rpm / 120);
+      this.motorOsc.frequency.setTargetAtTime(freq, this.ctx.currentTime, 0.1);
+    }
+    playRelayClick() {
+      this.init();
+      if (!this.ctx || this.isMuted) return;
+      if (this.ctx.state === "suspended") this.ctx.resume();
+      const osc = this.ctx.createOscillator();
+      const gain = this.ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(800, this.ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(120, this.ctx.currentTime + 0.04);
+      gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(1e-3, this.ctx.currentTime + 0.04);
+      osc.connect(gain);
+      gain.connect(this.ctx.destination);
+      osc.start();
+      osc.stop(this.ctx.currentTime + 0.05);
+    }
+    stopAll() {
+      if (this.motorOsc) {
+        try {
+          this.motorOsc.stop();
+        } catch (_) {
+        }
+        this.motorOsc = null;
+      }
+      if (this.humOsc) {
+        try {
+          this.humOsc.stop();
+        } catch (_) {
+        }
+        this.humOsc = null;
+      }
+      this.isRunning = false;
+    }
+  };
+  var soundEngine = new SoundEngine();
+
+  // src/3d/floatingModels.ts
+  var R_RING = 17;
+  var getHeptagonCoords = (index) => {
+    const theta = 2 * Math.PI * index / 7 - Math.PI / 2;
+    return {
+      x: Math.round(R_RING * Math.cos(theta) * 10) / 10,
+      y: 0,
+      z: Math.round(R_RING * Math.sin(theta) * 10) / 10
+    };
+  };
   var EXPERIMENT_3D_CONFIGS = [
     {
       id: "exp2",
       name: "EXP 2: Induction Motor Circle Diagram",
       category: "induction",
       facility: "motor",
-      gridCoordinates: { x: -14, y: 0, z: -4 },
+      gridCoordinates: getHeptagonCoords(0),
       accentColor: 15381256,
       // Gold
       colorHex: "#eab308",
@@ -1318,7 +1514,7 @@ var DigitalTwinApp = (() => {
       name: "EXP 3: Motor Speed Control Bench",
       category: "induction",
       facility: "motor",
-      gridCoordinates: { x: -9, y: 0, z: 6 },
+      gridCoordinates: getHeptagonCoords(1),
       accentColor: 3718648,
       // Sky Blue
       colorHex: "#38bdf8",
@@ -1335,7 +1531,7 @@ var DigitalTwinApp = (() => {
       name: "EXP 5: Alternator Load Test Bench",
       category: "synchronous",
       facility: "alternator",
-      gridCoordinates: { x: 0, y: 0, z: -8 },
+      gridCoordinates: getHeptagonCoords(2),
       accentColor: 16096779,
       // Amber
       colorHex: "#f59e0b",
@@ -1352,7 +1548,7 @@ var DigitalTwinApp = (() => {
       name: "EXP 6A: Alternator EMF & MMF Bench",
       category: "synchronous",
       facility: "alternator",
-      gridCoordinates: { x: 0, y: 0, z: 6 },
+      gridCoordinates: getHeptagonCoords(3),
       accentColor: 1096065,
       // Emerald
       colorHex: "#10b981",
@@ -1368,7 +1564,7 @@ var DigitalTwinApp = (() => {
       name: "EXP 6B: Induction Generator Bench",
       category: "induction",
       facility: "generator",
-      gridCoordinates: { x: 9, y: 0, z: -6 },
+      gridCoordinates: getHeptagonCoords(4),
       accentColor: 440020,
       // Cyan
       colorHex: "#06b6d4",
@@ -1385,7 +1581,7 @@ var DigitalTwinApp = (() => {
       name: "EXP 7: Alternator ZPF / Potier Bench",
       category: "synchronous",
       facility: "alternator",
-      gridCoordinates: { x: 14, y: 0, z: 4 },
+      gridCoordinates: getHeptagonCoords(5),
       accentColor: 11032055,
       // Purple
       colorHex: "#a855f7",
@@ -1401,7 +1597,7 @@ var DigitalTwinApp = (() => {
       name: "EXP 8: Infinite Bus Synchronizer",
       category: "synchronous",
       facility: "alternator",
-      gridCoordinates: { x: 0, y: 0, z: 14 },
+      gridCoordinates: getHeptagonCoords(6),
       accentColor: 16007006,
       // Rose
       colorHex: "#f43f5e",
@@ -1473,6 +1669,8 @@ var DigitalTwinApp = (() => {
       goldFillLight.position.set(0, 10, 0);
       this.scene.add(goldFillLight);
     }
+    coreMesh;
+    innerCoreMesh;
     setupFloorGrid() {
       const grid = new THREE.GridHelper(100, 100, 5195493, 988970);
       grid.position.y = -0.01;
@@ -1483,6 +1681,25 @@ var DigitalTwinApp = (() => {
       centerRing.rotation.x = Math.PI / 2;
       centerRing.position.y = 0.02;
       this.scene.add(centerRing);
+      const coreGeom = new THREE.IcosahedronGeometry(1.6, 2);
+      const coreMat = new THREE.MeshStandardMaterial({
+        color: 5195493,
+        emissive: 6514417,
+        emissiveIntensity: 0.8,
+        wireframe: true
+      });
+      this.coreMesh = new THREE.Mesh(coreGeom, coreMat);
+      this.coreMesh.position.set(0, 2.5, 0);
+      this.scene.add(this.coreMesh);
+      const innerGeom = new THREE.SphereGeometry(0.9, 24, 24);
+      const innerMat = new THREE.MeshBasicMaterial({
+        color: 15381256,
+        transparent: true,
+        opacity: 0.75
+      });
+      this.innerCoreMesh = new THREE.Mesh(innerGeom, innerMat);
+      this.innerCoreMesh.position.set(0, 2.5, 0);
+      this.scene.add(this.innerCoreMesh);
     }
     buildExperimentPlatforms() {
       EXPERIMENT_3D_CONFIGS.forEach((config) => {
@@ -1666,6 +1883,8 @@ var DigitalTwinApp = (() => {
       window.addEventListener("resize", onResize);
     }
     focusOnExperiment(id) {
+      soundEngine.playRelayClick();
+      soundEngine.startMachineHum(id === "exp3" ? 1200 : 1500);
       const bundle = this.bundles.find((b) => b.config.id === id);
       if (!bundle) return;
       const targetPos = new THREE.Vector3(
@@ -1702,6 +1921,7 @@ var DigitalTwinApp = (() => {
       }
     }
     resetOverviewCamera() {
+      soundEngine.playRelayClick();
       const gsap = window.gsap;
       if (gsap) {
         gsap.to(this.camera.position, {
@@ -1725,6 +1945,14 @@ var DigitalTwinApp = (() => {
       const animate = () => {
         this.animationFrameId = requestAnimationFrame(animate);
         const time = this.clock.getElapsedTime();
+        if (this.coreMesh) {
+          this.coreMesh.rotation.y = time * 0.6;
+          this.coreMesh.rotation.x = time * 0.3;
+        }
+        if (this.innerCoreMesh) {
+          const pulse = 1 + 0.12 * Math.sin(time * 3.5);
+          this.innerCoreMesh.scale.set(pulse, pulse, pulse);
+        }
         this.bundles.forEach((bundle) => {
           bundle.rotorMeshes.forEach((mesh) => {
             mesh.rotation.y = time * 4;
@@ -1803,6 +2031,7 @@ var DigitalTwinApp = (() => {
       { id: "calculations", label: "Model Calculations", icon: "fa-calculator" },
       { id: "procedure", label: "Procedure & Safety", icon: "fa-list-check" },
       { id: "theory", label: "Theory & Equations", icon: "fa-book-open" },
+      { id: "philosophy", label: "Philosopher & Math Lens", icon: "fa-brain" },
       { id: "viva", label: "Viva Voce Bank", icon: "fa-graduation-cap" }
     ].map((tab) => /* @__PURE__ */ import_react.default.createElement(
       "button",
@@ -1821,7 +2050,7 @@ var DigitalTwinApp = (() => {
         className: `px-2.5 py-1 rounded text-[11px] font-semibold transition-all ${vivaCategory === cat ? "bg-yellow-500 text-slate-950" : "bg-slate-800 text-slate-400 hover:text-white"}`
       },
       cat
-    )))), /* @__PURE__ */ import_react.default.createElement("div", { className: "space-y-3" }, filteredViva.map((item, idx) => /* @__PURE__ */ import_react.default.createElement("div", { key: idx, className: "bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-start justify-between" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "text-xs font-bold text-yellow-400 flex items-center" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-circle-question mr-2 text-indigo-400" }), "Q: ", item.question), /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800" }, item.conceptCategory)), /* @__PURE__ */ import_react.default.createElement("div", { className: "pl-6 text-xs text-slate-300 bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 leading-relaxed" }, /* @__PURE__ */ import_react.default.createElement("strong", { className: "text-emerald-400 block mb-1" }, "Answer:"), item.answer)))))), /* @__PURE__ */ import_react.default.createElement("div", { className: "p-4 border-t border-slate-800 bg-slate-950 flex items-center justify-between" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "text-xs text-slate-500 font-mono" }, "Semester-5 Digital Twin Educational Engine"), /* @__PURE__ */ import_react.default.createElement(
+    )))), /* @__PURE__ */ import_react.default.createElement("div", { className: "space-y-3" }, filteredViva.map((item, idx) => /* @__PURE__ */ import_react.default.createElement("div", { key: idx, className: "bg-slate-950 p-4 rounded-xl border border-slate-800 space-y-2" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-start justify-between" }, /* @__PURE__ */ import_react.default.createElement("span", { className: "text-xs font-bold text-yellow-400 flex items-center" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-circle-question mr-2 text-indigo-400" }), "Q: ", item.question), /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[10px] font-mono px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800" }, item.conceptCategory)), /* @__PURE__ */ import_react.default.createElement("div", { className: "pl-6 text-xs text-slate-300 bg-slate-900/60 p-3 rounded-lg border border-slate-800/80 leading-relaxed" }, /* @__PURE__ */ import_react.default.createElement("strong", { className: "text-emerald-400 block mb-1" }, "Answer:"), item.answer))))), activeTab === "philosophy" && /* @__PURE__ */ import_react.default.createElement("div", { className: "space-y-6" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "p-4 bg-gradient-to-r from-purple-950/40 via-indigo-950/30 to-amber-950/20 border border-purple-500/30 rounded-xl flex items-start space-x-4" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "w-10 h-10 rounded-xl bg-purple-900/60 border border-purple-500/50 flex items-center justify-center text-purple-300 text-lg flex-shrink-0 mt-0.5" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-atom" })), /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("h3", { className: "text-sm font-bold text-white flex items-center gap-2" }, "Epistemology & Differential Symmetry Council", /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[10px] font-mono px-2 py-0.5 rounded bg-purple-900/50 text-purple-300 border border-purple-700/50" }, "Transcendent UI Lens")), /* @__PURE__ */ import_react.default.createElement("p", { className: "text-xs text-slate-300 mt-1 leading-relaxed" }, "Beyond numbers and meter dials lies an ontological order: rotating magnetic fields mirror celestial mechanics, and complex impedance loci manifest the conformal symmetry of physical law."))), /* @__PURE__ */ import_react.default.createElement("div", { className: "grid grid-cols-1 md:grid-cols-2 gap-5" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-slate-950/70 border border-indigo-500/30 rounded-xl p-5 space-y-4 relative overflow-hidden" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 rounded-full blur-2xl pointer-events-none" }), /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-center justify-between border-b border-indigo-900/50 pb-3" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-center space-x-2.5" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "w-7 h-7 rounded-lg bg-indigo-950 border border-indigo-500/40 flex items-center justify-center text-indigo-400 text-xs" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-square-root-variable" })), /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("h4", { className: "text-xs font-bold text-indigo-200" }, "The Mathematician\u2019s Structure"), /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[10px] text-slate-400 font-mono" }, "Agent: Dr. Carl Friedrich Gauss"))), /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800" }, "\u03A6 = 1.618")), /* @__PURE__ */ import_react.default.createElement("div", { className: "space-y-3" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-slate-900/80 p-3 rounded-lg border border-slate-800" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "text-[10px] font-mono uppercase text-indigo-400 mb-1 font-semibold flex items-center gap-1.5" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-shapes" }), " Symmetry Group & Invariance"), /* @__PURE__ */ import_react.default.createElement("div", { className: "text-xs font-mono text-slate-200" }, guide.mathematicalStructure?.symmetryGroup || "Lie Group SO(2) rotational symmetry under 3-phase spatial coordinate projection")), /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-slate-900/80 p-3 rounded-lg border border-slate-800" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "text-[10px] font-mono uppercase text-cyan-400 mb-1 font-semibold flex items-center gap-1.5" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-wave-square" }), " Governing Differential Equation"), /* @__PURE__ */ import_react.default.createElement("div", { className: "text-xs font-mono text-cyan-200 bg-slate-950 p-2.5 rounded border border-cyan-900/40 break-all leading-relaxed" }, guide.mathematicalStructure?.governingDifferentialEq || "\u2207 \xD7 E = -\u2202B/\u2202t, \\quad J = \u03C3(E + v \xD7 B)")), /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-slate-900/80 p-3 rounded-lg border border-slate-800" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "text-[10px] font-mono uppercase text-amber-400 mb-1 font-semibold flex items-center gap-1.5" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-circle-nodes" }), " Geometric Locus on Complex Plane"), /* @__PURE__ */ import_react.default.createElement("div", { className: "text-xs text-slate-300 leading-relaxed" }, guide.mathematicalStructure?.geometricLocus || "Equidistant circular projection and orthogonal trajectory mapping")))), /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-slate-950/70 border border-purple-500/30 rounded-xl p-5 space-y-4 relative overflow-hidden" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full blur-2xl pointer-events-none" }), /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-center justify-between border-b border-purple-900/50 pb-3" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "flex items-center space-x-2.5" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "w-7 h-7 rounded-lg bg-purple-950 border border-purple-500/40 flex items-center justify-center text-purple-400 text-xs" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-quote-left" })), /* @__PURE__ */ import_react.default.createElement("div", null, /* @__PURE__ */ import_react.default.createElement("h4", { className: "text-xs font-bold text-purple-200" }, "The Philosopher\u2019s Lens"), /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[10px] text-slate-400 font-mono" }, "Agent: Prof. Heidegger & Lao Tzu"))), /* @__PURE__ */ import_react.default.createElement("span", { className: "text-[10px] font-mono px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-800" }, "Ontology")), /* @__PURE__ */ import_react.default.createElement("div", { className: "space-y-3" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-slate-900/80 p-3 rounded-lg border border-slate-800" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "text-[10px] font-mono uppercase text-purple-400 mb-1 font-semibold flex items-center gap-1.5" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-compass" }), " Ontological Theme"), /* @__PURE__ */ import_react.default.createElement("div", { className: "text-xs font-semibold text-purple-200" }, guide.philosophicalInsight?.theme || "The Eternal Rotation of Potential into Kinetic Flux")), /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-slate-900/80 p-3 rounded-lg border border-slate-800" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "text-[10px] font-mono uppercase text-emerald-400 mb-1 font-semibold flex items-center gap-1.5" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-eye" }), " The Essence of the Apparatus"), /* @__PURE__ */ import_react.default.createElement("p", { className: "text-xs text-slate-300 leading-relaxed italic" }, '"', guide.philosophicalInsight?.essence || "A machine does not merely consume electrons; it acts as an invisible loom weaving Faraday\u2019s lines of flux into synchronous mechanical torque.", '"')), /* @__PURE__ */ import_react.default.createElement("div", { className: "bg-gradient-to-br from-purple-950/60 to-slate-900/90 p-4 rounded-lg border border-purple-700/40 relative" }, /* @__PURE__ */ import_react.default.createElement("i", { className: "fa-solid fa-quote-right absolute bottom-3 right-3 text-2xl text-purple-500/10" }), /* @__PURE__ */ import_react.default.createElement("p", { className: "text-xs text-amber-200 font-serif italic mb-2" }, '"', guide.philosophicalInsight?.quote || "If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.", '"'), /* @__PURE__ */ import_react.default.createElement("div", { className: "text-[11px] text-slate-400 font-mono text-right" }, "\u2014 ", guide.philosophicalInsight?.author || "Nikola Tesla"))))))), /* @__PURE__ */ import_react.default.createElement("div", { className: "p-4 border-t border-slate-800 bg-slate-950 flex items-center justify-between" }, /* @__PURE__ */ import_react.default.createElement("div", { className: "text-xs text-slate-500 font-mono" }, "Semester-5 Digital Twin Educational Engine"), /* @__PURE__ */ import_react.default.createElement(
       "button",
       {
         onClick: () => onLaunchTwin(experimentId),
@@ -1859,7 +2088,83 @@ var DigitalTwinApp = (() => {
   };
 
   // src/components/LandingHero.tsx
-  var LandingHero = ({ onLaunchExperiment }) => {
+  var EXPERIMENT_MATHEMATICAL_INSIGHTS = {
+    exp2: {
+      symmetry: "\u222E Conformal Mobius Circle // SO(2)",
+      specs: "415 V \u2022 4.7 A \u2022 1440 RPM \u2022 2.2 kW",
+      archetype: "The Archetype of the Infinite Circle",
+      icon: "fa-circle-notch"
+    },
+    exp3: {
+      symmetry: "Torque \u221D V\xB2 // Dahlander 2P:4P Switch",
+      specs: "415 V \u2022 4P / 2P \u2022 Slip-Ring Rheostat",
+      archetype: "The Tripartite Modulation of Slip",
+      icon: "fa-gauge-high"
+    },
+    exp5: {
+      symmetry: "Synchronous Phasor // Ra + jXs Regulation",
+      specs: "3.5 kVA \u2022 415 V \u2022 1500 RPM \u2022 4.8 A",
+      archetype: "The Resilient Synchronous Field",
+      icon: "fa-bolt"
+    },
+    exp6_a: {
+      symmetry: "EMF Pessimistic & MMF Optimistic Bounds",
+      specs: "OCC & SCC \u2022 1500 RPM \u2022 Potier Field",
+      archetype: "The Epistemology of Upper & Lower Bounds",
+      icon: "fa-chart-line"
+    },
+    exp6_b: {
+      symmetry: "Super-Synchronous Generation (s < 0)",
+      specs: "Grid-Connected \u2022 1540 RPM \u2022 Negative Slip",
+      archetype: "The Transmutation of Slip into Power",
+      icon: "fa-rotate"
+    },
+    exp7: {
+      symmetry: "Potier Reactance Triangle (XL & Fa)",
+      specs: "ZPF Magnetization \u2022 Leakage & Armature Reaction",
+      archetype: "The Geometrical Unmasking of Flux",
+      icon: "fa-shapes"
+    },
+    exp8: {
+      symmetry: "Infinite Bus V-Curves // cos\u03C6 = 1 Parabola",
+      specs: "3-Lamp Dark/Bright \u2022 50 Hz Grid Synchrony",
+      archetype: "The Infinite Bus and the Solitary Machine",
+      icon: "fa-network-wired"
+    }
+  };
+  var PHILOSOPHICAL_APHORISMS = [
+    {
+      quote: "If you want to find the secrets of the universe, think in terms of energy, frequency and vibration.",
+      author: "Nikola Tesla",
+      role: "Rotating Field Architecture"
+    },
+    {
+      quote: "Geometry existed before the creation; it is co-eternal with the mind of God.",
+      author: "Johannes Kepler",
+      role: "Harmonic Invariance"
+    },
+    {
+      quote: "Nothing is too wonderful to be true, if it be consistent with the laws of nature.",
+      author: "Michael Faraday",
+      role: "Electromagnetic Induction"
+    },
+    {
+      quote: "There is no question which cannot be answered by mathematics.",
+      author: "Carl Friedrich Gauss",
+      role: "Differential Manifold"
+    },
+    {
+      quote: "The complex plane transforms alternating currents from transient mystery into pure circular geometry.",
+      author: "Charles Proteus Steinmetz",
+      role: "AC Symbolic Method"
+    }
+  ];
+  var LandingHero = ({
+    onLaunchExperiment,
+    currentUser,
+    onLogout,
+    onOpenAdmin
+  }) => {
     const mountRef = (0, import_react3.useRef)(null);
     const spaceManagerRef = (0, import_react3.useRef)(null);
     const [activeExpId, setActiveExpId] = (0, import_react3.useState)(null);
@@ -1869,6 +2174,14 @@ var DigitalTwinApp = (() => {
     const [drawerOpen, setDrawerOpen] = (0, import_react3.useState)(true);
     const [guideModalExpId, setGuideModalExpId] = (0, import_react3.useState)(null);
     const [showDatasheet, setShowDatasheet] = (0, import_react3.useState)(false);
+    const [isMuted, setIsMuted] = (0, import_react3.useState)(soundEngine.getMuteState());
+    const [aphorismIdx, setAphorismIdx] = (0, import_react3.useState)(0);
+    (0, import_react3.useEffect)(() => {
+      const timer = setInterval(() => {
+        setAphorismIdx((prev) => (prev + 1) % PHILOSOPHICAL_APHORISMS.length);
+      }, 9e3);
+      return () => clearInterval(timer);
+    }, []);
     (0, import_react3.useEffect)(() => {
       if (!mountRef.current) return;
       const manager = new VirtualSpaceManager(mountRef.current, {
@@ -1903,135 +2216,220 @@ var DigitalTwinApp = (() => {
       return matchesCategory && matchesSearch;
     });
     const activeBundle = EXPERIMENT_3D_CONFIGS.find((c) => c.id === activeExpId);
-    return /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-full h-full relative bg-slate-950 overflow-hidden font-sans select-none" }, /* @__PURE__ */ import_react3.default.createElement("header", { className: "absolute top-0 left-0 right-0 z-40 bg-slate-950/85 backdrop-blur-md border-b border-indigo-900/60 px-4 py-2.5 flex items-center justify-between shadow-2xl" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-3" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-9 h-9 rounded-xl bg-yellow-500/20 text-yellow-400 border border-yellow-500/40 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/10" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-bolt-lightning animate-pulse" })), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement("h1", { className: "text-xs sm:text-sm font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-sky-400 uppercase" }, "ELECTRICAL MACHINES DIGITAL TWIN LAB"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/40" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping mr-1.5" }), "SEM-5 CERTIFIED")), /* @__PURE__ */ import_react3.default.createElement("p", { className: "text-[10px] text-slate-400 font-mono tracking-tight" }, "INTERACTIVE 3D VIRTUAL TESTBENCH & REAL CURRICULUM OBSERVATIONS"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "hidden lg:flex items-center space-x-1 bg-slate-900/90 border border-slate-800 p-1 rounded-xl" }, /* @__PURE__ */ import_react3.default.createElement(
+    return /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-full h-full relative bg-slate-950 overflow-hidden font-sans select-none" }, /* @__PURE__ */ import_react3.default.createElement("header", { className: "absolute top-0 left-0 right-0 z-40 bg-slate-950/85 backdrop-blur-xl border-b border-indigo-900/60 px-3 sm:px-6 py-2.5 flex items-center justify-between shadow-[0_10px_35px_rgba(0,0,0,0.85)]" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-3" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-600/30 text-yellow-400 border border-yellow-500/40 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/10 flex-shrink-0" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-bolt-lightning animate-pulse" })), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement("h1", { className: "text-xs sm:text-sm font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-sky-400 uppercase" }, "ELECTRICAL MACHINES DIGITAL TWIN LAB"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/40" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping mr-1.5" }), "SEM-5 CERTIFIED")), /* @__PURE__ */ import_react3.default.createElement("p", { className: "text-[10px] text-slate-400 font-mono tracking-tight hidden sm:block" }, "VIRTUAL 3D TESTBENCH & REAL CURRICULUM OBSERVATIONS"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "hidden lg:flex items-center space-x-1 bg-slate-900/90 border border-slate-800/90 p-1 rounded-xl shadow-inner" }, /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
         onClick: () => handleSelectCameraMode("overview"),
-        className: `px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeExpId === null ? "bg-yellow-500 text-slate-950 font-bold shadow-md shadow-yellow-500/20" : "text-slate-400 hover:text-slate-200"}`
+        className: `px-3 py-1.5 rounded-lg text-xs font-semibold transition-all flex items-center space-x-1.5 ${activeExpId === null ? "bg-yellow-500 text-slate-950 font-bold shadow-md shadow-yellow-500/20" : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/60"}`
       },
-      /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-globe mr-1.5" }),
-      " Floor Overview"
-    ), EXPERIMENT_3D_CONFIGS.map((exp) => /* @__PURE__ */ import_react3.default.createElement(
+      /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-globe" }),
+      /* @__PURE__ */ import_react3.default.createElement("span", null, "Floor Overview")
+    ), EXPERIMENT_3D_CONFIGS.map((exp) => {
+      const isSelected = activeExpId === exp.id;
+      return /* @__PURE__ */ import_react3.default.createElement(
+        "button",
+        {
+          key: exp.id,
+          onClick: () => handleSelectCameraMode(exp.id),
+          className: `px-2.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all flex items-center space-x-1.5 ${isSelected ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50"}`,
+          title: exp.name
+        },
+        /* @__PURE__ */ import_react3.default.createElement(
+          "span",
+          {
+            className: "w-1.5 h-1.5 rounded-full",
+            style: { backgroundColor: exp.colorHex }
+          }
+        ),
+        /* @__PURE__ */ import_react3.default.createElement("span", null, exp.id.toUpperCase().replace("_", ""))
+      );
+    })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
-        key: exp.id,
-        onClick: () => handleSelectCameraMode(exp.id),
-        className: `px-2.5 py-1.5 rounded-lg text-xs font-mono font-semibold transition-all ${activeExpId === exp.id ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "text-slate-400 hover:text-slate-200"}`
+        onClick: () => setGuideModalExpId(activeExpId || "exp2"),
+        className: "px-3 py-1.5 bg-indigo-950/70 hover:bg-indigo-900/90 border border-indigo-500/50 hover:border-yellow-400/80 rounded-lg text-xs font-semibold text-yellow-300 transition-all flex items-center shadow-sm",
+        title: "Open Authentic Laboratory Observations & Viva Bank"
       },
-      exp.id.toUpperCase().replace("_", "")
-    ))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement(
+      /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-graduation-cap mr-1.5 text-yellow-400" }),
+      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden xl:inline" }, "Lab Records & "),
+      "Viva"
+    ), /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
         onClick: () => setShowDatasheet(true),
         className: "px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-yellow-500/50 rounded-lg text-xs font-semibold text-slate-200 transition-all flex items-center"
       },
       /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-book-open mr-1.5 text-yellow-400" }),
-      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden sm:inline" }, "Machine"),
-      " Datasheets"
+      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden sm:inline" }, "Machine "),
+      "Datasheets"
+    ), /* @__PURE__ */ import_react3.default.createElement(
+      "button",
+      {
+        onClick: () => setIsMuted(soundEngine.toggleMute()),
+        title: isMuted ? "Enable 50 Hz stator resonance & relay acoustics" : "Mute electromechanical audio",
+        className: `px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all flex items-center ${isMuted ? "bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200" : "bg-emerald-950/70 border-emerald-500/50 text-emerald-400 shadow-sm shadow-emerald-500/20"}`
+      },
+      /* @__PURE__ */ import_react3.default.createElement("i", { className: `fa-solid ${isMuted ? "fa-volume-xmark text-slate-500" : "fa-volume-high text-emerald-400 animate-pulse"} mr-1.5` }),
+      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden sm:inline" }, isMuted ? "Audio Off" : "50Hz Live")
     ), /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
         onClick: () => handleLaunch(activeExpId || "exp2"),
-        className: "px-4 py-1.5 bg-yellow-500 hover:bg-yellow-400 text-slate-950 font-black text-xs rounded-lg transition-all shadow-lg shadow-yellow-500/25 flex items-center uppercase tracking-wider"
+        className: "px-4 py-1.5 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-xs rounded-lg transition-all shadow-lg shadow-yellow-500/25 flex items-center uppercase tracking-wider"
       },
       /* @__PURE__ */ import_react3.default.createElement("span", null, "Enter Lab"),
       /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-chevron-right ml-1.5" })
+    ), currentUser?.role === "admin" && onOpenAdmin && /* @__PURE__ */ import_react3.default.createElement(
+      "button",
+      {
+        onClick: onOpenAdmin,
+        className: "p-2 text-indigo-300 hover:text-white bg-indigo-950/60 border border-indigo-800 rounded-lg hover:bg-indigo-900 transition-colors",
+        title: "Admin Git Settings"
+      },
+      /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-code-merge text-xs" })
+    ), onLogout && /* @__PURE__ */ import_react3.default.createElement(
+      "button",
+      {
+        onClick: onLogout,
+        className: "p-2 text-slate-400 hover:text-red-400 bg-slate-900 border border-slate-700 hover:border-red-500/60 rounded-lg transition-colors",
+        title: "Exit Session"
+      },
+      /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-power-off text-xs" })
     ))), /* @__PURE__ */ import_react3.default.createElement("div", { ref: mountRef, className: "w-full h-full cursor-grab active:cursor-grabbing" }), hoveredBundle && !activeExpId && /* @__PURE__ */ import_react3.default.createElement("div", { className: "absolute top-20 left-1/2 transform -translate-x-1/2 pointer-events-none bg-slate-950/90 border border-yellow-500 text-yellow-400 px-4 py-2 rounded-xl text-xs font-mono font-bold tracking-wider uppercase shadow-2xl backdrop-blur-md" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-crosshairs mr-2 animate-spin" }), "CLICK TO FOCUS: ", hoveredBundle.config.name), /* @__PURE__ */ import_react3.default.createElement(
       "div",
       {
-        className: `absolute top-16 left-3 sm:left-6 z-30 transition-all duration-300 pointer-events-auto ${drawerOpen ? "w-[calc(100%-1.5rem)] sm:w-96" : "w-12"}`
+        className: `absolute top-16 left-3 sm:left-6 z-30 transition-all duration-300 pointer-events-auto ${drawerOpen ? "w-[calc(100%-1.5rem)] sm:w-[410px]" : "w-14"}`
       },
-      /* @__PURE__ */ import_react3.default.createElement("div", { className: "bg-slate-950/85 backdrop-blur-md border border-indigo-900/60 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[82vh]" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "p-3 sm:p-4 border-b border-slate-800 bg-slate-900/60 flex items-center justify-between" }, drawerOpen ? /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-yellow-400 font-bold text-xs sm:text-sm uppercase tracking-wider" }, "\u26A1 Semester-5 Experiments"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[10px] font-mono px-2 py-0.5 rounded-full bg-yellow-950/80 text-yellow-400 border border-yellow-500/30" }, "7 Digital Twins")) : null, /* @__PURE__ */ import_react3.default.createElement(
-        "button",
-        {
-          onClick: () => setDrawerOpen(!drawerOpen),
-          className: "p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors ml-auto",
-          title: drawerOpen ? "Collapse Directory" : "Expand Directory"
-        },
-        /* @__PURE__ */ import_react3.default.createElement("i", { className: `fa-solid ${drawerOpen ? "fa-chevron-left" : "fa-list-check"}` })
-      )), drawerOpen && /* @__PURE__ */ import_react3.default.createElement(import_react3.default.Fragment, null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "p-3 border-b border-slate-800/80 space-y-2.5 bg-slate-950/60" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "relative" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-slate-500" }), /* @__PURE__ */ import_react3.default.createElement(
-        "input",
-        {
-          type: "text",
-          value: searchQuery,
-          onChange: (e) => setSearchQuery(e.target.value),
-          placeholder: "Search circle diagram, potier, speed...",
-          className: "w-full bg-slate-900/90 border border-slate-800 focus:border-yellow-500 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition-colors"
-        }
-      ), searchQuery && /* @__PURE__ */ import_react3.default.createElement(
-        "button",
-        {
-          onClick: () => setSearchQuery(""),
-          className: "absolute right-2.5 top-2 text-xs text-slate-500 hover:text-white"
-        },
-        /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-xmark" })
-      )), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex gap-1.5" }, [
-        { id: "all", label: "All (7)" },
-        { id: "induction", label: "Induction (3)" },
-        { id: "synchronous", label: "Sync (4)" }
-      ].map((cat) => /* @__PURE__ */ import_react3.default.createElement(
-        "button",
-        {
-          key: cat.id,
-          onClick: () => setCategoryFilter(cat.id),
-          className: `flex-1 py-1 rounded-lg text-[11px] font-semibold transition-all ${categoryFilter === cat.id ? "bg-indigo-600 text-white shadow-sm" : "bg-slate-900 text-slate-400 hover:text-slate-200 hover:bg-slate-800"}`
-        },
-        cat.label
-      )))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "p-3 overflow-y-auto space-y-2.5 flex-1 divide-y divide-slate-800/40" }, filteredConfigs.map((exp) => {
-        const obs = SEM5_OBSERVATIONS[exp.id];
-        const isSelected = activeExpId === exp.id;
-        return /* @__PURE__ */ import_react3.default.createElement(
-          "div",
+      !drawerOpen ? (
+        /* Mini Vertical Dock when collapsed */
+        /* @__PURE__ */ import_react3.default.createElement("div", { className: "bg-slate-950/90 backdrop-blur-xl border border-indigo-500/40 rounded-2xl shadow-2xl p-2 flex flex-col items-center space-y-2.5" }, /* @__PURE__ */ import_react3.default.createElement(
+          "button",
           {
-            key: exp.id,
-            className: `pt-2.5 first:pt-0 rounded-xl p-3 transition-all cursor-pointer border ${isSelected ? "bg-indigo-950/40 border-yellow-500/80 shadow-lg shadow-yellow-500/10" : "bg-slate-900/60 border-slate-800 hover:border-slate-700 hover:bg-slate-900"}`,
-            onClick: () => handleSelectCameraMode(exp.id)
+            onClick: () => setDrawerOpen(true),
+            className: "w-10 h-10 rounded-xl bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30 border border-yellow-500/40 flex items-center justify-center transition-all shadow-md",
+            title: "Expand Semester-5 Experiment Directory"
           },
-          /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-start justify-between gap-2" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "space-y-1" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement(
-            "span",
+          /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-list-check" })
+        ), /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-6 h-px bg-slate-800" }), EXPERIMENT_3D_CONFIGS.map((exp) => {
+          const isSelected = activeExpId === exp.id;
+          return /* @__PURE__ */ import_react3.default.createElement(
+            "button",
             {
-              className: "text-[10px] font-mono font-bold px-2 py-0.5 rounded",
+              key: exp.id,
+              onClick: () => {
+                handleSelectCameraMode(exp.id);
+                setDrawerOpen(true);
+              },
+              className: `w-9 h-9 rounded-xl flex items-center justify-center text-[10px] font-mono font-bold transition-all relative ${isSelected ? "ring-2 ring-yellow-400 shadow-lg scale-105" : "hover:scale-105 opacity-80 hover:opacity-100"}`,
               style: {
+                backgroundColor: `${exp.colorHex}22`,
                 color: exp.colorHex,
-                backgroundColor: `${exp.colorHex}18`,
-                border: `1px solid ${exp.colorHex}40`
-              }
-            },
-            exp.id.toUpperCase().replace("_", "")
-          ), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[10px] text-slate-400 font-mono capitalize" }, exp.category)), /* @__PURE__ */ import_react3.default.createElement("h4", { className: "text-xs font-bold text-slate-100 hover:text-yellow-400 transition-colors" }, obs?.title || exp.name))),
-          /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex flex-wrap gap-1 mt-2" }, exp.components.slice(0, 3).map((comp, cIdx) => /* @__PURE__ */ import_react3.default.createElement(
-            "span",
-            {
-              key: cIdx,
-              className: "text-[9px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800"
-            },
-            comp.name
-          ))),
-          /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-3 pt-2.5 border-t border-slate-800 flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react3.default.createElement(
-            "button",
-            {
-              onClick: (e) => {
-                e.stopPropagation();
-                setGuideModalExpId(exp.id);
+                border: `1px solid ${exp.colorHex}50`
               },
-              className: "flex-1 py-1.5 px-2 bg-slate-950 hover:bg-slate-800 border border-slate-700 hover:border-indigo-500 text-slate-300 text-[10px] font-semibold rounded-lg transition-colors flex items-center justify-center space-x-1"
+              title: exp.name
             },
-            /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-graduation-cap text-yellow-400" }),
-            /* @__PURE__ */ import_react3.default.createElement("span", null, "Student Guide & Data")
-          ), /* @__PURE__ */ import_react3.default.createElement(
-            "button",
+            exp.id.replace("exp", "").toUpperCase()
+          );
+        }))
+      ) : (
+        /* Full Rich Drawer */
+        /* @__PURE__ */ import_react3.default.createElement("div", { className: "bg-slate-950/92 backdrop-blur-2xl border border-indigo-500/30 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.85)] overflow-hidden flex flex-col max-h-[84vh]" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "p-3.5 sm:p-4 border-b border-indigo-900/40 bg-gradient-to-r from-slate-900/90 via-slate-900/70 to-indigo-950/40 flex items-center justify-between" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2.5" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-7 h-7 rounded-lg bg-yellow-500/20 border border-yellow-500/40 flex items-center justify-center text-yellow-400 text-xs" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-layer-group" })), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-yellow-400 font-extrabold text-xs sm:text-sm tracking-wide uppercase" }, "Semester-5 Experiments"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[10px] font-mono px-2 py-0.5 rounded-full bg-yellow-950/80 text-yellow-300 border border-yellow-500/40 font-bold" }, "7 Twins")), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[10px] text-slate-400 font-mono" }, "Virtual Testbenches & Lab Observations"))), /* @__PURE__ */ import_react3.default.createElement(
+          "button",
+          {
+            onClick: () => setDrawerOpen(false),
+            className: "w-7 h-7 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors flex items-center justify-center ml-auto",
+            title: "Collapse to Mini Dock"
+          },
+          /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-chevron-left text-xs" })
+        )), /* @__PURE__ */ import_react3.default.createElement("div", { className: "p-3 border-b border-slate-800/80 space-y-2.5 bg-slate-950/70" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "relative" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-indigo-400" }), /* @__PURE__ */ import_react3.default.createElement(
+          "input",
+          {
+            type: "text",
+            value: searchQuery,
+            onChange: (e) => setSearchQuery(e.target.value),
+            placeholder: "Search circle diagram, potier, speed, V-curves...",
+            className: "w-full bg-slate-900/90 border border-indigo-900/50 focus:border-yellow-500 rounded-xl pl-8 pr-8 py-2 text-xs text-slate-200 placeholder-slate-500 focus:outline-none transition-all shadow-inner"
+          }
+        ), searchQuery && /* @__PURE__ */ import_react3.default.createElement(
+          "button",
+          {
+            onClick: () => setSearchQuery(""),
+            className: "absolute right-2.5 top-2.5 text-xs text-slate-500 hover:text-white"
+          },
+          /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-xmark" })
+        )), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex gap-1.5" }, [
+          { id: "all", label: "All Experiments (7)" },
+          { id: "induction", label: "Induction (3)" },
+          { id: "synchronous", label: "Synchronous (4)" }
+        ].map((cat) => /* @__PURE__ */ import_react3.default.createElement(
+          "button",
+          {
+            key: cat.id,
+            onClick: () => setCategoryFilter(cat.id),
+            className: `flex-1 py-1.5 rounded-lg text-[11px] font-semibold transition-all ${categoryFilter === cat.id ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30" : "bg-slate-900/80 text-slate-400 hover:text-slate-200 hover:bg-slate-800 border border-slate-800"}`
+          },
+          cat.label
+        )))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "p-3 overflow-y-auto space-y-3 flex-1 [scrollbar-width:thin] [scrollbar-color:#4f46e5_#0f172a]" }, filteredConfigs.map((exp) => {
+          const obs = SEM5_OBSERVATIONS[exp.id];
+          const insight = EXPERIMENT_MATHEMATICAL_INSIGHTS[exp.id];
+          const isSelected = activeExpId === exp.id;
+          return /* @__PURE__ */ import_react3.default.createElement(
+            "div",
             {
-              onClick: (e) => {
-                e.stopPropagation();
-                handleLaunch(exp.id);
-              },
-              className: "py-1.5 px-3 bg-yellow-500 hover:bg-yellow-400 text-slate-950 text-[10px] font-bold rounded-lg transition-colors flex items-center justify-center shadow-md shadow-yellow-500/20"
+              key: exp.id,
+              className: `rounded-xl p-3.5 transition-all cursor-pointer border ${isSelected ? "bg-gradient-to-br from-indigo-950/60 via-slate-900/90 to-yellow-950/20 border-yellow-400/90 shadow-xl shadow-yellow-500/10 ring-1 ring-yellow-400/50" : "bg-slate-900/60 border-slate-800/80 hover:border-indigo-500/50 hover:bg-slate-900/90"}`,
+              onClick: () => handleSelectCameraMode(exp.id)
             },
-            /* @__PURE__ */ import_react3.default.createElement("span", null, "Launch"),
-            /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-play ml-1 text-[8px]" })
-          ))
-        );
-      }), filteredConfigs.length === 0 && /* @__PURE__ */ import_react3.default.createElement("div", { className: "py-8 text-center text-xs text-slate-500 space-y-1" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-folder-open text-2xl mb-1 block" }), 'No experiments match "', searchQuery, '"'))))
+            /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center justify-between gap-2 pb-1.5" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement(
+              "span",
+              {
+                className: "text-[10px] font-mono font-bold px-2 py-0.5 rounded shadow-sm",
+                style: {
+                  color: exp.colorHex,
+                  backgroundColor: `${exp.colorHex}20`,
+                  border: `1px solid ${exp.colorHex}50`
+                }
+              },
+              exp.id.toUpperCase().replace("_", "")
+            ), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[10px] text-slate-400 font-mono capitalize" }, exp.category)), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[9px] font-mono font-bold text-emerald-400 flex items-center bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-check-double mr-1 text-[8px]" }), " Verified Lab Data")),
+            /* @__PURE__ */ import_react3.default.createElement("h4", { className: "text-xs sm:text-sm font-bold text-slate-100 hover:text-yellow-400 transition-colors leading-snug" }, obs?.title || exp.name),
+            insight && /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-2 p-1.5 rounded-lg bg-slate-950/70 border border-indigo-900/50 flex items-center justify-between text-[10px] font-mono" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-indigo-300 font-semibold truncate flex items-center gap-1.5" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: `fa-solid ${insight.icon} text-indigo-400` }), insight.symmetry)),
+            insight && /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-1.5 flex items-center text-[10px] font-mono text-amber-300/80 space-x-1" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-bolt text-yellow-400 text-[9px]" }), /* @__PURE__ */ import_react3.default.createElement("span", null, insight.specs)),
+            /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex flex-wrap gap-1 mt-2" }, exp.components.slice(0, 3).map((comp, cIdx) => /* @__PURE__ */ import_react3.default.createElement(
+              "span",
+              {
+                key: cIdx,
+                className: "text-[9px] font-mono px-2 py-0.5 rounded bg-slate-950 text-slate-400 border border-slate-800 flex items-center gap-1"
+              },
+              /* @__PURE__ */ import_react3.default.createElement("span", { className: "w-1 h-1 rounded-full bg-indigo-400" }),
+              comp.name
+            ))),
+            /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between gap-2" }, /* @__PURE__ */ import_react3.default.createElement(
+              "button",
+              {
+                onClick: (e) => {
+                  e.stopPropagation();
+                  setGuideModalExpId(exp.id);
+                },
+                className: "flex-1 py-1.5 px-2 bg-indigo-950/50 hover:bg-indigo-900/80 border border-indigo-600/40 hover:border-yellow-400 text-slate-200 text-[10px] font-semibold rounded-lg transition-all flex items-center justify-center space-x-1.5 shadow-sm"
+              },
+              /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-graduation-cap text-yellow-400" }),
+              /* @__PURE__ */ import_react3.default.createElement("span", null, "Student Guide & Tables")
+            ), /* @__PURE__ */ import_react3.default.createElement(
+              "button",
+              {
+                onClick: (e) => {
+                  e.stopPropagation();
+                  handleLaunch(exp.id);
+                },
+                className: "py-1.5 px-3.5 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 text-[10px] font-black rounded-lg transition-all flex items-center justify-center shadow-md shadow-yellow-500/20 uppercase tracking-wider"
+              },
+              /* @__PURE__ */ import_react3.default.createElement("span", null, "Launch"),
+              /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-play ml-1.5 text-[8px]" })
+            ))
+          );
+        }), filteredConfigs.length === 0 && /* @__PURE__ */ import_react3.default.createElement("div", { className: "py-8 text-center text-xs text-slate-500 space-y-1" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-folder-open text-2xl mb-1 block" }), 'No experiments match "', searchQuery, '"')))
+      )
     ), activeBundle && /* @__PURE__ */ import_react3.default.createElement("div", { className: "absolute bottom-6 left-1/2 transform -translate-x-1/2 z-35 w-[calc(100%-2rem)] max-w-2xl bg-slate-950/90 backdrop-blur-md border-2 border-yellow-500 rounded-2xl p-4 shadow-2xl text-slate-100 pointer-events-auto flex flex-col sm:flex-row items-center justify-between gap-4" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-3" }, /* @__PURE__ */ import_react3.default.createElement(
       "div",
       {
@@ -2067,7 +2465,7 @@ var DigitalTwinApp = (() => {
         title: "Reset View"
       },
       /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-rotate-left" })
-    ))), guideModalExpId && /* @__PURE__ */ import_react3.default.createElement(
+    ))), !activeBundle && /* @__PURE__ */ import_react3.default.createElement("div", { className: "hidden sm:block absolute bottom-4 right-6 max-w-lg z-30 pointer-events-auto bg-slate-950/90 backdrop-blur-md border border-indigo-900/60 p-3.5 rounded-2xl shadow-2xl space-y-2" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center justify-between border-b border-indigo-950 pb-2" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "w-2 h-2 rounded-full bg-indigo-400 animate-ping" }), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-[10px] font-mono uppercase tracking-wider text-indigo-300 font-bold" }, "Differential Council \u2022 Heptagonal Virtual Ring (N=7)")), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2 text-[10px] font-mono text-slate-400" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-yellow-400" }, "R = 17.0m"), /* @__PURE__ */ import_react3.default.createElement("span", null, "\u2022"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-emerald-400" }, "\u03A6 = 1.618"), /* @__PURE__ */ import_react3.default.createElement("span", null, "\u2022"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-cyan-400" }, "50 Hz"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-start space-x-3 pt-1" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-7 h-7 rounded-lg bg-purple-950/80 border border-purple-600/40 flex items-center justify-center text-purple-300 text-xs flex-shrink-0 mt-0.5" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-quote-left" })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex-1 min-w-0" }, /* @__PURE__ */ import_react3.default.createElement("p", { className: "text-xs text-amber-200/90 italic font-serif leading-snug" }, '"', PHILOSOPHICAL_APHORISMS[aphorismIdx].quote, '"'), /* @__PURE__ */ import_react3.default.createElement("div", { className: "mt-1 flex items-center justify-between text-[10px]" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-purple-300 font-semibold font-mono" }, "\u2014 ", PHILOSOPHICAL_APHORISMS[aphorismIdx].author), /* @__PURE__ */ import_react3.default.createElement("span", { className: "text-slate-500 font-mono" }, PHILOSOPHICAL_APHORISMS[aphorismIdx].role))))), guideModalExpId && /* @__PURE__ */ import_react3.default.createElement(
       StudentGuideModal,
       {
         experimentId: guideModalExpId,
