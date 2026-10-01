@@ -2171,17 +2171,10 @@ var DigitalTwinApp = (() => {
     const [hoveredBundle, setHoveredBundle] = (0, import_react3.useState)(null);
     const [searchQuery, setSearchQuery] = (0, import_react3.useState)("");
     const [categoryFilter, setCategoryFilter] = (0, import_react3.useState)("all");
-    const [drawerOpen, setDrawerOpen] = (0, import_react3.useState)(true);
+    const [drawerOpen, setDrawerOpen] = (0, import_react3.useState)(false);
     const [guideModalExpId, setGuideModalExpId] = (0, import_react3.useState)(null);
     const [showDatasheet, setShowDatasheet] = (0, import_react3.useState)(false);
     const [isMuted, setIsMuted] = (0, import_react3.useState)(soundEngine.getMuteState());
-    const [aphorismIdx, setAphorismIdx] = (0, import_react3.useState)(0);
-    (0, import_react3.useEffect)(() => {
-      const timer = setInterval(() => {
-        setAphorismIdx((prev) => (prev + 1) % PHILOSOPHICAL_APHORISMS.length);
-      }, 9e3);
-      return () => clearInterval(timer);
-    }, []);
     (0, import_react3.useEffect)(() => {
       if (!mountRef.current) return;
       const manager = new VirtualSpaceManager(mountRef.current, {
@@ -2201,6 +2194,7 @@ var DigitalTwinApp = (() => {
       } else {
         setActiveExpId(expId);
         spaceManagerRef.current?.focusOnExperiment(expId);
+        setDrawerOpen(false);
       }
     };
     const handleLaunch = (expId) => {
@@ -2216,7 +2210,7 @@ var DigitalTwinApp = (() => {
       return matchesCategory && matchesSearch;
     });
     const activeBundle = EXPERIMENT_3D_CONFIGS.find((c) => c.id === activeExpId);
-    return /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-full h-full relative bg-slate-950 overflow-hidden font-sans select-none" }, /* @__PURE__ */ import_react3.default.createElement("header", { className: "absolute top-0 left-0 right-0 z-40 bg-slate-950/85 backdrop-blur-xl border-b border-indigo-900/60 px-3 sm:px-6 py-2.5 flex items-center justify-between shadow-[0_10px_35px_rgba(0,0,0,0.85)]" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-3" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-600/30 text-yellow-400 border border-yellow-500/40 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/10 flex-shrink-0" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-bolt-lightning animate-pulse" })), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement("h1", { className: "text-xs sm:text-sm font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-sky-400 uppercase" }, "ELECTRICAL MACHINES DIGITAL TWIN LAB"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden md:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/40" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping mr-1.5" }), "SEM-5 CERTIFIED")), /* @__PURE__ */ import_react3.default.createElement("p", { className: "text-[10px] text-slate-400 font-mono tracking-tight hidden sm:block" }, "VIRTUAL 3D TESTBENCH & REAL CURRICULUM OBSERVATIONS"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "hidden lg:flex items-center space-x-1 bg-slate-900/90 border border-slate-800/90 p-1 rounded-xl shadow-inner" }, /* @__PURE__ */ import_react3.default.createElement(
+    return /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-full h-full relative bg-slate-950 overflow-hidden font-sans select-none" }, /* @__PURE__ */ import_react3.default.createElement("header", { className: "absolute top-0 left-0 right-0 z-40 bg-slate-950/85 backdrop-blur-xl border-b border-indigo-900/60 px-3 sm:px-6 py-2.5 flex items-center justify-between shadow-[0_10px_35px_rgba(0,0,0,0.85)]" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-3 flex-shrink-0" }, /* @__PURE__ */ import_react3.default.createElement("div", { className: "w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-500/20 to-amber-600/30 text-yellow-400 border border-yellow-500/40 flex items-center justify-center text-lg shadow-lg shadow-yellow-500/10 flex-shrink-0" }, /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-bolt-lightning animate-pulse" })), /* @__PURE__ */ import_react3.default.createElement("div", null, /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement("h1", { className: "text-xs sm:text-sm font-extrabold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-sky-400 uppercase whitespace-nowrap" }, "ELECTRICAL MACHINES DIGITAL TWIN LAB"), /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden xl:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/80 text-emerald-400 border border-emerald-500/40 whitespace-nowrap" }, /* @__PURE__ */ import_react3.default.createElement("span", { className: "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping mr-1.5" }), "SEM-5 CERTIFIED")), /* @__PURE__ */ import_react3.default.createElement("p", { className: "text-[10px] text-slate-400 font-mono tracking-tight hidden sm:block whitespace-nowrap" }, "VIRTUAL 3D TESTBENCH & REAL CURRICULUM OBSERVATIONS"))), /* @__PURE__ */ import_react3.default.createElement("div", { className: "hidden lg:flex items-center space-x-1 bg-slate-900/90 border border-slate-800/90 p-1 rounded-xl shadow-inner" }, /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
         onClick: () => handleSelectCameraMode("overview"),
@@ -2243,39 +2237,38 @@ var DigitalTwinApp = (() => {
         ),
         /* @__PURE__ */ import_react3.default.createElement("span", null, exp.id.toUpperCase().replace("_", ""))
       );
-    })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2" }, /* @__PURE__ */ import_react3.default.createElement(
+    })), /* @__PURE__ */ import_react3.default.createElement("div", { className: "flex items-center space-x-2 flex-shrink-0" }, /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
         onClick: () => setGuideModalExpId(activeExpId || "exp2"),
-        className: "px-3 py-1.5 bg-indigo-950/70 hover:bg-indigo-900/90 border border-indigo-500/50 hover:border-yellow-400/80 rounded-lg text-xs font-semibold text-yellow-300 transition-all flex items-center shadow-sm",
+        className: "px-3 py-1.5 bg-indigo-950/70 hover:bg-indigo-900/90 border border-indigo-500/50 hover:border-yellow-400/80 rounded-lg text-xs font-semibold text-yellow-300 transition-all flex items-center shadow-sm whitespace-nowrap",
         title: "Open Authentic Laboratory Observations & Viva Bank"
       },
       /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-graduation-cap mr-1.5 text-yellow-400" }),
-      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden xl:inline" }, "Lab Records & "),
-      "Viva"
+      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden sm:inline" }, "Lab Records & Viva"),
+      /* @__PURE__ */ import_react3.default.createElement("span", { className: "sm:hidden" }, "Records")
     ), /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
         onClick: () => setShowDatasheet(true),
-        className: "px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-yellow-500/50 rounded-lg text-xs font-semibold text-slate-200 transition-all flex items-center"
+        className: "px-3 py-1.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-yellow-500/50 rounded-lg text-xs font-semibold text-slate-200 transition-all flex items-center whitespace-nowrap"
       },
       /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-book-open mr-1.5 text-yellow-400" }),
-      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden sm:inline" }, "Machine "),
-      "Datasheets"
+      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden sm:inline" }, "Datasheets")
     ), /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
         onClick: () => setIsMuted(soundEngine.toggleMute()),
         title: isMuted ? "Enable 50 Hz stator resonance & relay acoustics" : "Mute electromechanical audio",
-        className: `px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all flex items-center ${isMuted ? "bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200" : "bg-emerald-950/70 border-emerald-500/50 text-emerald-400 shadow-sm shadow-emerald-500/20"}`
+        className: `px-3 py-1.5 rounded-lg border text-xs font-semibold transition-all flex items-center whitespace-nowrap ${isMuted ? "bg-slate-900 border-slate-700 text-slate-400 hover:text-slate-200" : "bg-emerald-950/70 border-emerald-500/50 text-emerald-400 shadow-sm shadow-emerald-500/20"}`
       },
       /* @__PURE__ */ import_react3.default.createElement("i", { className: `fa-solid ${isMuted ? "fa-volume-xmark text-slate-500" : "fa-volume-high text-emerald-400 animate-pulse"} mr-1.5` }),
-      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden sm:inline" }, isMuted ? "Audio Off" : "50Hz Live")
+      /* @__PURE__ */ import_react3.default.createElement("span", { className: "hidden md:inline" }, isMuted ? "Audio Off" : "50Hz Live")
     ), /* @__PURE__ */ import_react3.default.createElement(
       "button",
       {
         onClick: () => handleLaunch(activeExpId || "exp2"),
-        className: "px-4 py-1.5 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-xs rounded-lg transition-all shadow-lg shadow-yellow-500/25 flex items-center uppercase tracking-wider"
+        className: "px-4 py-1.5 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 text-slate-950 font-black text-xs rounded-lg transition-all shadow-lg shadow-yellow-500/25 flex items-center uppercase tracking-wider whitespace-nowrap"
       },
       /* @__PURE__ */ import_react3.default.createElement("span", null, "Enter Lab"),
       /* @__PURE__ */ import_react3.default.createElement("i", { className: "fa-solid fa-chevron-right ml-1.5" })
