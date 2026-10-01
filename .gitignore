@@ -16,6 +16,7 @@ __pycache__/
 build/
 develop-eggs/
 dist/
+!static/dist/
 downloads/
 eggs/
 .eggs/
@@ -47,6 +48,7 @@ tmp/
 .idea/
 
 # OS specific
-.DS_Store
-Thumbs.db
-
+# Node / JS
+node_modules/
+package-lock.json
+scratch/
