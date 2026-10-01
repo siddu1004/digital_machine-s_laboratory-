@@ -1,520 +1,466 @@
 """
 Virtual Lab Experiment Framework.
-Contains 12 comprehensive electrical machine experiments with aim, apparatus,
-theoretical principles, wiring setup rules, step-by-step procedures,
-observation schemas, and analysis formulas.
+SOLE SOURCE OF TRUTH: machineslabmaterials-sem-5
+Contains ONLY the 7 verified Semester-5 electrical machine experiments:
+1. EXP 2: No Load and Blocked Rotor Tests on 3-Phase Squirrel Cage Induction Motor
+2. EXP 3: Speed Control of 3-Phase Induction Motor (Pole Changing, Stator Voltage, Rotor Resistance)
+3. EXP 5: Load Test on Three-Phase Alternator
+4. EXP 6-A: Regulation of Alternator by EMF and MMF Methods
+5. EXP 6-B: Load Test on Induction Generator
+6. EXP 7: Regulation of Alternator by ZPF (Potier Triangle) Method
+7. EXP 8: Alternator on Infinite Bus Bar (V and Inverted V Curves)
 """
 
 from typing import Dict, Any, List
 
 EXPERIMENTS_REGISTRY: Dict[str, Dict[str, Any]] = {
-    "exp_im_load_test": {
-        "id": "exp_im_load_test",
-        "title": "Brake Load Test on 3-Phase Squirrel-Cage Induction Motor",
+    "exp2": {
+        "id": "exp2",
+        "number": "EXP 2",
+        "title": "No Load and Blocked Rotor Tests on 3-Phase Squirrel Cage Induction Motor",
         "machine_type": "induction_motor",
-        "aim": "To conduct load test on a 3-phase squirrel cage induction motor and determine its performance characteristics (efficiency, power factor, torque, slip, and speed vs output power).",
+        "ratings": {
+            "voltage": 415.0,
+            "current": 4.5,
+            "power_kw": 2.2,
+            "speed_rpm": 1440,
+            "frequency_hz": 50.0,
+            "phases": 3,
+            "connection": "Delta",
+            "insulation": "Class B"
+        },
+        "aim": (
+            "1. To conduct no-load test and blocked rotor test on the given 3-phase cage induction motor and obtain equivalent circuit parameters.\n"
+            "2. Using the equivalent circuit, calculate current, power factor, torque, output power, and efficiency at any given slip.\n"
+            "3. Calculate the slip for maximum power and maximum torque.\n"
+            "4. Draw the circle diagram of the 3-phase induction motor from test data."
+        ),
         "apparatus": [
-            "3-Phase Squirrel Cage Induction Motor (415V, 5HP, 1440 RPM)",
-            "3-Phase 415V, 50Hz AC Power Supply with 3-pole MCB",
-            "3-Phase Variac / Auto-transformer (0-470V, 15A)",
-            "Digital Multimeter (0-600V AC RMS)",
-            "Digital Ammeter (0-15A AC RMS)",
-            "3-Phase Power Meter (or Two-Wattmeter System: 500V, 10A, UPF/LPF)",
-            "Digital Non-contact Tachometer (0-2000 RPM)",
-            "Mechanical Brake Drum with Spring Balance Dynamometer (S1, S2 in kg)"
+            "3-Phase Squirrel Cage Induction Motor (415V, 4.5A, 2.2kW, 1440 RPM)",
+            "3-Phase Auto Transformer / Variac (0-470V, 15A)",
+            "AC Voltmeter (0-600V MI)",
+            "AC Ammeter (0-10A MI)",
+            "Wattmeters (500V, 5/10A, LPF & UPF)",
+            "Digital Tachometer (0-3000 RPM)",
+            "DC Regulated Power Supply for Stator Resistance Measurement",
+            "Mechanical Rotor Locking Clamp"
         ],
         "theory": (
-            "The direct load test is performed by applying mechanical brake torque to the motor pulley. "
-            "As the mechanical shaft load increases, the motor slows down slightly (speed drops), which increases the slip s = (Ns - N)/Ns. "
-            "The increased slip induces higher rotor EMF and higher rotor current at rotor frequency fr = s*f. "
-            "To balance this, stator draws higher line current from the mains. "
-            "Electromagnetic torque T_dev = P_ag / omega_s balances shaft load torque T_shaft + rotational losses. "
-            "Shaft output power is P_out = 2*pi*N*T / 60. Efficiency is eta = (P_out / P_in) * 100%."
+            "No-load test gives no-load losses (core loss and friction/windage loss) and magnetizing branch parameters (Rc, Xm). "
+            "Blocked rotor test gives equivalent series resistance R01 and leakage reactance X01 at slip s = 1.0."
         ),
         "equations": [
-            r"N_s = \frac{120 \times f}{P} \text{ RPM}",
-            r"s = \frac{N_s - N}{N_s}",
-            r"T_{\text{shaft}} = (S_1 - S_2) \times 9.81 \times R_{\text{drum}} \text{ N}\cdot\text{m}",
-            r"P_{\text{out}} = \frac{2 \pi N T}{60} \text{ W}",
-            r"P_{\text{in}} = \sqrt{3} V_L I_L \cos\phi \text{ W}",
-            r"\eta = \frac{P_{\text{out}}}{P_{\text{in}}} \times 100\%"
+            r"\cos\phi_0 = \frac{W_0}{\sqrt{3} V_0 I_0}",
+            r"I_w = I_0 \cos\phi_0, \quad I_m = I_0 \sin\phi_0",
+            r"R_c = \frac{V_{0,\text{ph}}}{I_w}, \quad X_m = \frac{V_{0,\text{ph}}}{I_m}",
+            r"R_{01} = \frac{W_{sc}}{3 I_{sc,\text{ph}}^2}, \quad Z_{01} = \frac{V_{sc,\text{ph}}}{I_{sc,\text{ph}}}",
+            r"X_{01} = \sqrt{Z_{01}^2 - R_{01}^2}, \quad X_1 = X_2' = \frac{X_{01}}{2}",
+            r"R_1 = 1.2 \times R_{dc}, \quad R_2' = R_{01} - R_1"
         ],
         "procedure_steps": [
-            "Step 1: Check mechanical brake drum; ensure belt is loose and drum turns freely without initial friction.",
-            "Step 2: Connect the motor terminals (U1, V1, W1) through 3-phase power meter and ammeter to the 3-phase AC supply.",
-            "Step 3: Switch ON the 3-phase main circuit breaker. Bring supply voltage to rated 415V using the variac.",
-            "Step 4: Start the motor under NO-LOAD condition. Record no-load speed (N0), line current (I0), and no-load power (P0).",
-            "Step 5: Gradually tighten the brake belt in progressive steps. At each load step, record: Line Voltage (V), Line Current (I), Input Power (W1, W2 or Pin), Spring balances (S1, S2), and Rotor Speed (N).",
-            "Step 6: Maintain cooling water flow in brake drum pulley if testing high load steps to avoid overheating.",
-            "Step 7: Do not exceed the motor's rated current (7.5A). After recording full load data, gradually loosen the brake belt.",
-            "Step 8: Turn OFF the supply breaker and inspect all readings."
+            "1. NO-LOAD TEST: Set variac to 0V. Switch ON 3-phase 415V 50Hz supply. Increase variac to rated 415V.",
+            "2. Record no-load voltage V0, no-load current I0, power W0, and speed N0.",
+            "3. Reduce variac to zero and switch OFF supply.",
+            "4. BLOCKED ROTOR TEST: Mechanically lock motor rotor using locking clamp.",
+            "5. Apply low voltage and increase until line current reaches rated 4.7A. Quickly record Vsc, Isc, and Wsc.",
+            "6. Turn variac to zero and switch OFF.",
+            "7. Measure stator DC resistance Rdc using voltmeter-ammeter method and determine effective AC resistance R1 = 1.2 * Rdc."
         ],
         "observation_columns": [
-            {"key": "v_line", "label": "V_line", "unit": "V"},
-            {"key": "i_line", "label": "I_line", "unit": "A"},
-            {"key": "p_in", "label": "P_in", "unit": "W"},
-            {"key": "speed", "label": "Speed (N)", "unit": "RPM"},
-            {"key": "s1", "label": "Spring S1", "unit": "kg"},
-            {"key": "s2", "label": "Spring S2", "unit": "kg"},
-            {"key": "torque", "label": "Torque (T)", "unit": "Nm"},
-            {"key": "p_out", "label": "P_out", "unit": "W"},
-            {"key": "efficiency", "label": "Efficiency (η)", "unit": "%"},
-            {"key": "slip", "label": "Slip (s)", "unit": "pu"},
+            {"key": "test", "label": "Test Type", "unit": ""},
+            {"key": "voltage", "label": "Voltage (V)", "unit": "V"},
+            {"key": "current", "label": "Current (A)", "unit": "A"},
+            {"key": "power", "label": "Power (W)", "unit": "W"},
+            {"key": "speed", "label": "Speed (RPM)", "unit": "RPM"},
             {"key": "pf", "label": "Power Factor", "unit": ""}
         ],
-        "viva_topics": [
-            "Why does slip increase when load is applied?",
-            "What constitutes the no-load losses in an induction motor?",
-            "Why is the power factor very low at no load (around 0.1 to 0.2)?",
-            "What is the physical meaning of air-gap power P_ag?"
+        "verified_observations": [
+            {"test": "No-Load Test (MF=4)", "voltage": 415.0, "current": 2.60, "power": 180.0, "speed": 1498, "pf": 0.096},
+            {"test": "Blocked Rotor Test (MF=1)", "voltage": 114.0, "current": 4.70, "power": 260.0, "speed": 0, "pf": 0.280},
+            {"test": "DC Stator Resistance (Mean)", "voltage": 20.0, "current": 2.50, "power": 50.0, "speed": 0, "pf": 1.0, "r_dc": 7.9007, "r_eff": 9.4808}
         ]
     },
-    "exp_im_no_load": {
-        "id": "exp_im_no_load",
-        "title": "No-Load (Open Shaft) Test on 3-Phase Induction Motor",
-        "machine_type": "induction_motor",
-        "aim": "To perform no-load test on a 3-phase induction motor to determine no-load losses (core loss and friction/windage loss) and magnetizing branch parameters (Rc and Xm).",
-        "apparatus": ["3-Phase Induction Motor", "3-Phase Variac", "Ammeter", "Voltmeter", "Two LPF Wattmeters", "Tachometer"],
-        "theory": "At no load, slip is negligible (s ~ 0.001), hence the rotor branch impedance R2'/s approaches infinity and draws negligible current. The input current consists almost entirely of core loss current Ic and magnetizing current Im.",
-        "procedure_steps": [
-            "Connect motor with no mechanical load coupled to shaft.",
-            "Apply rated 415V line voltage at 50Hz.",
-            "Record V0, I0, W0, and N0."
+    "exp3": {
+        "id": "exp3",
+        "number": "EXP 3",
+        "title": "Speed Control of 3-Phase Induction Motor",
+        "machine_type": "slip_ring_induction_motor",
+        "ratings": {
+            "voltage": 415.0,
+            "current": 4.5,
+            "frequency_hz": 50.0,
+            "poles": [2, 4, 6],
+            "rotor_type": "Slip-ring wound rotor"
+        },
+        "aim": (
+            "1. To control the speed of the 3-phase induction motor by pole changing method (2, 4, 6 poles).\n"
+            "2. To control speed by changing external rotor resistance and plot speed variation with rotor resistance.\n"
+            "3. To control speed by varying stator input voltage at no-load and 25% full-load."
+        ),
+        "apparatus": [
+            "3-Phase Slip Ring Induction Motor with Pole Changing Tappings",
+            "3-Phase Auto Transformer / Variac (0-470V, 15A)",
+            "3-Phase External Rotor Resistance Rheostat Bank (0-120 Ohm)",
+            "AC Voltmeter (0-600V)",
+            "AC Ammeter (0-10A)",
+            "Digital Tachometer (0-3000 RPM)"
         ],
-        "observation_columns": [
-            {"key": "v_line", "label": "V0", "unit": "V"},
-            {"key": "i_line", "label": "I0", "unit": "A"},
-            {"key": "p_in", "label": "W0", "unit": "W"},
-            {"key": "speed", "label": "N0", "unit": "RPM"}
-        ]
-    },
-    "exp_im_blocked_rotor": {
-        "id": "exp_im_blocked_rotor",
-        "title": "Blocked Rotor (Short Circuit) Test on 3-Phase Induction Motor",
-        "machine_type": "induction_motor",
-        "aim": "To determine equivalent series resistance (R01), leakage reactance (X01), and full-load copper losses by mechanically locking the rotor (s = 1.0).",
-        "apparatus": ["3-Phase Induction Motor with Rotor Locking Clamp", "3-Phase Variac", "Ammeter", "Voltmeter", "Wattmeters"],
-        "theory": "With rotor locked, s = 1. A reduced voltage is applied to circulate rated stator current. Core loss is negligible because applied voltage is small.",
-        "procedure_steps": [
-            "Clamp rotor securely so it cannot rotate.",
-            "Starting from 0V, gradually increase variac voltage until line current reaches rated current (7.5A).",
-            "Quickly record V_sc, I_sc, and P_sc to prevent winding overheating."
-        ],
-        "observation_columns": [
-            {"key": "v_line", "label": "V_sc", "unit": "V"},
-            {"key": "i_line", "label": "I_sc", "unit": "A"},
-            {"key": "p_in", "label": "P_sc", "unit": "W"}
-        ]
-    },
-    "exp_alt_load_test": {
-        "id": "exp_alt_load_test",
-        "title": "Load Test & Voltage Regulation of 3-Phase Alternator",
-        "machine_type": "synchronous_alternator",
-        "aim": "To determine the load characteristics and percentage voltage regulation of a 3-phase alternator under unity, lagging, and leading power factor loads.",
-        "apparatus": ["Synchronous Generator coupled to DC Motor prime mover", "DC Excitation Unit (0-220V)", "3-Phase R-L-C Load Bank", "Multimeter", "Power Meter"],
-        "theory": "Terminal voltage Vt varies with load current Ia and power factor due to armature resistance drop Ia*Ra, leakage reactance drop Ia*Xl, and armature reaction demagnetization/magnetization.",
-        "procedure_steps": [
-            "Run prime mover to bring alternator to synchronous speed (1500 RPM for 4 poles, 50Hz).",
-            "Adjust DC field current until open circuit terminal voltage equals rated 415V.",
-            "Gradually apply electrical load on alternator output terminals while maintaining rated speed.",
-            "Record terminal voltage, armature current, power factor, and active/reactive power at each step."
-        ],
-        "observation_columns": [
-            {"key": "armature_current", "label": "Ia", "unit": "A"},
-            {"key": "terminal_voltage", "label": "Vt (Line)", "unit": "V"},
-            {"key": "power_factor", "label": "PF", "unit": ""},
-            {"key": "active_power", "label": "P", "unit": "W"},
-            {"key": "voltage_regulation", "label": "VR", "unit": "%"}
-        ]
-    },
-    "exp_dc_shunt_load": {
-        "id": "exp_dc_shunt_load",
-        "title": "Load Characteristics of DC Shunt Motor",
-        "machine_type": "dc_shunt_motor",
-        "aim": "To determine speed-armature current, torque-armature current, and speed-torque characteristics of a DC shunt motor.",
-        "apparatus": ["DC Shunt Motor (220V, 3HP)", "3-Point Starter", "Field Rheostat", "Ammeter", "Voltmeter", "Brake Drum Dynamometer"],
-        "theory": "Speed N = (Vt - Ia*Ra) / (k*phi). Since field flux phi is virtually constant, speed drops only slightly with load due to armature resistance drop Ia*Ra.",
-        "procedure_steps": [
-            "Connect DC shunt motor with 3-point starter and field rheostat set to minimum resistance position.",
-            "Switch ON 220V DC supply and start motor using 3-point starter handle.",
-            "Adjust field rheostat to set no-load speed to rated 1500 RPM.",
-            "Gradually apply mechanical brake load in steps up to rated current, recording V, Ia, N, and Spring balances S1, S2."
-        ],
-        "observation_columns": [
-            {"key": "line_current", "label": "I_line", "unit": "A"},
-            {"key": "armature_current", "label": "I_a", "unit": "A"},
-            {"key": "speed", "label": "Speed (N)", "unit": "RPM"},
-            {"key": "torque", "label": "Torque (T)", "unit": "Nm"},
-            {"key": "efficiency", "label": "Efficiency", "unit": "%"}
-        ]
-    },
-    "exp_transformer_oc_sc": {
-        "id": "exp_transformer_oc_sc",
-        "title": "Open Circuit & Short Circuit Tests on Single Phase Transformer",
-        "machine_type": "single_phase_transformer",
-        "aim": "To determine equivalent circuit parameters, predetermine efficiency and voltage regulation at various loads and power factors without actual loading.",
-        "apparatus": ["1-Phase Transformer (230V/115V, 3kVA)", "Variac (0-270V)", "Voltmeters", "Ammeters", "LPF & UPF Wattmeters"],
-        "theory": "OC test on LV side yields core loss Rc and Xm. SC test on HV side with LV shorted yields equivalent series resistance R01 and leakage reactance X01.",
-        "equations": [
-            r"R_c = \frac{V_0^2}{W_0}",
-            r"X_m = \frac{V_0^2}{Q_0} = \frac{V_0}{I_m}",
-            r"R_{01} = \frac{W_{sc}}{I_{sc}^2}",
-            r"Z_{01} = \frac{V_{sc}}{I_{sc}}, \quad X_{01} = \sqrt{Z_{01}^2 - R_{01}^2}"
-        ],
-        "procedure_steps": [
-            "Perform OC test: Keep HV winding open, apply rated 115V to LV winding, measure V0, I0, W0.",
-            "Perform SC test: Dead short LV winding, apply low voltage to HV winding to circulate rated current, record Vsc, Isc, Wsc."
-        ],
-        "observation_columns": [
-            {"key": "test_type", "label": "Test", "unit": ""},
-            {"key": "voltage", "label": "Voltage", "unit": "V"},
-            {"key": "current", "label": "Current", "unit": "A"},
-            {"key": "power", "label": "Power", "unit": "W"}
-        ],
-        "viva_topics": [
-            "Why is the OC test performed on the LV side?",
-            "Why is copper loss negligible during the OC test?",
-            "What is the significance of LPF wattmeter in OC test?"
-        ]
-    },
-    "exp_im_speed_control": {
-        "id": "exp_im_speed_control",
-        "title": "Speed Control of 3-Phase Induction Motor (V/f Control & Stator Voltage)",
-        "machine_type": "induction_motor",
-        "aim": "To investigate speed control characteristics of a 3-phase induction motor by variable voltage variable frequency (V/f) control and stator voltage control.",
-        "apparatus": ["3-Phase Induction Motor", "Variable Frequency Drive (VFD) Inverter", "3-Phase Variac", "Digital Tachometer", "Power Analyzer"],
-        "theory": "Synchronous speed Ns = 120f/P depends directly on supply frequency f. By maintaining a constant V/f ratio, maximum torque is kept constant while operating speed is controlled smoothly over a wide range without magnetic core saturation.",
-        "equations": [
-            r"N_s = \frac{120 \times f}{P}",
-            r"\Phi_{\text{airgap}} \propto \frac{V}{f} \approx \text{constant}",
-            r"T_{\text{max}} \propto \left(\frac{V}{f}\right)^2 \approx \text{constant}"
-        ],
-        "procedure_steps": [
-            "Connect the induction motor to the variable frequency AC source.",
-            "Vary supply frequency in steps from 20 Hz to 60 Hz while adjusting voltage proportionally to keep V/f constant (8.3 V/Hz).",
-            "At each frequency step, measure motor shaft speed, line voltage, current, and starting torque.",
-            "Plot speed vs frequency and torque vs speed curves."
-        ],
-        "observation_columns": [
-            {"key": "frequency", "label": "Frequency (f)", "unit": "Hz"},
-            {"key": "v_line", "label": "Voltage (V)", "unit": "V"},
-            {"key": "v_f_ratio", "label": "V/f Ratio", "unit": "V/Hz"},
-            {"key": "speed", "label": "Speed (N)", "unit": "RPM"},
-            {"key": "i_line", "label": "Current (I)", "unit": "A"}
-        ],
-        "viva_topics": [
-            "Why must V/f ratio be maintained constant below base frequency?",
-            "What happens to core flux if frequency is reduced without lowering voltage?",
-            "Why is stator resistance compensation boost required at very low frequencies?"
-        ]
-    },
-    "exp_alt_synchronization": {
-        "id": "exp_alt_synchronization",
-        "title": "Synchronization of Alternator with Infinite Bus (Three-Lamp & Synchroscope)",
-        "machine_type": "synchronous_alternator",
-        "aim": "To synchronize an incoming 3-phase alternator with the infinite busbar using dark lamp, bright lamp, and synchroscope methods.",
-        "apparatus": ["3-Phase Alternator with DC Prime Mover", "Synchronizing Switch", "Three Synchronizing Lamps", "Synchroscope", "Dual Voltmeter", "Dual Frequency Meter"],
-        "theory": "For safe paralleling without circulating transient currents, five conditions must be satisfied: identical terminal voltage magnitudes, identical frequencies, identical phase sequence, zero phase angle displacement, and matching waveform shapes.",
-        "equations": [
-            r"V_{\text{incoming}} = V_{\text{bus}}",
-            r"f_{\text{incoming}} = f_{\text{bus}} \pm 0.1 \text{ Hz}",
-            r"\Delta \theta = 0^\circ"
-        ],
-        "procedure_steps": [
-            "Drive alternator to rated speed (1500 RPM) using prime mover.",
-            "Adjust DC field rheostat until alternator line voltage exactly matches infinite busbar voltage.",
-            "Observe the synchronization lamps. In dark lamp connection, lamps flicker simultaneously if phase sequence is identical.",
-            "Adjust prime mover speed fine trim until flicker rate becomes very slow (< 1 cycle per 5 seconds).",
-            "Close synchronizing switch exactly at the instant when the top lamp is dark (or synchroscope pointer points to 12 o'clock)."
-        ],
-        "observation_columns": [
-            {"key": "v_bus", "label": "V_bus", "unit": "V"},
-            {"key": "v_alt", "label": "V_alt", "unit": "V"},
-            {"key": "f_bus", "label": "f_bus", "unit": "Hz"},
-            {"key": "f_alt", "label": "f_alt", "unit": "Hz"},
-            {"key": "phase_angle", "label": "Phase Diff (Δθ)", "unit": "deg"},
-            {"key": "status", "label": "Lamp State", "unit": ""}
-        ],
-        "viva_topics": [
-            "What happens if the synchronizing switch is closed when the phase angle difference is 180 degrees?",
-            "How does the synchroscope indicate whether the incoming alternator is running faster or slower?",
-            "What is synchronizing power and synchronizing torque?"
-        ]
-    },
-    "exp_dc_shunt_speed_control": {
-        "id": "exp_dc_shunt_speed_control",
-        "title": "Speed Control of DC Shunt Motor (Armature Voltage & Field Flux Control)",
-        "machine_type": "dc_shunt_motor",
-        "aim": "To control the speed of a DC shunt motor below rated speed by armature voltage control and above rated speed by field flux weakening.",
-        "apparatus": ["DC Shunt Motor (220V, 3HP)", "Armature Rheostat", "Field Rheostat", "Digital Tachometer", "Ammeters", "Voltmeter"],
-        "theory": "Motor speed is governed by N = (Vt - Ia*Ra) / (k*phi). By introducing external resistance in the armature circuit (or varying armature voltage), speed is varied below base speed. By introducing resistance in field circuit, flux phi decreases, driving speed above base speed (flux weakening mode).",
-        "equations": [
-            r"N = \frac{V_t - I_a(R_a + R_{\text{ext}})}{k \Phi}",
-            r"\text{Armature control: } N < N_{\text{rated}} \quad (\text{Constant Torque drive})",
-            r"\text{Field control: } N > N_{\text{rated}} \quad (\text{Constant Power drive})"
-        ],
-        "procedure_steps": [
-            "Connect the DC shunt motor with armature and field rheostats.",
-            "Part A (Armature Control): Keep field current at rated maximum. Vary armature resistance from max to min, recording armature voltage and speed.",
-            "Part B (Field Weakening): Keep armature voltage at rated 220V. Increase field rheostat resistance to decrease field current from rated down to safe limit, recording speed vs If."
-        ],
-        "observation_columns": [
-            {"key": "control_mode", "label": "Mode", "unit": ""},
-            {"key": "armature_voltage", "label": "V_arm", "unit": "V"},
-            {"key": "field_current", "label": "I_field", "unit": "A"},
-            {"key": "speed", "label": "Speed (N)", "unit": "RPM"},
-            {"key": "armature_current", "label": "I_arm", "unit": "A"}
-        ],
-        "viva_topics": [
-            "Why is field control suitable for constant-power applications?",
-            "What is the danger of opening the field circuit of a running DC shunt motor?",
-            "Why can armature rheostatic control only achieve speeds below rated speed?"
-        ]
-    },
-    "exp_sync_motor_v_curves": {
-        "id": "exp_sync_motor_v_curves",
-        "title": "V-Curves and Inverted V-Curves of Synchronous Motor",
-        "machine_type": "synchronous_motor",
-        "aim": "To determine the V-curves (armature current vs field current) and inverted V-curves (power factor vs field current) of a 3-phase synchronous motor at no-load and full-load.",
-        "apparatus": ["3-Phase Synchronous Motor (415V, 5HP)", "DC Field Excitation Supply (0-220V, 5A)", "3-Phase Power Factor Meter", "AC Ammeter", "DC Ammeter"],
-        "theory": "A synchronous motor operates at constant synchronous speed Ns = 120f/P regardless of load up to pull-out torque. Varying the DC field excitation changes the generated back EMF Ef. At under-excitation, Ef*cos(delta) < V_ph, causing the motor to draw lagging current (acts like an inductor). At normal excitation, PF = 1.0 (minimum Ia). At over-excitation, Ef*cos(delta) > V_ph, drawing leading current (acts like a synchronous condenser).",
-        "equations": [
-            r"\mathbf{V}_{\text{ph}} = \mathbf{E}_f + \mathbf{I}_a (R_a + jX_s)",
-            r"P_{\text{in}} = \frac{3 V_{\text{ph}} E_f}{X_s} \sin\delta",
-            r"\text{Unity PF at: } E_f \cos\delta = V_{\text{ph}} - I_a R_a"
-        ],
-        "procedure_steps": [
-            "Start synchronous motor using damper windings / auxiliary starter and bring into synchronism at no-load.",
-            "Vary DC field excitation current from minimum excitation (under-excited) up to maximum permissible field current (over-excited).",
-            "At each field current step, record Armature Current (Ia), Field Current (If), and Power Factor (cos phi).",
-            "Repeat the procedure under 50% rated mechanical shaft load.",
-            "Plot Ia vs If (V-curve) and cos phi vs If (Inverted V-curve)."
-        ],
-        "observation_columns": [
-            {"key": "field_current", "label": "I_field (If)", "unit": "A"},
-            {"key": "armature_current", "label": "I_armature (Ia)", "unit": "A"},
-            {"key": "power_factor", "label": "Power Factor (cos φ)", "unit": ""},
-            {"key": "pf_mode", "label": "PF Mode", "unit": ""},
-            {"key": "active_power", "label": "P_in", "unit": "W"}
-        ],
-        "viva_topics": [
-            "Why does armature current reach a minimum at unity power factor?",
-            "What is a synchronous condenser and where is it used in utility power grids?",
-            "What determines the pull-out torque of a synchronous motor?"
-        ]
-    },
-    "exp_transformer_load_test": {
-        "id": "exp_transformer_load_test",
-        "title": "Direct Load Test on Single-Phase Transformer for Efficiency & Regulation",
-        "machine_type": "single_phase_transformer",
-        "aim": "To conduct direct load test on a single-phase transformer and determine its efficiency and voltage regulation from no-load to 125% full load.",
-        "apparatus": ["1-Phase Transformer (230V/115V, 3kVA)", "Single-Phase Load Bank (Resistive & Inductive)", "Digital Ammeters", "Digital Voltmeters", "Digital Wattmeters"],
-        "theory": "Direct loading subjects the transformer to simultaneous core and copper losses under actual operating conditions. As secondary load current I2 increases, secondary terminal voltage V2 decreases for lagging loads due to internal resistance and leakage reactance voltage drops. Efficiency eta = (P_out / P_in) * 100%.",
-        "equations": [
-            r"\text{Efficiency } \eta = \frac{V_2 I_2 \cos\phi_2}{W_1} \times 100\%",
-            r"\text{Voltage Regulation } \% = \frac{V_{2,\text{no-load}} - V_{2,\text{load}}}{V_{2,\text{no-load}}} \times 100\%"
-        ],
-        "procedure_steps": [
-            "Connect primary winding to 230V AC mains through input voltmeter, ammeter, and wattmeter.",
-            "Connect secondary winding to load bank through output voltmeter, ammeter, and wattmeter.",
-            "Energize transformer with load switch OPEN; record no-load primary and secondary voltages.",
-            "Increase load current in regular steps up to 125% rated current. At each step, record V1, I1, W1, V2, I2, and W2.",
-            "Plot efficiency vs output power and secondary voltage vs load current."
-        ],
-        "observation_columns": [
-            {"key": "v1_primary", "label": "V1", "unit": "V"},
-            {"key": "i1_primary", "label": "I1", "unit": "A"},
-            {"key": "p1_input", "label": "W1 (P_in)", "unit": "W"},
-            {"key": "v2_secondary", "label": "V2", "unit": "V"},
-            {"key": "i2_secondary", "label": "I2", "unit": "A"},
-            {"key": "p2_output", "label": "W2 (P_out)", "unit": "W"},
-            {"key": "efficiency", "label": "Efficiency (η)", "unit": "%"},
-            {"key": "regulation", "label": "Voltage Reg", "unit": "%"}
-        ],
-        "viva_topics": [
-            "At what condition is the efficiency of a transformer maximum?",
-            "Why is direct load test limited to small transformers in practice?",
-            "How does load power factor affect voltage regulation?"
-        ]
-    },
-    "exp_3ph_transformer_vector_parallel": {
-        "id": "exp_3ph_transformer_vector_parallel",
-        "title": "Vector Group Identification & Parallel Operation of 3-Phase Transformers",
-        "machine_type": "three_phase_transformer",
-        "aim": "To verify vector group connection (Dyn11, Ynd1) and demonstrate load sharing during parallel operation of two 3-phase transformers.",
-        "apparatus": ["Two 3-Phase Transformers (415V/230V, 10kVA)", "3-Phase Load Bank", "AC Voltmeters", "Phase Angle Meter", "Synchronization Switch"],
-        "theory": "Parallel operation requires equal voltage ratios, identical vector group phase shift (e.g. both Dyn11), identical phase sequence, and per-unit impedances inversely proportional to kVA ratings to ensure proportional load sharing without circulating currents.",
-        "equations": [
-            r"\frac{S_{A}}{S_{B}} = \frac{Z_{B}}{Z_{A}}",
-            r"I_{\text{circulating}} = \frac{E_A - E_B}{Z_A + Z_B}"
-        ],
-        "procedure_steps": [
-            "Verify polarity and vector group phase shift of each transformer using voltmeter method.",
-            "Connect primaries of both transformers to 415V 3-phase AC supply in parallel.",
-            "Connect secondaries with one terminal common. Measure potential difference across remaining terminal pairs to verify zero voltage before paralleling.",
-            "Close paralleling switch and apply 3-phase balanced load.",
-            "Measure load currents I_total, I_A, I_B, and terminal voltage to evaluate proportional load sharing."
-        ],
-        "observation_columns": [
-            {"key": "v_bus", "label": "V_bus", "unit": "V"},
-            {"key": "i_load", "label": "I_total", "unit": "A"},
-            {"key": "i_trafo_a", "label": "I_Trafo_A", "unit": "A"},
-            {"key": "i_trafo_b", "label": "I_Trafo_B", "unit": "A"},
-            {"key": "circulating_current", "label": "I_circ", "unit": "A"}
-        ],
-        "viva_topics": [
-            "What are the mandatory conditions for parallel operation of three-phase transformers?",
-            "Can a Dyn11 transformer be operated in parallel with a Yd1 transformer?",
-            "What is the consequence of unequal per-unit impedances in parallel transformers?"
-        ]
-    },
-    "exp_alt_emf_mmf_regulation": {
-        "id": "exp_alt_emf_mmf_regulation",
-        "title": "Voltage Regulation of Alternator by EMF (Synchronous Impedance) & MMF (Ampere-Turn) Methods",
-        "machine_type": "synchronous_alternator",
-        "aim": "To predetermine the percentage voltage regulation of a 3-phase alternator for various power factors using EMF and MMF methods by obtaining OCC and SCC curves.",
-        "apparatus": ["3-Phase Alternator coupled to DC Motor Prime Mover", "DC Field Rheostat", "AC Voltmeter", "AC Ammeter", "DC Ammeters"],
         "theory": (
-            "EMF Method (Pessimistic Method): Assumes magnetic circuit is unsaturated and replaces armature reaction flux by fictitious synchronous reactance drop I*Xs. "
-            "MMF Method (Optimistic Method): Replaces armature resistance and leakage reactance voltage drops by equivalent field ampere-turns."
+            "Synchronous speed Ns = 120*f/P. Changing stator poles changes Ns.\n"
+            "Rotor resistance control increases total rotor resistance R2 + R_ext, increasing slip for any given load torque and lowering speed.\n"
+            "Stator voltage control varies developed torque with V^2; at reduced voltage, motor operates at higher slip to produce required load torque."
         ),
         "equations": [
-            r"Z_s = \left.\frac{E_{0(\text{ph})}}{I_{sc(\text{ph})}}\right|_{I_f = \text{const}}, \quad X_s = \sqrt{Z_s^2 - R_a^2}",
+            r"N_s = \frac{120 f}{P}",
+            r"N = N_s (1 - s)",
+            r"T \propto \frac{V^2 (R_2 + R_{\text{ext}})}{s}",
+            r"s_{\text{max}} = \frac{R_2 + R_{\text{ext}}}{\sqrt{R_1^2 + (X_1 + X_2)^2}}"
+        ],
+        "procedure_steps": [
+            "1. POLE CHANGING: Connect stator for 6-pole, apply 415V, record speed (998 RPM). Repeat for 4-pole (1499 RPM) and 2-pole (2999 RPM).",
+            "2. STATOR VOLTAGE CONTROL: Apply 20% (83V), 40% (166V), 60% (249V), 80% (332V), 100% (415V). Record no-load speed. Apply 25% load and repeat.",
+            "3. ROTOR RHEOSTAT CONTROL: Start with rotor rheostat at minimum. Increase resistance in steps (31.43Ω to 116.84Ω). Record speed (1296 to 507 RPM)."
+        ],
+        "observation_columns": [
+            {"key": "method", "label": "Method / Step", "unit": ""},
+            {"key": "voltage", "label": "Stator V", "unit": "V"},
+            {"key": "poles", "label": "Poles", "unit": "P"},
+            {"key": "r_ext", "label": "R_ext", "unit": "Ω"},
+            {"key": "speed_noload", "label": "Speed No-Load", "unit": "RPM"},
+            {"key": "speed_loaded", "label": "Speed 25% Load", "unit": "RPM"}
+        ],
+        "verified_observations": [
+            {"method": "Pole Changing (6-Pole)", "voltage": 415, "poles": 6, "r_ext": 0, "speed_noload": 998, "speed_loaded": 960},
+            {"method": "Pole Changing (4-Pole)", "voltage": 415, "poles": 4, "r_ext": 0, "speed_noload": 1499, "speed_loaded": 1440},
+            {"method": "Pole Changing (2-Pole)", "voltage": 415, "poles": 2, "r_ext": 0, "speed_noload": 2999, "speed_loaded": 2880},
+            {"method": "Voltage 20% (83V)", "voltage": 83, "poles": 4, "r_ext": 0, "speed_noload": 1470, "speed_loaded": 1320},
+            {"method": "Voltage 40% (166V)", "voltage": 166, "poles": 4, "r_ext": 0, "speed_noload": 1486, "speed_loaded": 1365},
+            {"method": "Voltage 60% (249V)", "voltage": 249, "poles": 4, "r_ext": 0, "speed_noload": 1491, "speed_loaded": 1400},
+            {"method": "Voltage 80% (332V)", "voltage": 332, "poles": 4, "r_ext": 0, "speed_noload": 1493, "speed_loaded": 1447},
+            {"method": "Voltage 100% (415V)", "voltage": 415, "poles": 4, "r_ext": 0, "speed_noload": 1494, "speed_loaded": 1465},
+            {"method": "Rotor Rheostat R=31.43Ω", "voltage": 415, "poles": 4, "r_ext": 31.43, "speed_noload": 1494, "speed_loaded": 1296},
+            {"method": "Rotor Rheostat R=41.05Ω", "voltage": 415, "poles": 4, "r_ext": 41.05, "speed_noload": 1494, "speed_loaded": 1135},
+            {"method": "Rotor Rheostat R=60.00Ω", "voltage": 415, "poles": 4, "r_ext": 60.00, "speed_noload": 1494, "speed_loaded": 954},
+            {"method": "Rotor Rheostat R=116.84Ω", "voltage": 415, "poles": 4, "r_ext": 116.84, "speed_noload": 1494, "speed_loaded": 507}
+        ]
+    },
+    "exp5": {
+        "id": "exp5",
+        "number": "EXP 5",
+        "title": "Load Test on Three-Phase Alternator",
+        "machine_type": "synchronous_alternator",
+        "ratings": {
+            "alternator": "3.5 kVA, 415 V Star, 4.8 A rated, 1500 RPM, 50 Hz",
+            "prime_mover": "DC Shunt Motor (220 V, 19 A, 1500 RPM, 5 HP / 3.68 kW)",
+            "excitation": "0-220 V DC Variable Field Supply, If = 0-2.0 A"
+        },
+        "aim": "To conduct load test on a 3-phase alternator and determine its percentage voltage regulation and efficiency characteristics under varying electrical load current.",
+        "apparatus": [
+            "3-Phase Synchronous Alternator coupled to DC Shunt Motor Prime Mover",
+            "3-Phase Balanced Resistive Lamp Load Bank (0-10A)",
+            "DC Motor 3-Point Starter",
+            "Field Rheostats (300 Ohm, 1.5A)",
+            "AC Voltmeter (0-600V)",
+            "AC Ammeter (0-10A)",
+            "DC Field Ammeter (0-2A)",
+            "Digital Tachometer (0-2000 RPM)"
+        ],
+        "theory": (
+            "When load is drawn from an alternator, terminal voltage Vt drops due to armature resistance drop Ia*Ra, "
+            "leakage reactance drop Ia*Xl, and armature reaction drop. "
+            "Percentage Voltage Regulation = [(E0 - Vt) / E0] * 100%."
+        ),
+        "equations": [
+            r"P_0 = \sqrt{3} V_t I_L \cos\phi \text{ Watts}",
+            r"\% \text{Reg} = \frac{E_0 - V_t}{E_0} \times 100\%",
+            r"N_s = \frac{120 f}{P} = 1500 \text{ RPM}"
+        ],
+        "procedure_steps": [
+            "1. Start DC prime mover using 3-point starter and adjust speed to rated 1500 RPM.",
+            "2. Switch ON DC excitation and adjust field rheostat until terminal voltage reaches rated no-load E0 = 415V.",
+            "3. Switch on balanced 3-phase load bank in steps (IL = 1.0A to 6.8A).",
+            "4. At each step, maintain speed at 1500 RPM, record If, Vt, IL, and calculate Output Power and % Regulation."
+        ],
+        "observation_columns": [
+            {"key": "sno", "label": "S.No", "unit": ""},
+            {"key": "if", "label": "Field Current If", "unit": "A"},
+            {"key": "vt", "label": "Line Voltage Vt", "unit": "V"},
+            {"key": "il", "label": "Load Current IL", "unit": "A"},
+            {"key": "p0", "label": "Output Power P0", "unit": "W"},
+            {"key": "reg", "label": "Voltage Regulation", "unit": "%"}
+        ],
+        "verified_observations": [
+            {"sno": 1, "if": 1.10, "vt": 415, "il": 0.0, "p0": 0.0, "reg": 0.0},
+            {"sno": 2, "if": 1.10, "vt": 410, "il": 1.0, "p0": 710.14, "reg": 1.20},
+            {"sno": 3, "if": 1.06, "vt": 400, "il": 2.0, "p0": 1385.64, "reg": 3.61},
+            {"sno": 4, "if": 1.05, "vt": 390, "il": 2.8, "p0": 1891.40, "reg": 6.02},
+            {"sno": 5, "if": 1.05, "vt": 375, "il": 3.4, "p0": 2208.36, "reg": 9.64},
+            {"sno": 6, "if": 1.05, "vt": 360, "il": 4.2, "p0": 2618.86, "reg": 13.25},
+            {"sno": 7, "if": 1.05, "vt": 350, "il": 4.3, "p0": 2606.73, "reg": 15.66},
+            {"sno": 8, "if": 1.04, "vt": 340, "il": 4.8, "p0": 2826.70, "reg": 18.07},
+            {"sno": 9, "if": 1.04, "vt": 325, "il": 5.3, "p0": 2983.46, "reg": 21.68},
+            {"sno": 10, "if": 1.04, "vt": 310, "il": 5.8, "p0": 3114.23, "reg": 25.30},
+            {"sno": 11, "if": 1.04, "vt": 290, "il": 6.3, "p0": 3164.45, "reg": 30.12},
+            {"sno": 12, "if": 1.04, "vt": 270, "il": 6.8, "p0": 3180.04, "reg": 34.94}
+        ]
+    },
+    "exp6_a": {
+        "id": "exp6_a",
+        "number": "EXP 6-A",
+        "title": "Regulation of Alternator by EMF and MMF Methods",
+        "machine_type": "synchronous_alternator",
+        "ratings": {
+            "alternator": "415 V Star, 4.3 A rated, 1500 RPM, 50 Hz, Ra = 2.415 Ohm/ph",
+            "prime_mover": "DC Shunt Motor (220 V, 19 A, 1500 RPM, 5 HP)"
+        },
+        "aim": "To predetermine the voltage regulation of a 3-phase alternator for various power factors using EMF and MMF methods by obtaining OCC and SCC curves.",
+        "apparatus": [
+            "3-Phase Alternator with DC Prime Mover",
+            "DC Power Supply & 3-Point Starter",
+            "Field Rheostats (300 Ohm, 1.5A)",
+            "AC Voltmeter (0-600V MI)",
+            "AC Ammeter (0-10A MI)",
+            "DC Ammeters (0-2A MC)",
+            "Digital Tachometer (0-2000 RPM)"
+        ],
+        "theory": (
+            "EMF Method: Assumes linear magnetic circuit. Replaces armature reaction by fictitious reactance drop Ia*Xa. "
+            "Zs = E0_ph / Isc_ph. Predicts pessimistic (higher) regulation.\n"
+            "MMF Method: Combines field ampere-turns vectorially. If = sqrt(If1^2 + If2^2 - 2*If1*If2*cos(90 +- phi)). "
+            "Predicts optimistic (lower) regulation."
+        ),
+        "equations": [
+            r"R_a = 1.2 \times R_{dc} = 2.415\ \Omega/\text{phase}",
+            r"Z_s = \left.\frac{E_{0,\text{ph}}}{I_{sc,\text{ph}}}\right|_{I_f = \text{const}}, \quad X_s = \sqrt{Z_s^2 - R_a^2}",
             r"E_0 = \sqrt{(V\cos\phi + I R_a)^2 + (V\sin\phi \pm I X_s)^2}",
             r"I_f = \sqrt{I_{f1}^2 + I_{f2}^2 - 2 I_{f1} I_{f2} \cos(90^\circ \pm \phi)}",
             r"\% \text{Reg} = \frac{E_0 - V}{V} \times 100\%"
         ],
         "procedure_steps": [
-            "Part 1 (OCC): Run alternator at synchronous speed. Increase field current If in steps from zero to maximum, recording open circuit phase voltage E0.",
-            "Part 2 (SCC): Short-circuit alternator armature terminals through ammeters. Increase If slowly until rated armature current flows; record If.",
-            "Part 3 (EMF Method): Calculate Zs and Xs. Compute generated voltage E0 for given power factor and determine regulation.",
-            "Part 4 (MMF Method): Find If1 (for V) and If2 (for I_rated). Vectorially combine If1 and If2 to obtain resultant field current If, read E0 from OCC and calculate regulation."
+            "1. OCC TEST: Drive alternator at 1500 RPM with stator open. Vary field current If from 0 to 1.09A, recording line and phase voltages.",
+            "2. SCC TEST: Short stator terminals through ammeter. Slowly increase If until rated 4.3A flows (Ifsc = 0.35A).",
+            "3. Measure DC armature resistance and compute effective AC resistance Ra = 1.2 * Rdc = 2.415 Ohm/phase.",
+            "4. Compute Zs, Xs, E0 and % Reg for EMF method; perform vector summation of If1 and If2 for MMF method."
         ],
         "observation_columns": [
-            {"key": "if_field", "label": "I_f (Field)", "unit": "A"},
-            {"key": "e0_occ", "label": "E0 (OCC)", "unit": "V"},
-            {"key": "isc_scc", "label": "I_sc (SCC)", "unit": "A"},
-            {"key": "zs", "label": "Z_s", "unit": "Ω"},
-            {"key": "reg_emf", "label": "Reg (EMF)", "unit": "%"},
-            {"key": "reg_mmf", "label": "Reg (MMF)", "unit": "%"}
+            {"key": "if", "label": "Field Current If", "unit": "A"},
+            {"key": "e0_line", "label": "OCC Line E0", "unit": "V"},
+            {"key": "e0_ph", "label": "OCC Phase E0", "unit": "V"},
+            {"key": "isc", "label": "SCC Current Isc", "unit": "A"}
         ],
-        "viva_topics": [
-            "Why is the EMF method called pessimistic and MMF method called optimistic?",
-            "Why does SCC characteristic remain linear even at high field currents?",
-            "How does saturation affect synchronous reactance Zs?"
+        "verified_observations": [
+            {"if": 0.00, "e0_line": 28.0, "e0_ph": 16.16, "isc": 0.0},
+            {"if": 0.25, "e0_line": 152.5, "e0_ph": 87.75, "isc": 3.07},
+            {"if": 0.29, "e0_line": 170.5, "e0_ph": 98.43, "isc": 3.56},
+            {"if": 0.31, "e0_line": 190.4, "e0_ph": 109.92, "isc": 3.81},
+            {"if": 0.35, "e0_line": 210.0, "e0_ph": 121.24, "isc": 4.30},
+            {"if": 0.40, "e0_line": 230.0, "e0_ph": 132.80, "isc": 4.91},
+            {"if": 0.43, "e0_line": 257.0, "e0_ph": 148.40, "isc": 5.28},
+            {"if": 0.45, "e0_line": 270.0, "e0_ph": 155.80, "isc": 5.53},
+            {"if": 0.50, "e0_line": 290.0, "e0_ph": 167.40, "isc": 6.14},
+            {"if": 0.55, "e0_line": 310.0, "e0_ph": 178.90, "isc": 6.75},
+            {"if": 0.62, "e0_line": 330.0, "e0_ph": 190.50, "isc": 7.61},
+            {"if": 0.70, "e0_line": 350.0, "e0_ph": 202.10, "isc": 8.60},
+            {"if": 0.79, "e0_line": 370.0, "e0_ph": 213.60, "isc": 9.70},
+            {"if": 0.90, "e0_line": 390.0, "e0_ph": 225.20, "isc": 11.05},
+            {"if": 1.00, "e0_line": 400.0, "e0_ph": 230.90, "isc": 12.28},
+            {"if": 1.09, "e0_line": 410.0, "e0_ph": 236.70, "isc": 13.39}
         ]
     },
-    "exp_induction_generator_load": {
-        "id": "exp_induction_generator_load",
-        "title": "Load Test on 3-Phase Induction Generator",
-        "machine_type": "induction_motor",
-        "aim": "To operate a 3-phase squirrel cage induction machine in super-synchronous generator mode (N > Ns, s < 0) driven by prime mover, and determine its generation efficiency, power factor, and electrical output characteristics.",
-        "apparatus": ["3-Phase Induction Machine", "DC Motor Prime Mover", "3-Phase AC Mains / Capacitor Bank", "Digital Tachometer", "3-Phase Power Analyzer", "DC Field Rheostat"],
+    "exp6_b": {
+        "id": "exp6_b",
+        "number": "EXP 6-B",
+        "title": "Load Test on Induction Generator",
+        "machine_type": "induction_generator",
+        "ratings": {
+            "ac_machine": "3-Phase Induction Machine (415 V, 4.5 A, 1440 RPM, 2.2 kW, 50 Hz, Class B)",
+            "dc_machine": "DC Shunt Prime Mover (220 V, 19 A, 1500 RPM, 5 HP / 3.68 kW)"
+        },
+        "aim": "To operate a 3-phase induction machine in super-synchronous generator mode (N > Ns, s < 0) driven by prime mover, and determine its output power, efficiency, and power factor.",
+        "apparatus": [
+            "3-Phase Induction Machine coupled with DC Shunt Motor",
+            "3-Phase AC Mains Supply with Auto Transformer / Variac",
+            "220V DC Supply with DPST switch",
+            "DC Motor Field Rheostat (300 Ohm, 1.5A)",
+            "Two 3-Phase Wattmeters (500V, 10A, LPF/UPF, MF = 2)",
+            "AC Voltmeter (0-600V MI) & AC Ammeter (0-10A MI)",
+            "DC Voltmeter (0-300V MC) & DC Ammeter (0-20A MC)",
+            "Digital Tachometer (0-2000 RPM)"
+        ],
         "theory": (
-            "When an induction machine is driven by a mechanical prime mover above synchronous speed (N > Ns), the rotor slip becomes negative (s < 0). "
-            "The rotor conductors cut the stator rotating field in reverse relative direction, causing mechanical power input to be converted into electrical power output delivered to the grid. "
-            "The machine requires lagging reactive VARs from grid (or parallel capacitors) for magnetic excitation."
+            "When driven above synchronous speed (N > Ns = 1500 RPM), rotor slip s = (Ns - N)/Ns becomes negative. "
+            "Mechanical shaft energy is converted into active electrical power exported to the AC grid. "
+            "The induction generator draws reactive VARs from the grid for excitation."
         ),
         "equations": [
-            r"s = \frac{N_s - N}{N_s} < 0 \quad (\text{Super-synchronous speed } N > N_s)",
-            r"P_{\text{mech,in}} = T_{\text{prime\_mover}} \times \omega_m",
-            r"P_{\text{elec,out}} = \sqrt{3} V_L I_L \cos\phi \text{ (Delivered to grid)}",
-            r"\eta_{\text{generator}} = \frac{P_{\text{elec,out}}}{P_{\text{mech,in}}} \times 100\%"
+            r"s = \frac{N_s - N}{N_s} \times 100\% < 0",
+            r"P_{dc} = V_{dc} \times I_{dc} \text{ W}",
+            r"P_{\text{mech,in}} = 0.85 \times P_{dc} \text{ W}",
+            r"P_{\text{ac,out}} = (W_1 + W_2) \times MF \text{ W}",
+            r"\text{pf} = \frac{P_{\text{ac,out}}}{\sqrt{3} V_{ac} I_{ac}}",
+            r"\eta = \frac{P_{\text{ac,out}}}{P_{\text{mech,in}}} \times 100\%"
         ],
         "procedure_steps": [
-            "Connect induction machine to 3-phase AC supply network.",
-            "Start DC prime mover and gradually increase speed up to synchronous speed (1500 RPM).",
-            "Increase prime mover speed above synchronous speed (e.g. 1515 to 1560 RPM). Observe negative wattmeter reading turning positive output direction.",
-            "Record mechanical input torque, rotor speed N (> 1500 RPM), stator line current, line voltage, active power delivered, and reactive VARs absorbed.",
-            "Plot generated electrical power vs speed and generator efficiency vs active power output."
+            "1. Start induction machine as motor on 415V AC mains. Rotate coupled DC machine.",
+            "2. Match DC machine generated voltage with DC supply and close DPST switch.",
+            "3. Adjust DC field excitation so wattmeter reads ZERO (synchronous benchmark Ns = 1494-1500 RPM).",
+            "4. Weaken DC motor field to increase speed above 1500 RPM (1503.6 to 1528.8 RPM).",
+            "5. Record Vac, Iac, Pac_out, Vdc, Idc, and Speed at each step. Calculate negative slip, power factor, and efficiency."
         ],
         "observation_columns": [
-            {"key": "speed", "label": "Speed (N)", "unit": "RPM"},
-            {"key": "slip", "label": "Slip (s)", "unit": "pu"},
-            {"key": "v_line", "label": "V_line", "unit": "V"},
-            {"key": "i_line", "label": "I_line", "unit": "A"},
-            {"key": "p_elec_out", "label": "P_elec", "unit": "W"},
+            {"key": "sno", "label": "S.No", "unit": ""},
+            {"key": "vac", "label": "AC Voltage Vac", "unit": "V"},
+            {"key": "iac", "label": "AC Current Iac", "unit": "A"},
+            {"key": "pac_out", "label": "AC Power Output", "unit": "W"},
+            {"key": "vdc", "label": "DC Voltage Vdc", "unit": "V"},
+            {"key": "idc", "label": "DC Current Idc", "unit": "A"},
+            {"key": "speed", "label": "Speed N", "unit": "RPM"},
+            {"key": "slip", "label": "Slip s", "unit": "%"},
             {"key": "pf", "label": "Power Factor", "unit": ""},
-            {"key": "efficiency", "label": "Gen Efficiency", "unit": "%"}
+            {"key": "eff", "label": "Efficiency", "unit": "%"}
         ],
-        "viva_topics": [
-            "What supplies the magnetizing VARs needed by an isolated induction generator?",
-            "What happens if an induction generator loses grid connection while running?",
-            "Why is an induction generator widely used in wind turbine power generation?"
+        "verified_observations": [
+            {"sno": 1, "vac": 415, "iac": 3.95, "pac_out": 200, "vdc": 220, "idc": 3.5, "speed": 1503.6, "slip": -0.64, "pf": 0.070, "eff": 30.5},
+            {"sno": 2, "vac": 415, "iac": 3.95, "pac_out": 280, "vdc": 216, "idc": 4.5, "speed": 1505.5, "slip": -0.77, "pf": 0.099, "eff": 33.9},
+            {"sno": 3, "vac": 415, "iac": 4.10, "pac_out": 560, "vdc": 216, "idc": 5.0, "speed": 1507.0, "slip": -0.87, "pf": 0.190, "eff": 61.0},
+            {"sno": 4, "vac": 415, "iac": 4.20, "pac_out": 720, "vdc": 215, "idc": 6.0, "speed": 1509.6, "slip": -1.04, "pf": 0.239, "eff": 65.6},
+            {"sno": 5, "vac": 415, "iac": 4.40, "pac_out": 890, "vdc": 215, "idc": 7.0, "speed": 1512.0, "slip": -1.20, "pf": 0.282, "eff": 69.6},
+            {"sno": 6, "vac": 415, "iac": 4.50, "pac_out": 1080, "vdc": 214, "idc": 8.0, "speed": 1514.4, "slip": -1.36, "pf": 0.334, "eff": 74.2},
+            {"sno": 7, "vac": 415, "iac": 4.65, "pac_out": 1220, "vdc": 210, "idc": 9.0, "speed": 1516.2, "slip": -1.49, "pf": 0.365, "eff": 76.0},
+            {"sno": 8, "vac": 415, "iac": 4.80, "pac_out": 1400, "vdc": 210, "idc": 10.0, "speed": 1517.0, "slip": -1.54, "pf": 0.406, "eff": 78.4},
+            {"sno": 9, "vac": 415, "iac": 4.90, "pac_out": 1560, "vdc": 210, "idc": 11.0, "speed": 1521.0, "slip": -1.81, "pf": 0.443, "eff": 79.5},
+            {"sno": 10, "vac": 415, "iac": 5.00, "pac_out": 1740, "vdc": 210, "idc": 12.0, "speed": 1524.0, "slip": -2.01, "pf": 0.484, "eff": 81.2},
+            {"sno": 11, "vac": 415, "iac": 5.10, "pac_out": 2000, "vdc": 208, "idc": 13.0, "speed": 1527.8, "slip": -2.26, "pf": 0.545, "eff": 87.0},
+            {"sno": 12, "vac": 415, "iac": 5.30, "pac_out": 2080, "vdc": 208, "idc": 14.0, "speed": 1528.8, "slip": -2.33, "pf": 0.546, "eff": 84.1}
         ]
     },
-    "exp_alt_zpf_regulation": {
-        "id": "exp_alt_zpf_regulation",
-        "title": "Voltage Regulation of Alternator by ZPF (Potier Triangle) Method",
+    "exp7": {
+        "id": "exp7",
+        "number": "EXP 7",
+        "title": "Regulation of Alternator by ZPF (Potier Triangle) Method",
         "machine_type": "synchronous_alternator",
-        "aim": "To predetermine the voltage regulation of a 3-phase alternator using Zero Power Factor (ZPF) lag characteristic and Potier Triangle construction.",
-        "apparatus": ["3-Phase Alternator driven by Prime Mover", "3-Phase Inductive ZPF Load Bank", "DC Excitation Unit", "Voltmeters", "Ammeters"],
+        "ratings": {
+            "alternator": "415 V Star, 6.9 A rated, 1500 RPM, 50 Hz, Ra = 2.0 Ohm/phase",
+            "prime_mover": "DC Shunt Motor (220 V, 19 A, 1500 RPM, 5 HP)",
+            "zpf_load": "3-Phase Inductive Reactor Load Bank"
+        },
+        "aim": "To predetermine the voltage regulation of a 3-phase alternator using the Zero Power Factor (ZPF / Potier Triangle) method at lagging, unity, and leading power factors.",
+        "apparatus": [
+            "3-Phase Synchronous Alternator coupled to DC Prime Mover",
+            "3-Phase Inductive ZPF Load Reactor Bank",
+            "DC Excitation Power Supply & Rheostats (300 Ohm, 1.5A)",
+            "AC Voltmeter (0-600V MI) & AC Ammeter (0-10A MI)",
+            "DC Field Ammeter (0-3A MC)",
+            "Digital Tachometer (0-2000 RPM)"
+        ],
         "theory": (
-            "The ZPF / Potier Triangle method accurately separates the Potier leakage reactance drop (I*X_L) from the armature reaction field MMF (MQ). "
-            "It gives the most accurate predetermination of voltage regulation under saturation conditions."
+            "The Potier Triangle separates leakage reactance drop (PQ = I*XL) from armature reaction field MMF (MQ = If1). "
+            "It gives accurate regulation by accounting for magnetic circuit saturation."
         ),
         "equations": [
-            r"PQ = I X_L \quad (\text{Potier Leakage Reactance Drop})",
+            r"PQ = I_{\text{rated}} \times X_L, \quad X_L = \frac{PQ}{I_{\text{rated}}}",
             r"MQ = I_{f1} \quad (\text{Armature Reaction MMF})",
             r"E = \sqrt{(V\cos\phi + I R_a)^2 + (V\sin\phi \pm I X_L)^2}",
             r"I_f = \sqrt{I_{f1}^2 + I_{f2}^2 - 2 I_{f1} I_{f2} \cos(90^\circ \pm \phi)}",
             r"\% \text{Reg} = \frac{E_0 - V}{V} \times 100\%"
         ],
         "procedure_steps": [
-            "Obtain Open Circuit Characteristic (OCC) by measuring E0 vs If at synchronous speed.",
-            "Obtain ZPF point at rated voltage V and rated current I at zero power factor lagging.",
-            "Construct Potier Triangle ΔPMN on OCC-ZPF plot. Determine Potier leakage reactance XL from vertical leg PQ and armature reaction field current If1 from horizontal leg MQ.",
-            "Calculate excitation voltage E. Find corresponding field current If2 from OCC curve.",
-            "Combine If1 and If2 vectorially to get total field current If. Read no-load voltage E0 from OCC and calculate percentage voltage regulation."
+            "1. Plot OCC curve at 1500 RPM.",
+            "2. Connect pure inductive ZPF load. Adjust load and field to draw rated current (6.9A) at rated voltage (415V). Record ZPF field current (If = 1.7A).",
+            "3. Construct Potier Triangle ΔPMN. Measure vertical leg PQ = I*XL and horizontal leg MQ = If1.",
+            "4. Calculate internal voltage E for each power factor, find If2 from OCC, compute resultant field excitation If, read E0 from OCC, and calculate % Reg."
         ],
         "observation_columns": [
-            {"key": "if_field", "label": "I_f", "unit": "A"},
-            {"key": "v_zpf", "label": "V_zpf", "unit": "V"},
-            {"key": "i_rated", "label": "I_rated", "unit": "A"},
-            {"key": "potier_xl", "label": "X_L", "unit": "Ω"},
-            {"key": "ar_if1", "label": "I_f1 (AR)", "unit": "A"},
-            {"key": "reg_zpf", "label": "Reg (ZPF)", "unit": "%"}
+            {"key": "pf_nature", "label": "Nature of PF", "unit": ""},
+            {"key": "pf", "label": "PF", "unit": ""},
+            {"key": "v_ph", "label": "Rated Vph", "unit": "V"},
+            {"key": "e_ph", "label": "Voltage E", "unit": "V"},
+            {"key": "if_res", "label": "Resultant If", "unit": "A"},
+            {"key": "e0_ph", "label": "No-Load E0", "unit": "V"},
+            {"key": "reg", "label": "Regulation", "unit": "%"}
         ],
-        "viva_topics": [
-            "Why is the Potier triangle method more accurate than EMF and MMF methods?",
-            "What physical quantity is represented by the vertical leg PQ of the Potier triangle?",
-            "Why is a zero power factor lagging load required for this test?"
+        "verified_observations": [
+            {"pf_nature": "lagging", "pf": 0.0, "v_ph": 239.6, "e_ph": 307.40, "if_res": 2.046, "e0_ph": 315.0, "reg": 31.40},
+            {"pf_nature": "lagging", "pf": 0.2, "v_ph": 239.6, "e_ph": 308.49, "if_res": 2.036, "e0_ph": 315.0, "reg": 31.40},
+            {"pf_nature": "lagging", "pf": 0.4, "v_ph": 239.6, "e_ph": 307.32, "if_res": 2.000, "e0_ph": 315.0, "reg": 31.40},
+            {"pf_nature": "lagging", "pf": 0.6, "v_ph": 239.6, "e_ph": 303.31, "if_res": 1.940, "e0_ph": 315.0, "reg": 31.40},
+            {"pf_nature": "lagging", "pf": 0.8, "v_ph": 239.6, "e_ph": 294.70, "if_res": 1.830, "e0_ph": 315.0, "reg": 31.40},
+            {"pf_nature": "UPF", "pf": 1.0, "v_ph": 239.6, "e_ph": 262.23, "if_res": 1.470, "e0_ph": 310.0, "reg": 29.38},
+            {"pf_nature": "leading", "pf": 0.8, "v_ph": 239.6, "e_ph": 219.17, "if_res": 0.970, "e0_ph": 283.0, "reg": 18.11},
+            {"pf_nature": "leading", "pf": 0.6, "v_ph": 239.6, "e_ph": 200.61, "if_res": 0.740, "e0_ph": 240.0, "reg": 0.17},
+            {"pf_nature": "leading", "pf": 0.4, "v_ph": 239.6, "e_ph": 187.49, "if_res": 0.560, "e0_ph": 209.0, "reg": -12.77},
+            {"pf_nature": "leading", "pf": 0.2, "v_ph": 239.6, "e_ph": 178.28, "if_res": 0.430, "e0_ph": 174.0, "reg": -27.38},
+            {"pf_nature": "leading", "pf": 0.0, "v_ph": 239.6, "e_ph": 172.65, "if_res": 0.386, "e0_ph": 145.0, "reg": -39.48}
         ]
     },
-    "exp_alt_infinite_bus_v_curves": {
-        "id": "exp_alt_infinite_bus_v_curves",
-        "title": "V and Inverted V Curves of Alternator Connected to Infinite Bus Bar",
+    "exp8": {
+        "id": "exp8",
+        "number": "EXP 8",
+        "title": "Alternator on Infinite Bus Bar (V and Inverted V Curves)",
         "machine_type": "synchronous_alternator",
-        "aim": "To plot the V-curves (armature line current vs field current) and inverted V-curves (power factor vs field current) of a 3-phase alternator connected to an infinite busbar at constant power output.",
-        "apparatus": ["3-Phase Alternator with DC Prime Mover", "Synchronizing Panel with TPST Switch & Lamps", "DC Field Rheostats", "Power Analyzer"],
+        "ratings": {
+            "alternator": "415 V Star, 6.9 A rated, 1500 RPM, 50 Hz",
+            "prime_mover": "DC Shunt Motor (220 V, 19 A, 1500 RPM, 5 HP)",
+            "infinite_bus": "3-Phase 415 V 50 Hz Grid Bus"
+        },
+        "aim": "To synchronize the given 3-phase alternator with the infinite busbar using dark-lamp method, and to plot the V-curves and inverted V-curves at constant power output.",
+        "apparatus": [
+            "3-Phase Alternator coupled to DC Prime Mover",
+            "3-Phase Infinite Busbar (415V, 50Hz)",
+            "Synchronizing Switch (TPST)",
+            "Three Synchronizing Lamp Sets (Dark Lamp Method)",
+            "AC Voltmeter (0-600V MI) & AC Ammeter (0-10A MI)",
+            "DC Field Ammeter (0-3A MC)",
+            "Two 3-Phase Wattmeters (500V, 5A, UPF/LPF, MF = 2)",
+            "Digital Tachometer (0-2000 RPM)"
+        ],
         "theory": (
-            "When an alternator is synchronized to an infinite busbar, its terminal voltage and frequency are clamped by the grid. "
-            "Varying prime mover mechanical power input changes active power output P. "
-            "Varying DC field current If changes reactive power Q and power factor. Under-excitation causes lagging power factor (supplies VARs to grid), while over-excitation causes leading power factor."
+            "Synchronization requires matching voltage, frequency, phase sequence, and zero phase difference. "
+            "Once synchronized to infinite bus, machine speed is clamped at synchronous speed (1500 RPM). "
+            "Varying field current If alters reactive power Q and power factor while active power P remains constant. "
+            "Minimum line current occurs at unity power factor."
         ),
         "equations": [
-            r"P_{\text{grid}} = \sqrt{3} V_L I_L \cos\phi = \text{constant}",
-            r"Q_{\text{grid}} = \sqrt{3} V_L I_L \sin\phi \quad (\text{Varies with } I_f)",
-            r"\text{Minimum } I_L \text{ occurs at unity power factor } (\cos\phi = 1.0)"
+            r"W = \text{Wattmeter} \times 3 \times MF \text{ Watts} = \text{constant}",
+            r"\text{pf} = \frac{W}{\sqrt{3} V_L I_L}",
+            r"Q = \sqrt{3} V_L I_L \sin\phi \text{ VAR}",
+            r"I_{L,\text{min}} \text{ occurs at } \cos\phi = 1.0"
         ],
         "procedure_steps": [
-            "Synchronize the alternator with the infinite busbar using dark lamp / synchroscope method.",
-            "Adjust DC prime mover speed/torque to set active power output to one-third of rated capacity.",
-            "Maintain constant active power. Vary alternator field current If from under-excitation to over-excitation.",
-            "At each step, record Field Current If, Armature Current IL, Line Voltage VL, Active Power P, and Power Factor cos phi.",
-            "Plot IL vs If (V-curve) and cos phi vs If (Inverted V-curve)."
+            "1. Start DC prime mover and adjust speed to exactly 1500 RPM.",
+            "2. Energize field until alternator terminal voltage equals bus voltage (415V).",
+            "3. Verify phase sequence with synchronizing lamps (all 3 lamps brighten and darken together).",
+            "4. When dark period is slow, close TPST switch in middle of dark period.",
+            "5. Adjust DC throttle until wattmeter reads one-third rated output (200W, MF=2). Maintain constant power.",
+            "6. Vary field current If from 0.4A to 2.1A. Record VL, IL, If, Wattmeter, and calculate power factor."
         ],
         "observation_columns": [
-            {"key": "if_field", "label": "Field Current (If)", "unit": "A"},
-            {"key": "i_armature", "label": "Line Current (IL)", "unit": "A"},
-            {"key": "active_power", "label": "Active Power (P)", "unit": "W"},
-            {"key": "power_factor", "label": "Power Factor", "unit": ""},
-            {"key": "pf_mode", "label": "PF Mode", "unit": ""}
+            {"key": "sno", "label": "S.No", "unit": ""},
+            {"key": "vl", "label": "Line Voltage VL", "unit": "V"},
+            {"key": "il", "label": "Line Current IL", "unit": "A"},
+            {"key": "if", "label": "Field Current If", "unit": "A"},
+            {"key": "w", "label": "Wattmeter W", "unit": "W"},
+            {"key": "pf", "label": "Power Factor", "unit": ""}
         ],
-        "viva_topics": [
-            "What controls active power output P of a grid-connected alternator?",
-            "What controls reactive power output Q and power factor of a grid-connected alternator?",
-            "What is an infinite busbar?"
+        "verified_observations": [
+            {"sno": 1, "vl": 415, "il": 6.6, "if": 0.40, "w": 200, "pf": 0.252},
+            {"sno": 2, "vl": 415, "il": 5.8, "if": 0.50, "w": 200, "pf": 0.287},
+            {"sno": 3, "vl": 415, "il": 5.0, "if": 0.60, "w": 200, "pf": 0.333},
+            {"sno": 4, "vl": 415, "il": 4.2, "if": 0.70, "w": 200, "pf": 0.397},
+            {"sno": 5, "vl": 415, "il": 3.2, "if": 0.80, "w": 200, "pf": 0.521},
+            {"sno": 6, "vl": 420, "il": 2.6, "if": 0.90, "w": 200, "pf": 0.634},
+            {"sno": 7, "vl": 420, "il": 2.2, "if": 1.00, "w": 200, "pf": 0.749},
+            {"sno": 8, "vl": 420, "il": 2.0, "if": 1.10, "w": 200, "pf": 0.824},
+            {"sno": 9, "vl": 420, "il": 2.0, "if": 1.20, "w": 200, "pf": 0.824},
+            {"sno": 10, "vl": 420, "il": 2.3, "if": 1.30, "w": 200, "pf": 0.717},
+            {"sno": 11, "vl": 420, "il": 2.0, "if": 1.40, "w": 200, "pf": 0.824},
+            {"sno": 12, "vl": 420, "il": 3.1, "if": 1.50, "w": 200, "pf": 0.532},
+            {"sno": 13, "vl": 420, "il": 3.8, "if": 1.60, "w": 200, "pf": 0.434},
+            {"sno": 14, "vl": 420, "il": 4.4, "if": 1.70, "w": 200, "pf": 0.374},
+            {"sno": 15, "vl": 420, "il": 5.1, "if": 1.80, "w": 200, "pf": 0.323},
+            {"sno": 16, "vl": 420, "il": 5.7, "if": 1.90, "w": 200, "pf": 0.289},
+            {"sno": 17, "vl": 420, "il": 6.3, "if": 2.00, "w": 200, "pf": 0.261},
+            {"sno": 18, "vl": 420, "il": 6.9, "if": 2.10, "w": 200, "pf": 0.239}
         ]
     }
 }
@@ -528,3 +474,12 @@ class ExperimentEngine:
 
     def get_experiment(self, exp_id: str) -> Dict[str, Any]:
         return self.experiments.get(exp_id, {})
+
+EXPERIMENTS = EXPERIMENTS_REGISTRY
+
+def get_experiment(exp_id: str) -> Dict[str, Any]:
+    return EXPERIMENTS_REGISTRY.get(exp_id, {})
+
+def list_experiments() -> List[Dict[str, Any]]:
+    return list(EXPERIMENTS_REGISTRY.values())
+

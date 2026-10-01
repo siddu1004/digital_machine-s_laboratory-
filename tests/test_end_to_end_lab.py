@@ -158,31 +158,21 @@ def test_full_professor_demonstration_workflow(client):
 
 def test_all_10_machines_physics_and_12_experiments(client):
     """
-    Verifies that all 10 preset machines simulate without error using deterministic physics
-    and all 12 standardized experiments are accessible via the API.
+    Verifies that all 7 Semester-5 experiments from machineslabmaterials-sem-5
+    are accessible via the API.
     """
     # 1. Verify Experiments via API
     exp_resp = client.get("/api/experiments")
     assert exp_resp.status_code == 200
     experiments = exp_resp.get_json()
-    assert len(experiments) >= 12, f"Expected at least 12 experiments, got {len(experiments)}"
+    assert len(experiments) == 7, f"Expected exactly 7 Semester-5 experiments, got {len(experiments)}"
     
-    # Check key experiments exist
+    # Check exact Semester-5 experiments exist
     exp_ids = [e["id"] for e in experiments]
-    assert "exp_im_load_test" in exp_ids
-    assert "exp_im_speed_control" in exp_ids
-    assert "exp_alt_load_test" in exp_ids
-    assert "exp_alt_synchronization" in exp_ids
-    assert "exp_dc_shunt_load" in exp_ids
-    assert "exp_dc_shunt_speed_control" in exp_ids
-    assert "exp_sync_motor_v_curves" in exp_ids
-    assert "exp_transformer_oc_sc" in exp_ids
-    assert "exp_transformer_load_test" in exp_ids
-    assert "exp_3ph_transformer_vector_parallel" in exp_ids
-    assert "exp_alt_emf_mmf_regulation" in exp_ids
-    assert "exp_induction_generator_load" in exp_ids
-    assert "exp_alt_zpf_regulation" in exp_ids
-    assert "exp_alt_infinite_bus_v_curves" in exp_ids
+    expected_ids = ["exp2", "exp3", "exp5", "exp6_a", "exp6_b", "exp7", "exp8"]
+    for eid in expected_ids:
+        assert eid in exp_ids, f"Experiment {eid} missing from API"
+
 
     # 2. Verify Deterministic Physics Solvers across all 10 machines
     mgr = NameplateManager()

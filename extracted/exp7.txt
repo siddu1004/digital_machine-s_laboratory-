@@ -1,0 +1,205 @@
+
+--- Page 1 ---
+Expt. No.:         Date:  
+ 
+REGULATION OF ALTERNATOR BY ZPF METHOD 
+ 
+AIM: 
+ 
+To predetermine the voltage regulation of an alternator by ZPF or Potier method. 
+ 
+APPARATUS REQUIRED: 
+ 
+Serial No. Item Type and Range Quantity  
+ Voltmeter 
+Ammeter 
+Wattmeter 
+Rheostat 
+Tachometer 
+DPDT 
+TPST 
+Lamps(Synchronising) 
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ 
+ 
+PROCEDURE: 
+OPEN CIRCUIT TEST 
+1. Wire up the circuit as per the OCC determination test. 
+2. Set the field rheostat of the motor to minimum resistance and that of the alternator 
+to maximum resistance position. 
+3. The rheostats in the armature circuit of the motor are set for maximum resistance 
+position. 
+4. The TPST switch is kept open, and the DC motor is started using 3-point starter. 
+5. Using the armature rheostats of the motor, the alternator is driven at rated speed if 
+not achieved, the resistance in the field rheostat is included. 
+6. Keeping the SPST open and ensuring zero field current in the alternator side, the 
+residual voltage is noted down. Then the SPST is closed. 
+7. Adjust the field current of the alternator in steps and corresponding to each field 
+current, record the terminal voltage on open circuit. 
+8. The experiment is repeated until about 120% of the rated voltage is obtained. 
+Throughout the experiment, the speed must be maintained at the rated speed 
+value. 
+9. Plot the phase value of open circuit voltage against field current to obtain the open 
+circuit characteristic curve. 
+ 
+ 
+--- Page 2 ---
+To obtain ZPF point and Potier triangle: 
+ 
+1. Make connections as shown in the circuit diagram for connection alternator to infinite 
+busbar..  
+2. Keep the armature rheostat of the DC machine in maximum resistance position and the 
+field rheostat in minimum resistance position. Also, keep the field rheostat of the 
+alternator in maximum resistance position. All the switches are kept open.  
+3. Switch on the DC supply and start the motor using 3-point starter.  
+4. Bring the speed of the DC motor very close to synchronous speed by adjusting the 
+armature rheostat and the field rheostat of the motor.  
+5. Put on the AC supply  
+6. Watch the changes in the glow of three lamp sets. If the phase sequence is correct, all 
+three lamp sets come to a fully bright position simultaneously at one instant and then 
+slowly go to the dark side simultaneously at the same instant and the cycle repeats. 
+7. If the phase sequence is incorrect, then the lamps brighten up in a cyclic order, one after 
+the other. In that case, switch off the whole supply, interchange any two leads of the 
+alternator or the supply mains, and restart.  
+8. Measure its line-line voltage. Adjust the field current of the alternator so that its generated 
+voltage is equal to the AC supply voltage.  
+9. For frequency synchronization, small adjustments in the speed of the motor must be made 
+to get longer dark periods.  
+8. If all conditions are verified, then in the middle of the dark period synchronizing 
+switch TPST is closed, thereby connecting the alternator with the infinite bus.  
+9. Increase the speed of the DC motor so that the wattmeter reads one-third of the 
+required output as the wattmeter is reading per phase value. This reading must be 
+kept constant throughout the experiment.  
+10. Adjust the field current of the alternator for a minimum value so that the current 
+delivered by the alternator is equal to its rated current. Adjust the field rheostat of 
+motor to bring the power output of the alternator to zero. Note down the readings of 
+all meters.  
+11. Reduce the armature current to a minimum and switch off AC supply and then the 
+DC supply.  
+12. Plot the OCC and the ZPF point on a graph with common field current taken in X-axis. 
+13. Complete the Potier triangle and determine the IX L drop and field current If1 required to 
+overcome armature reaction drop from the triangle. 
+14. Find E using the formula E= 22 )sin(IR)  cos( sIXVV    (+ for lagging and - for 
+leading power factors. 
+15. Find the field current If2 corresponding to E from OCC graph. 
+--- Page 3 ---
+16. Find the resultant field current using If1 and If2 using the formula 
+If = ට(𝐼௙ଵ
+ଶ + 𝐼௙ଶ
+ଶ − 2𝐼௙ଵ𝐼௙ଶ 𝑐𝑜𝑠( 90 ±𝜑))    
+(+ for lagging and – for leading power factors) 
+17. From OCC find the voltage Eo corresponding to If from the above equation. 
+18. Find the regulation using the formula V
+VEo   x 100% 
+ 
+  
+ 
+ 
+  
+--- Page 4 ---
+Circuit Diagram for OCC: 
+ 
+
+--- Page 5 ---
+Circuit Diagram for ZPF point determination: 
+ 
+  
+
+--- Page 6 ---
+Tabular Observation: 
+OCC: 
+Serial no. Field Current I f 
+amp 
+Open circuit line 
+voltage Eo (line)V 
+Open circuit 
+phase voltage Eoph 
+V 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ 
+ZPF point: 
+Field Current If  A Short circuit current Isc A 
+  
+ 
+Regulation Pre-determination: 
+S 
+NO. 
+Nature of 
+pf 
+PF Rated Voltage/Phase V 
+Volt 
+E 
+Volts 
+If 
+A 
+Generated 
+volt/Phase Eo 
+volt 
+%REG=(Eo-V)/V)*100 
+1. 0.0     
+2. 0.2     
+3. 0.4     
+4. 0.6     
+5. 0.8     
+6. 1.0     
+7. 0.8     
+8. 0.6     
+9. 0.4     
+10. 0.2     
+11. 0.0     
+--- Page 7 ---
+Model Graph: 
+ 
+• Draw MN Equal and parallel to OL 
+• Thru N draw a line parallel to airgap line meeting OCC at P 
+• Drop a perpendicular to Q  on MN from P 
+• ΔPMN is Potier Triangle 
+• PQ represents IXL drop 
+• MQ is field current required to overcome armature reaction drop 
+  
+
+--- Page 8 ---
+Phasor diagram: 
+• Draw rated VPh vector, represent current I at ɸ pf angle 
+• Draw IRa parallel to I vector and represent IXL obtained from Potier Δ perpendicular to 
+IRa.  
+• Find E – vectorial sum of VPh, IRa and IXL 
+• Draw OF perpendicular to E which is field current corresponding to E from OCC graph 
+• Draw FG = QM from Potier Δ at an angle (90±ɸ)  ‘+’ for lagging pf and ‘–’ for leading 
+pf 
+• Find OG which is the field excitation If corresponding to Eo in OCC graph. Find Eo. 
+ 
+%100% xV
+VEreg o 
+ 
+Result: 
+The voltage regulation of three phase alternator was predetermined using ZPF or Potier method 
+at different power factor conditions and the ZPG regulation phasor diagram is drawn for a given 
+power factor. 
+ 
+Inference:  
+IXL 
+90+ɸ 

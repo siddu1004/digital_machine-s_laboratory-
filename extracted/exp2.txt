@@ -1,0 +1,238 @@
+
+--- Page 1 ---
+EXPERIMENT NO:        DATE: 
+ 
+NO LOAD AND BLOCKED ROTOR TESTS ON 3-PHASE SQUIRREL CAGE INDUCTION 
+MOTOR 
+Aim : 
+1. To conduct the no-load test and blocked rotor test on the given 3-phase cage induction motor and to 
+obtain the values of equivalent circuit parameters. 
+2. Using the equivalent circuit to calculate the following at any given slip 
+ a) Current drawn from the supply 
+ b) Input power factor 
+ c) Torque developed 
+d) Approximate output 
+e) Efficiency 
+3. To calculate the slip for maximum power and maximum power. 
+4. Draw the circle diagram of the three-phase induction motor from test data. 
+ 
+APPARATUS REQUIRED: 
+ 
+Serial 
+no. 
+ 
+Item 
+ 
+Range & Type 
+ 
+Quantity 
+ 
+1 
+ 
+Voltmeter 
+  
+ 
+2 
+ 
+Ammeter 
+  
+ 
+3 
+ 
+Wattmeter 
+  
+ 
+4 
+ 
+Rheostat 
+  
+ 
+5 
+ 
+Auto transformer 
+  
+6 Tachometer   
+ 
+--- Page 2 ---
+PROCEDURE: 
+1. NO-LOAD TEST 
+(1)  Make the connections as shown in the diagram. 
+(2) With no load on the motor and with the autotransformer set for zero output voltage, switch on the 
+supply. 
+(3) Slowly increase the voltage to the normal rated value. 
+(4)  While increasing the voltage, see that the current drawn by the motor never exceeds the full load 
+value. 
+(5) Note the no-load voltage, current, speed, and input power. 
+(6) Reduce the voltage to zero and switch off the supply. Note that the no-load current drawn by the motor 
+is 20-30% of the full load value, and the no-load power factor will usually be less than 0.2. Hence an LPF 
+wattmeter is used for power measurement. 
+ 
+2. BLOCK ROTOR TEST: 
+(1) Connections are made as shown in the diagram. Usually, about 30% rated voltage is sufficient for 
+circulating full-load current through the stator winding. The power factor under blocked–rotor condition 
+is well above 0.5, and hence a UPF wattmeter is to be used. 
+(2) Prevent the rotor from rotation by mechanical loading. 
+(3)  With the autotransformer set for zero output voltage, switch on the supply. 
+(4) Increase the voltage to a value sufficient to circulate the full-load current through stator windings. 
+(5) Note down the input power, current, and voltage applied. 
+(6) Reduce the voltage and switch off the supply and release the load on the motor. 
+ 
+3. STATOR RESISTANCE MEASUREMENT 
+(1) Make the connections to measure stator resistance. 
+(2) The DC resistance per phase of the stator winding is determined by the usual voltmeter-ammeter 
+method. 
+  
+--- Page 3 ---
+
+--- Page 4 ---
+ 
+ 
+  
+
+--- Page 5 ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 6 ---
+Tabulation: 
+No load test        No load Speed=      rpm 
+Stator Voltage Vo (V) No load current      I o (A) Power Wo 
+   
+ 
+ 
+Blocked Rotor Test 
+Stator Voltage Vsc (V) Blocked Rotor Current I sc (A) Power W sc 
+   
+ 
+SAMPLE CALCULATIONS: 
+From No load test data: 
+Delta connected stator 
+No load power factor cos φo   =  
+)3/(
+)3/(
+IoVo
+Wo  
+Magnetising current / phase Im   = 
+3
+Io sin φ0    A 
+Core loss or working component current/phase Iw  =
+3
+Io Cos φ0  A 
+Magnetic Circuit reactance ,Xm  = Im
+Vo   Ohms 
+Magnetic circuit resistance, Rm  =  Iw
+Vo    Ohms 
+No load current /phase  Io  =(Iw - jIm)   A 
+From Blocked Rotor test data: 
+Total equivalent resistance referred to stator Ro1 =
+2)3/(
+)3/(
+Isc
+Wsc Ohms 
+Stator resistance /phase  R1 =    Ohms 
+Rotor resistance/phase R2’ =     Ohms 
+Ro1  = R1 + R2’    Ohms         
+--- Page 7 ---
+Equivalent Impedance refered to stator     Zo1  =   
+)3/(Isc
+Vsc        Ohms      
+Total reactance refered to stator  Xo1= )(
+2
+1
+2
+1 oo RZ    Ohms 
+Xo1  = X1 + X2’    
+Performance for any Slip ‘s’  
+Resistance representing Load component on motor = RL’ = R2’(1-s)/s    Ohms 
+Impedance offered to current  I2’ =  Z2’ = (Ro1 + RL’) + j Xo1      Ohms 
+Current  I2’=    Vo/ Z2’ A     (Vo is taken as reference is Vo o ) 
+Stator current / phase   I1    =     I0  +I2' A 
+Input power factor= cos   φ   =  cosine of angle of I1  
+Speed N = (1-s)Ns =      RPM 
+Total Mechanical Power developed  Pm = 3(I2’)2RL’  
+Total Torque =  mPNT 60
+2  
+                        T = N
+Pm
+2
+60     N-m 
+Input to motor  P1  =√3 VL IL cos φ   =  
+Neglecting friction and windage losses, Efficiency  = (Pm/P1) x 100                = 
+  
+Slip corresponding to maximum power output  Sp= R2’/( R2’+Zo1) 
+Maximum power output Pm(max)= 3Vo2/(2Ro1 + 2Zo1)     W 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- Page 8 ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 9 ---
+RESULT: 
+1. The equivalent circuit was drawn inserting the values of all parameters . 
+2. At any value of  slip, s=    %(any one value between 2 to 10%) 
+a) current drawn from the supply 
+b) Input power factor 
+c) Torque developed  
+d) Approximate output 
+e) Efficiency 
+3. a) Slip corresponding to maximum power Sp = 
+   b) Maximum power Pm(max) 
+4. Circle diagram of the machine is obtained and parameters are calculated. 
+ 
+INFERENCE: 
+  

@@ -1,0 +1,140 @@
+
+--- Page 1 ---
+Exp. No: 
+Date: 
+                      LOAD TEST ON INDUCTION GENERATOR 
+AIM 
+             To conduct load test on induction generator and plot the following characteristics: 
+1. Efficiency Vs Output Power 
+2. Line current Vs Output Power 
+3. Power factor Vs Output Power 
+4. Percentage Slip Vs Output Power 
+5. Output Torque Vs Slip 
+ 
+Name Plate Details 
+            DC machine 
+220V,19A ,1500 rpm ,5hp/3.68kw 
+ 
+               AC machine  
+ 415V ,4.5 A, 1440 rpm 2.2 kw 
+3 ,50 Hz Insulation B 
+ 
+Apparatus Required 
+Sl.No Name Specifications Quantity 
+1 Auto Transformer   
+2 Voltmeter   
+3 Wattmeter   
+4 Ammeter   
+5 Rheostat   
+6 Tachometer   
+7 DPST switch   
+ 
+ 
+--- Page 2 ---
+PROCEDURE 
+1. Make connections as per the circuit diagram. 
+2. Set autotransformer for zero output voltage. Switch on the AC supply. Gradually increase the 
+voltage from zero to the rated value using a transformer so as to start the induction machine as a 
+motor. The coupled DC machine shaft also starts rotating. 
+3. Switch on DC supply. Note down the reading of the connected voltmeter. 
+4. Increase the excitation of the DC machine so that the generated voltage becomes equal to the 
+DC source voltage in magnitude. Check if the polarity of the voltage is matching with that of the 
+DC supply voltage. In case of polarity mismatch, interchange the DC machine terminals. 
+5. Close the DPST switch. Paralleling of the DC machine and DC supply is done. 
+6. Reduce the field excitation of the DC machine so that the wattmeter reads zero. The speed 
+corresponding to this condition is called the synchronous speed of the induction machine. 
+7. Note down the readings of all meters. 
+8. Increase the speed in steps by reducing the motor field excitation. Note down the value at 
+each time. Note down the current on the induction machine side. 
+9. Repeat the procedure until the rated current is reached on the induction machine side. 
+10. Reduce the current to the minimum using autotransformer. Switch off the AC supply. Then 
+switch off the DC supply. 
+11. From the tabulated readings, do the calculations and deduce performance characteristics. 
+  
+--- Page 3 ---
+OBSERVATIONS 
+Synchronous speed Ns=    ------- rpm 
+Sl. No Voltage(V) 
+    Vac 
+Current(A) 
+I ac 
+Power (W) 
+ Pac_out 
+Voltage (V) 
+  Vdc 
+Current    
+Idc (A) 
+     
+Speed 
+(rpm) 
+       
+       
+       
+       
+       
+       
+ 
+CALCULATIONS 
+SAMPLE CALCULATIONS 
+Set No:(   ) 
+𝑃𝑑𝑐 = 𝑉𝑑𝑐 ∗ 𝐼𝑑𝑐    = 
+ Pac_in=0.85 *Pdc    = 
+ pf=
+௉ ௔௖_௢௨௧
+√ଷ௏௔௖∗ூ௔௖             = 
+𝑁𝑠 =
+ே௦ିே
+ே௦ *100       = 
+ 
+ 
+ 
+--- Page 4 ---
+TABULATIONS 
+Sl. 
+No 
+      DC machine 
+  Input  Power    (W) 
+𝑃𝑑𝑐 = 𝑉𝑑𝑐 ∗ 𝐼𝑑𝑐    
+    AC machine 
+   Input power(W) 
+𝑃𝑎𝑐௜௡ = 0.85𝑃𝑑𝑐 
+Percentage  
+Efficiency 
+=
+௉௔௖_௢௨௧
+௉௔௖_௜௡  
+Power  
+Factor 
+pf=
+௉ ௔௖_௢௨௧
+√ଷ௏௔௖∗ூ௔௖ 
+ 
+      Slip 
+ 
+𝑁𝑠 =
+ே௦ିே
+ே௦ *100 
+      
+      
+      
+      
+      
+      
+      
+ 
+Model Graph 
+ 
+
+--- Page 5 ---
+Circuit Diagram 
+ 
+
+--- Page 6 ---
+RESULT 
+Load test on Induction generator is carried out and performance characteristics are plotted. 
+INFERENCE 
+ 
+ 
+ 
+ 
+  

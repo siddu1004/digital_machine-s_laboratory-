@@ -1,0 +1,183 @@
+
+--- Page 1 ---
+EXPERIMENTNO:                Date:                                                                    
+SPEED CONTROL OF 3-PHASE INDUCTION MOTOR 
+ 
+AIM: 
+1 To control the speed of the given 3 phase squirrel cage induction motor by pole changing method. 
+2 To control the speed of the given slip ring induction motor by changing rotor resistance and to plot 
+the variations of speed for different values of rotor resistance. 
+3 To control the speed of the given 3_phase slip ring induction motor by varying the input voltage 
+and to plot the variation of speed with voltage at no load and 25% full load. 
+ 
+INSTRUMENTS AND ACCESSORIES: 
+Sl NO: ITEM TYPE AND RANGE QUANTITY 
+1 Auto transformer   
+2 Voltmeter   
+3 Ammeter   
+4 Tachometer   
+ 
+THEORY: 
+The synchronous speed of an induction motor is given by Ns=120f/P. So by changing the no. of poles on 
+the stator, the synchronous speed and hence rotor speed can be changed. The no. of stator and rotor poles 
+should be equal. The stator winding can be designed so that by a simple change in coil connections, the 
+no. of poles can be changed. As the no. of poles on the stator is changed, a cage rotor adjusts itself to the 
+same number of poles. The stator winding can be connected for 2-pole, 4-pole or 6-pole configuration as 
+shown in the diagram. 
+The speed of the slip ring induction motor can be changed by changing the rotor resistance. By changing 
+rotor resistance the same load torque can be obtained at different speed. For a given load torque as rotor 
+resistance increases the speed decreases and vice versa. Even though with simple method high starting 
+torque can be obtained, this has the drawback of the power loss in the external resistance. 
+As the torque developed by the induction motor is proportional to square of the voltage, the speed can 
+also be varied by changing the voltage.  
+  
+--- Page 2 ---
+PROCEDURE: 
+1. POLE CHANGING METHOD 
+I. Make connection as shown in the circuit diagram. 
+II. Using a 3-phase auto transformer, slowly increase the voltage to the rated value. 
+III.  Measure and record the voltage applied and the speed on no load.  
+IV.  Switch off the power supply. 
+V. Repeat the same procedure for 4-pole and 2-pole configurations. 
+ 
+2. ROTOR RHEOSTATIC SPEED  CONTROL 
+I. Make a connection as shown in the circuit diagram 
+II.  Keep the rotor rheostat at a minimum resistance position and give supply to the stator. 
+The motor should be under no load. 
+III. Motor starts rotating, and the ammeter, voltmeter, and tachometer readings are noted 
+down. 
+IV. Rotor resistance is gradually increased  and at each step, all the meter readings are 
+observed and tabulated. 
+V. Experiment is repeated until the maximum value of rotor circuit resistance is reached. 
+ 
+3.  SPEED CONTROL BY CHANGING THE VOLTAGE 
+I. Connections are made as shown in circuit diagram 
+II. Switch on the supply with the motor under no load and keep the autotransformer in the 
+minimum voltage position. 
+III. Apply 20% normal voltage and note down the no load speed. 
+IV. No load speed is noted with 40%, 60%, 80%, and 100% normal voltage. 
+V. Experiment is repeated with 25%load on the motor, and the above procedure is repeated. 
+VI. Reduce the load and voltage and switch off the motor supply. 
+ 
+  
+--- Page 3 ---
+Tabulation: 
+Pole Changing Method 
+ 
+ 
+STATOR VOLTAGE CONTROL METHOD 
+ 
+SERIAL 
+NO. 
+STATOR VOLTAGE 
+AS PERCENTAGE 
+OF RATED VALUE 
+SPEED IN RPM 
+NO-LOAD 25% FULL LOAD 
+1    
+2    
+3    
+4    
+5    
+ 
+SERIAL 
+NO. 
+POLE 
+CONFIGURATIONS 
+STATOR VOLTAGE 
+(VOLTS) 
+NO-LOAD 
+SPEED 
+(RPM) 
+1    
+2    
+3    
+--- Page 4 ---
+ROTOR RHEOSTAT CONTROL METHOD 
+ 
+ 
+SL 
+NO. 
+SPEED 
+(RPM) 
+VOLTAGE 
+ACROSS ROTOR 
+RESISTANCE 
+Vr(VOLTS) 
+ROTOR 
+CURRENT 
+Ir 
+(AMPS) 
+EXTERNAL 
+ROTOR 
+CIRCUIT 
+RESISTANCE 
+R=Vr/Ir 
+(OHM) 
+AVERAGE 
+RESISTANCE 
+R 
+(OHM) 
+1      
+2      
+3      
+4      
+5      
+6      
+7      
+8      
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+--- Page 5 ---
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- Page 6 ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- Page 7 ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+--- Page 8 ---
+ 
+ 
+ 
+Result: 
+The different Speed control techniques on the given three phase induction motor was carried out and the 
+characteristic curves were plotted. 
+ 
+Inference: 

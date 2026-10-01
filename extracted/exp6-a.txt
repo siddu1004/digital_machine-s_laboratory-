@@ -1,0 +1,186 @@
+
+--- Page 1 ---
+EXPT NO:                        DATE:   
+REGULATION OF ALTERNATOR BY EMF AND MMF METHODS 
+AIM: 
+To predetermine the voltage regulation of the given non-salient pole alternator at any 
+load by EMF and MMF methods at different power factors and plot percentage voltage 
+regulation Vs Power factor curve. 
+Apparatus Required:                           
+Serial no Item Type and range Quantity 
+1. 
+ 
+2. 
+ 
+3. 
+ 
+4. 
+ 
+5. 
+ 
+6. 
+ 
+Voltmeter 
+ 
+Ammeter  
+ 
+Rheostat 
+ 
+Tachometer 
+ 
+SPST 
+ 
+TPST 
+  
+ 
+PROCEDURE: 
+a) OPEN CIRCUIT TEST 
+1. Wire up the circuit as shown in the circuit diagram. 
+2. Set the field rheostat of the motor to minimum resistance and that of the alternator to 
+maximum resistance position. 
+3. The rheostats in the armature circuit of the motor are set for maximum resistance 
+position. 
+4. The TPST switch is kept open, and the DC motor is started using 3-point starter. 
+5. Using the armature rheostats of the motor, the alternator is driven at rated speed if not 
+achieved, the resistance in the field rheostat is included. 
+6. Keeping the SPST open and ensuring zero field current in the alternator side, the 
+residual voltage is noted down. Then the SPST is closed. 
+--- Page 2 ---
+7. Adjust the field current of the alternator in steps and corresponding to each field 
+current, record the terminal voltage on open circuit. 
+8. The experiment is repeated until about 120% of the rated voltage is obtained. 
+Throughout the experiment, the speed must be maintained at the rated speed value. 
+9. Plot the phase value of open circuit voltage against field current to obtain the open 
+circuit characteristic curve. 
+ 
+b) SHORT CIRCUIT TEST 
+1. Reduce the field excitation of the alternator to the minimum position and open the 
+SPST switch. 
+2. Close the TPST and adjust the field rheostat of the alternator so that the rated current 
+flows through the short-circuited armature winding. 
+3. Note down the corresponding field current(Ifsc) 
+4. The Short Circuit Characteristic curve is drawn as a straight line passing through the 
+points (0,0) and (Ifsc, I) where ‘I’  is the rated current of the alternator. 
+c) ARMATURE (STATOR) RESISTANCE MEASUREMENT 
+The armature resistance is found by the voltmeter-ammeter method. The effective armature 
+resistance may be taken 1.2 times that of obtained value. This is to take the skin effect into 
+account. 
+--- Page 3 ---
+Tabular Observation: 
+OCC: 
+Serial no. Field Current I f 
+amp 
+Open circuit line 
+voltage Eo (line)V 
+Open circuit 
+phase voltage Eoph 
+V 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+ 
+SCC: 
+Field Current Ifsc amp Short circuit current Isc amp 
+  
+ 
+Resistance Measurement: 
+S No.  Current through 
+Phase winding 
+Idc amp 
+Voltage drop 
+Vdc volt 
+Resistance Rdc  
+Vdc/Idc 
+Effective 
+Armature 
+Resistance/Phase 
+R=1.2Rdc Ω 
+     
+     
+     
+     
+     
+          MEAN: 
+--- Page 4 ---
+Regulation Pre-determination: 
+S 
+NO. 
+Nature of 
+pf 
+PF Rated Voltage/Phase V 
+Volt 
+Generated volt/Phase Eo 
+volt 
+%REG=(Eo-
+V)/V)*100 
+1. 0.0   
+2. 0.2   
+3. 0.4   
+4. 0.6   
+5. 0.8   
+6. 1.0   
+7. 0.8   
+8. 0.6   
+9. 0.4   
+10. 0.2   
+11. 0.0   
+ 
+MODEL CALCULATION: 
+ EMF METHOD: 
+Synchronous impedance = Zs =Rated voltage per phase / [short circuit current 
+corresponding to rated voltage (Same field 
+current) ohms] 
+  Effective Armature resistance per phase R=   
+  Synchronous reactance / phase = Xs = )( 22
+RZ s   = 
+Rated voltage/phase = V=   
+  Full – load current= I =   
+  Generated voltage E 0 =   22 )sin(IR)  cos( sIXVV      
+  (+ for lagging and – for leading power factors) 
+  Percentage Voltage regulation =  
+       
+ MMF METHOD: 
+  Field current Ifo for rated voltage from OC test=   
+  Field current I fsc for rated current under SC test =   
+--- Page 5 ---
+  Field current I f  for rated voltage on full load 
+     I f = ට(𝐼௙଴
+ଶ + 𝐼௙௦௖
+ଶ − 2𝐼௙௢𝐼௙௦௖ 𝑐𝑜𝑠( 90 ±𝜑)) 
+                                                   (+ for lagging and – for leading power factors) 
+  E 0(for If from OCC) =           
+  Percentage Voltage regulation= V
+VEo   x 100 
+To measure Stator Resistance: 
+ 
+ 
+
+--- Page 6 ---
+Circuit Diagram: 
+ 
+
+--- Page 7 ---
+Model graph: 
+ 
+ 
+
+--- Page 8 ---
+Vector diagrams for EMF method: 
+ 
+Result:  
+The voltage regulation of a three-phase alternator was pre-determined by EMF and 
+MMF methods and the characteristic curves were plotted. 
+ 
+Inference: 
+  

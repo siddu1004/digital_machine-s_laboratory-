@@ -1,0 +1,129 @@
+
+--- Page 1 ---
+Expt. No.:         Date:  
+ 
+ALTERNATOR ON INFINITE BUS BAR 
+ 
+AIM: 
+ 
+To plot the “V” and inverted “V” curves of the given alternator connected to infinite bus bar at 
+constant output. 
+ 
+APPARATUS REQUIRED: 
+ 
+Serial No. Item Type and Range Quantity  
+ Voltmeter 
+Ammeter 
+Wattmeter 
+Rheostat 
+Tachometer 
+DPDT 
+TPST 
+Lamps(Synchronising) 
+  
+   
+   
+   
+   
+   
+   
+   
+   
+   
+   
+ 
+ 
+PROCEDURE: 
+ 
+Synchronization and V and inverted V-curves of the alternator 
+ 
+10. Make connections as shown in the circuit diagram.  
+11. Keep the armature rheostat of the DC machine in maximum resistance position and the 
+field rheostat in minimum resistance position. Also, keep the field rheostat of the 
+alternator in maximum resistance position. All the switches are kept open.  
+12. Switch on the DC supply and start the motor using 3-point starter.  
+13. Bring the speed of the DC motor very close to synchronous speed by adjusting the 
+armature rheostat and the field rheostat of the motor.  
+14. Put on the AC supply  
+15. Watch the changes in the glow of three lamp sets. If the phase sequence is correct, all 
+three lamp sets come to a fully bright position simultaneously at one instant and then 
+slowly go to the dark side simultaneously at the same instant and the cycle repeats. 
+16. If the phase sequence is incorrect,then the lamps brighten up in a cyclic order, one after 
+the other. In that case, switch off the whole supply, interchange any two leads of the 
+alternator or the supply mains, and restart.  
+--- Page 2 ---
+17. Measure its line-line voltage. Adjust the field current of the alternator so that its generated 
+voltage is equal to the AC supply voltage.  
+18. For frequency synchronization, small adjustments in the speed of the motor must be made 
+to get longer dark periods.  
+19. If all conditions are verified, then in the middle of the dark period synchronizing 
+switch TPST is closed, thereby connecting the alternator with the infinite bus.  
+20. Increase the speed of the DC motor so that the wattmeter reads one-third of the 
+required output as the wattmeter is reading per phase value. This reading must be 
+kept constant throughout the experiment.  
+21. Adjust the field current of the alternator for a minimum value so that the current 
+delivered by the alternator is nearly equal to the rated current. Note down the readings 
+of all meters.  
+22. Increase the alternator field current in equal steps, and for each step, note down the 
+meter readings and tabulate the values. See that the armature current never exceeds 
+the rated current.  
+23. Reduce the armature current to a minimum and switch off AC supply and then the 
+DC supply.  
+24. Draw the ‘V’ and inverted ‘V’ curves using the tabulated values.  
+ 
+SAMPLE CALCULATION:-  
+IL= 
+ 
+VL= 
+ 
+Total three phase power W= Wattmeter reading x 3 x multiplication factor of the meter 
+ 
+Power factor=W / (√3 * VL* IL) 
+ 
+  
+--- Page 3 ---
+CIRCUIT DIAGRAM: 
+ 
+  
+
+--- Page 4 ---
+Tabulation:  
+    Wattmeter multiplication factor= 
+Serial No 
+Voltage 
+VL 
+(V) 
+Line 
+Current 
+IL (A) 
+Field  
+Current 
+If (A) Wattmeter(W) 
+Power 
+Factor 
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      
+ 
+Model Graph: 
+ 
+RESULT: 
+ 
+The Alternator was synchronised to the three phase infinite busbar and its V and inverted V 
+curves were plotted at constant power output. 
+ 
+INFERENCE: 

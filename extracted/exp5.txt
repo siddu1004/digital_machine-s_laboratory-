@@ -1,0 +1,83 @@
+
+--- Page 1 ---
+Expt No.:          Date: 
+LOAD TEST ON THREE-PHASE ALTERNATOR 
+AIM: 
+ To determine the performance characteristics of three phase alternator by conducting a load test 
+on it. 
+APPARATUS REQUIRED:  
+S.NO APPARATUS RANGE QUANTITY 
+1 Rheostat   
+2 Rheostat   
+3 Rheostat   
+4 Ammeter   
+5 Ammeter   
+6 Voltmeter   
+7 Voltmeter   
+7 Tachometer   
+ 
+PROCEDURE: 
+1. Connections are given as per the circuit diagram. 
+2. Ensure that the motor field rheostat is in minimum position, the armature rheostat in 
+maximum position and the alternator field rheostat is in maximum position. 
+3. The supply is switched ON from the DC side.  
+4. The 3-point starter is gradually moved from the OFF to the ON position. 
+5. The motor is brought to its rated speed by adjusting its armature and field rheostats. 
+6. The terminal voltage of the alternator is brought to its rated voltage by varying the field 
+rheostat of the alternator.  
+7. Resistive load connected to the alternator is varied in steps from no load till the rated 
+current is reached. 
+8. Field current, terminal voltage, and load current of the alternator are noted down in 
+steps. 
+9. In each step, ensure that the machine runs at rated speed. 
+10. Now, the resistive load is brought to its initial position. 
+11. Then, the alternator field rheostat and motor field rheostat is brought to its initial 
+condition. 
+Observation 
+--- Page 2 ---
+ No load Voltage Eo =       V 
+S.No Field Current If  
+(A) 
+Line Voltage  
+Vt (V) 
+Load current  
+IL(A) 
+Output Power 
+Po(Watts) 
+Voltage 
+Regulation (%) 
+    
+  
+ 
+Model Calculations: 
+Po= 3 VLIL cosФ 
+Due to resistive load cosФ=1 
+Voltage Regulation = No load voltage – Load voltage   x 100 
+                                               No load voltage 
+Voltage Regulation = Eo – Vt    x 100  % 
+                                          Eo 
+ 
+  
+--- Page 3 ---
+Circuit Diagram: 
+ 
+ 
+
+--- Page 4 ---
+Model Graph: 
+ 
+Result: 
+The load test on the given three phase alternator was conducted and the characteristics curves 
+were plotted. 
+Inference: 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
